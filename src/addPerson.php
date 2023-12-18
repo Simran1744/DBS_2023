@@ -36,15 +36,19 @@ $success = $database->insertIntoFitnessstudio($Studio_ID, $F_Name, $Ort, $Platz,
 
 // Check result
 if ($success){
-    echo "Fitnessstudio '{$Studio_ID} {$F_Name}' successfully added!'";
+    $message =  "Fitnessstudio '{$Studio_ID} {$F_Name}' successfully added!'";
 }
 else{
-    echo "Error can't insert Fitnessstudio '{$Studio_ID} {$F_Name}'!";
+    $message =  "Error can't insert Fitnessstudio '{$Studio_ID} {$F_Name}'!";
 }
 ?>
 
-<!-- link back to index page-->
-<br>
-<a href="index.php">
-    go back
-</a>
+<div id="message">
+    <?php echo $message; ?>
+</div>
+
+<script>
+    setTimeout(function () {
+        window.location.href = 'index.php';
+    }, 1500);
+</script>

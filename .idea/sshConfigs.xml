@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" host="almighty.cs.univie.ac.at" id="88489353-2b89-44db-b5e6-b939c99eedef" port="22" nameFormat="DESCRIPTIVE" username="simranw22" useOpenSSHConfig="true" />
+    </configs>
+  </component>
+</project>

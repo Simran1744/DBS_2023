@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="dc9709bc-927b-4489-b6c7-45fe0e822beb" name="Almighty" url="https://wwwlab.cs.univie.ac.at/~simranw22/">
+        <fileTransfer rootFolder="/home/simranw22/public_html/" accessType="SFTP" host="almighty.cs.univie.ac.at" port="22" sshConfigId="88489353-2b89-44db-b5e6-b939c99eedef" sshConfig="simranw22@almighty.cs.univie.ac.at:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

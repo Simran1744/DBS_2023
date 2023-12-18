@@ -117,8 +117,53 @@ $studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Ort, $Pl
 <hr>
 
 <!-- Update Person -->
-<h2
+<h2>Update Fitnessstudio: </h2>
+<form method="post" action="updatePerson.php">
+    <!-- ID textbox -->
+    <div>
+        <label for="Studio_IDs">ID:</label>
+        <input id="Studio_IDs" name="Studio_ID" type="number" min="1">
+    </div>
+    <br>
+    <h3>Update Values: </h3>
+    <!-- Name textbox -->
+    <div>
+        <label for="new_Studio_IDs">ID:</label>
+        <input id="new_Studio_IDs" name ="Studio_IDs" type="number" min="1">
+    </div>
+    <br>
+    <div>
+        <label for="new_F_Names">Name:</label>
+        <input id="new_F_Names" name="F_Name" type="text" maxlength="20">
+    </div>
+    <br>
 
+    <!-- Surname textbox -->
+    <div>
+        <label for="new_Orts">Ort:</label>
+        <input id="new_Orts" name="Ort" type="text" maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <label for="new_Platzs">Platz:</label>
+        <input id="new_Platzs" name="Platz" type="number">
+    </div>
+    <br>
+
+    <div>
+        <label for="new_Strasses">Strasse:</label>
+        <input id="new_Strasses" name="Strasse" type="text" maxlength="20">
+    </div>
+    <br>
+    <div>
+        <button id ='update' type='submit'>
+           Update
+        </button>
+    </div>
+</form>
+<br>
+<hr>
 
 <!-- Search form -->
 <h2>Fitnessstudio Search:</h2>
@@ -154,14 +199,24 @@ $studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Ort, $Pl
     <tr>
         <th>ID</th>
         <th>Name</th>
+        <th>Ort</th>
+        <th>Platz</th>
+        <th>Strasse</th>
+
     </tr>
     <?php foreach ($studio_array as $Fitnessstudio) : ?>
         <tr>
             <td><?php echo $Fitnessstudio['STUDIO_ID']; ?>  </td>
             <td><?php echo $Fitnessstudio['F_NAME']; ?>  </td>
+            <td><?php echo $Fitnessstudio['ORT']; ?>  </td>
+            <td><?php echo $Fitnessstudio['PLATZ']; ?>  </td>
+            <td><?php echo $Fitnessstudio['STRASSE']; ?>  </td>
+
         </tr>
     <?php endforeach; ?>
 </table>
+
+
 
 </body>
 </html>

@@ -89,37 +89,12 @@ class DatabaseHelper
         return $success;
     }
 
-    // Using a Procedure
-    // This function uses a SQL procedure to delete a person and returns an errorcode (&errorcode == 1 : OK)
+
     public function deleteFitnessstudio($Studio_ID)
     {
 
         $errorcode = 0;
 
-        // In our case the procedure P_DELETE_PERSON takes two parameters:
-        //  1. person_id (IN parameter)
-        //  2. error_code (OUT parameter)
-        /*
-        // The SQL string
-        $sql = 'BEGIN P_DELETE_Fitnessstudio(:Studio_ID, :errorcode); END;';
-        $statement = oci_parse($this->conn, $sql);
-
-        //  Bind the parameters
-        oci_bind_by_name($statement, ':Studio_ID', $Studio_ID);
-        oci_bind_by_name($statement, ':errorcode', $errorcode);
-
-        // Execute Statement
-        oci_execute($statement);
-
-        //Note: Since we execute COMMIT in our procedure, we don't need to commit it here.
-        //@oci_commit($statement); //not necessary
-
-        //Clean Up
-        oci_free_statement($statement);
-        */
-
-        //$errorcode == 1 => success
-        //$errorcode != 1 => Oracle SQL related errorcode;
 
         $sql = "DELETE FROM Fitnessstudio WHERE Studio_ID = :Studio_ID";
 
@@ -133,5 +108,50 @@ class DatabaseHelper
         oci_commit($this->conn);
         oci_free_statement($statement);
         return $errorcode;
+    }
+
+    public function updateFitnessstudio($Studio_ID, $New_Studio_ID, $F_Name, $Ort, $Platz, $Strasse)
+    {
+
+        /*$sql = "UPDATE Fitnessstudio SET F_Name = '{$F_Name}', Ort = '{$Ort}', Platz = '{$Platz}', Strasse = '{$Strasse}' WHERE Studio_ID = '{$Studio_ID}'";
+        $statement = oci_parse($this->conn, $sql);
+        $success = oci_execute($statement) && oci_commit($this->conn);
+        oci_free_statement($statement);
+
+        return $success;*/
+
+        $setClauses = [];
+
+        // Check each parameter and add it to the SET clause if it's provided
+        if($New_Studio_ID != null){
+            $setClauses[] = "Studio_ID = '{$New_Studio_ID}'";
+        }
+        if ($F_Name != null) {
+            $setClauses[] = "F_Name = '{$F_Name}'";
+        }
+        if ($Ort != null) {
+            $setClauses[] = "Ort = '{$Ort}'";
+        }
+        if ($Platz != null) {
+            $setClauses[] = "Platz = '{$Platz}'";
+        }
+        if ($Strasse != null) {
+            $setClauses[] = "Strasse = '{$Strasse}'";
+        }
+
+        // If no parameters were provided, return false as nothing to update
+        if (empty($setClauses)) {
+            return false;
+        }
+
+        // Construct the SQL query with the dynamic SET clause
+        $setClause = implode(', ', $setClauses);
+        $sql = "UPDATE Fitnessstudio SET {$setClause} WHERE Studio_ID = '{$Studio_ID}'";
+
+        $statement = oci_parse($this->conn, $sql);
+        $success = oci_execute($statement) && oci_commit($this->conn);
+        oci_free_statement($statement);
+
+        return $success;
     }
 }

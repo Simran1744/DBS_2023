@@ -15,16 +15,25 @@ if(isset($_POST['Studio_ID'])){
 $error_code = $database->deleteFitnessstudio($Studio_ID);
 
 // Check result
+
 if ($error_code == 0){
-    echo "Fitnessstudio with ID: '{$Studio_ID}' successfully deleted!'";
+    $message = "Fitnessstudio with ID: '{$Studio_ID}' successfully deleted!'";
 }
 else{
-    echo "Error can't delete Fitnessstudio with ID: '{$Studio_ID}'. Errorcode: {$error_code}";
+    $message = "Error can't delete Fitnessstudio with ID: '{$Studio_ID}'. Errorcode: {$error_code}";
 }
+
+
 ?>
 
-<!-- link back to index page-->
-<br>
-<a href="index.php">
-    go back
-</a>
+<div id="message">
+    <?php echo $message; ?>
+</div>
+
+<script>
+    setTimeout(function () {
+        window.location.href = 'index.php';
+    }, 1500);
+</script>
+
+
