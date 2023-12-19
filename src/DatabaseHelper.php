@@ -154,4 +154,31 @@ class DatabaseHelper
 
         return $success;
     }
+
+    public function insertIntoMitarbeiter($Mitarbeiter_ID, $Studio_ID, $Vorname, $Nachname){
+        $sql = "INSERT INTO Mitarbeiter (Mitarbeiter_ID, Studio_ID, Vorname, Nachname) VALUES ('{$Mitarbeiter_ID}','{$Studio_ID}','{$Vorname}','{$Nachname}')";
+
+        $statement = oci_parse($this->conn, $sql);
+        $success = oci_execute($statement) && oci_commit($this->conn);
+        oci_free_statement($statement);
+        return $success;
+    }
+
+    public function deleteMitarbeiter($Mitarbeiter_ID){
+        $errorcode = 0;
+
+
+        $sql = "DELETE FROM Mitarbeiter WHERE Mitarbeiter_ID = '{$Mitarbeiter_ID}'";
+
+        $statement = oci_parse($this->conn, $sql);
+        oci_bind_by_name($statement, ":Mitarbeiter_ID", $Studio_ID);
+        if (!oci_execute($statement)) {
+            $errorcode = 1;
+        }elseif(oci_num_rows($statement)==0){
+            $errorcode = 2;
+        }
+        oci_commit($this->conn);
+        oci_free_statement($statement);
+        return $errorcode;
+    }
 }

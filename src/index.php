@@ -8,6 +8,7 @@ $database = new DatabaseHelper();
 
 // Get parameter 'person_id', 'surname' and 'name' from GET Request
 // Btw. you can see the parameters in the URL if they are set
+
 $Studio_ID = '';
 if (isset($_GET['Studio_ID'])) {
     $Studio_ID  = $_GET['Studio_ID'];
@@ -41,7 +42,7 @@ $studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Ort, $Pl
 
 <html lang="en">
 <head>
-    <title>DBS Tutorial</title>
+    <title>Fitnessstudio</title>
 </head>
 
 <body>
@@ -165,6 +166,8 @@ $studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Ort, $Pl
 <br>
 <hr>
 
+
+
 <!-- Search form -->
 <h2>Fitnessstudio Search:</h2>
 <form method="get">
@@ -215,6 +218,66 @@ $studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Ort, $Pl
         </tr>
     <?php endforeach; ?>
 </table>
+
+<br>
+<hr>
+
+<h2>Add Mitarbeiter: </h2>
+<form method="post" action="addMitarbeiter.php">
+
+    <div>
+        <label for="new_ID">ID:</label>
+        <input id="new_ID" name="Mitarbeiter_ID" type="number">
+    </div>
+    <br>
+
+    <div>
+        <label for="new_F_ID">Studio-ID:</label>
+        <input id="new_F_ID" name="Studio_ID" type="number" min="1">
+    </div>
+    <br>
+
+    <div>
+        <label for="new_Vorname">Vorname:</label>
+        <input id="new_Vorname" name="Vorname" type="text" maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <label for="new_Nachname">Nachname:</label>
+        <input id="new_Nachname" name="Nachname" type="text" maxlength="20">
+    </div>
+    <br>
+
+    <!-- Submit button -->
+    <div>
+        <button type="submit">
+            Add Mitarbeiter
+        </button>
+    </div>
+</form>
+<br>
+<hr>
+
+
+<!-- Delete Person -->
+<h2>Delete Mitarbeiter: </h2>
+<form method="post" action="delMitarbeiter.php">
+    <div>
+        <label for="newM_ID">ID:</label>
+        <input id="newM_ID" name="Mitarbeiter_ID" type="number" min="1">
+    </div>
+    <br>
+
+    <!-- Submit button -->
+    <div>
+        <button type="submit">
+            Delete Mitarbeiter
+        </button>
+    </div>
+</form>
+<br>
+<hr>
 
 
 
