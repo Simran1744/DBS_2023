@@ -78,6 +78,45 @@ class DatabaseHelper
         return $res;
     }
 
+    public function selectAllMitarbeiter($Mitarbeiter_ID, $Studio_ID, $Vorname, $Nachname){
+
+        $sql = "SELECT * FROM MITARBEITER
+            WHERE MITARBEITER_ID LIKE '%{$Mitarbeiter_ID}%'
+              AND upper(STUDIO_ID) LIKE upper('%{$Studio_ID}%')
+              AND upper(VORNAME) LIKE upper('%{$Vorname}%')
+              AND upper(NACHNAME) LIKE upper('%{$Nachname}%')";
+        $statement = oci_parse($this->conn, $sql);
+
+        // Executes the statement
+        oci_execute($statement);
+
+        oci_fetch_all($statement, $res, null, null, OCI_FETCHSTATEMENT_BY_ROW);
+
+        //clean up;
+        oci_free_statement($statement);
+
+        return $res;
+    }
+
+    public function selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht, $Sprachkenntnisse){
+
+        $sql = "SELECT * FROM PERSONAL_TRAINER
+            WHERE MITARBEITER_ID LIKE '%{$Mitarbeiter_ID}%'
+              AND upper(GESCHLECHT) LIKE upper('%{$Geschlecht}%')
+              AND upper(SPRACHKENNTNISSE) LIKE upper('%{$Sprachkenntnisse}%')";
+        $statement = oci_parse($this->conn, $sql);
+
+        // Executes the statement
+        oci_execute($statement);
+
+        oci_fetch_all($statement, $res, null, null, OCI_FETCHSTATEMENT_BY_ROW);
+
+        //clean up;
+        oci_free_statement($statement);
+
+        return $res;
+    }
+
     // This function creates and executes a SQL insert statement and returns true or false
     public function insertIntoFitnessstudio($Studio_ID, $F_Name, $Ort, $Platz, $Strasse)
     {
@@ -180,5 +219,75 @@ class DatabaseHelper
         oci_commit($this->conn);
         oci_free_statement($statement);
         return $errorcode;
+    }
+
+    public function updateMitarbeiter($Mitarbeiter_ID, $New_Mitarbeiter_ID, $Studio_ID, $Vorname, $Nachname){
+        $setClauses = [];
+
+        // Check each parameter and add it to the SET clause if it's provided
+        if($New_Mitarbeiter_ID != null){
+            $setClauses[] = "Mitarbeiter_ID = '{$New_Mitarbeiter_ID}'";
+        }
+        if ($Studio_ID != null) {
+            $setClauses[] = "Studio_ID = '{$Studio_ID}'";
+        }
+        if ($Vorname != null) {
+            $setClauses[] = "Vorname = '{$Vorname}'";
+        }
+        if ($Nachname != null) {
+            $setClauses[] = "Nachname = '{$Nachname}'";
+        }
+
+        // If no parameters were provided, return false as nothing to update
+        if (empty($setClauses)) {
+            return false;
+        }
+
+        // Construct the SQL query with the dynamic SET clause
+        $setClause = implode(', ', $setClauses);
+        $sql = "UPDATE MITARBEITER SET {$setClause} WHERE MITARBEITER_ID = '{$Mitarbeiter_ID}'";
+
+        $statement = oci_parse($this->conn, $sql);
+        $success = oci_execute($statement) && oci_commit($this->conn);
+        oci_free_statement($statement);
+
+        return $success;
+    }
+
+    public function insertIntoPersonalTrainer($Mitarbeiter_ID,$Geschlecht, $Sprachkenntnisse){
+        $sql = "INSERT INTO PERSONAL_TRAINER (Mitarbeiter_ID, GESCHLECHT, SPRACHKENNTNISSE) VALUES ('{$Mitarbeiter_ID}','{$Geschlecht}','{$Sprachkenntnisse}')";
+
+        $statement = oci_parse($this->conn, $sql);
+        $success = oci_execute($statement) && oci_commit($this->conn);
+        oci_free_statement($statement);
+        return $success;
+    }
+
+    public function updatePersonalTrainer($Mitarbeiter_ID, $New_Mitarbeiter_ID, $Geschlecht, $Sprachkenntnisse){
+
+        if($New_Mitarbeiter_ID != null){
+            $setClauses[] = "Mitarbeiter_ID = '{$New_Mitarbeiter_ID}'";
+        }
+        if ($Geschlecht != null) {
+            $setClauses[] = "Geschlecht = '{$Geschlecht}'";
+        }
+        if ($Sprachkenntnisse != null) {
+            $setClauses[] = "Sprachkenntnisse = '{$Sprachkenntnisse}'";
+        }
+
+        // If no parameters were provided, return false as nothing to update
+        if (empty($setClauses)) {
+            return false;
+        }
+
+        // Construct the SQL query with the dynamic SET clause
+        $setClause = implode(', ', $setClauses);
+        $sql = "UPDATE PERSONAL_TRAINER SET {$setClause} WHERE MITARBEITER_ID = '{$Mitarbeiter_ID}'";
+
+        $statement = oci_parse($this->conn, $sql);
+        $success = oci_execute($statement) && oci_commit($this->conn);
+        oci_free_statement($statement);
+
+        return $success;
     }
 }

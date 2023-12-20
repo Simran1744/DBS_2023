@@ -281,5 +281,274 @@ $studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Ort, $Pl
 
 
 
+<h2>Update Mitarbeiter: </h2>
+<form method="post" action="updateMitarbeiter.php">
+    <!-- ID textbox -->
+    <div>
+        <label for="Mitarbeiter_IDs">ID:</label>
+        <input id="Mitarbeiter_IDs" name="Mitarbeiter_ID" type="number">
+    </div>
+    <br>
+    <h3>Update Values: </h3>
+    <!-- Name textbox -->
+    <div>
+        <label for="new_Mitarbeiter_IDs">ID:</label>
+        <input id="new_Mitarbeiter_IDs" name ="Mitarbeiter_IDs" type="number">
+    </div>
+    <br>
+    <div>
+        <label for="new_Studio_IDs_Names">Studio-ID:</label>
+        <input id="new_Studio_IDs_Names" name="Studio_ID"  type="number">
+    </div>
+    <br>
+
+    <!-- Surname textbox -->
+    <div>
+        <label for="new_Vorname">Vorname:</label>
+        <input id="new_Nachname" name="Vorname" type="text" maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <label for="new_Nachname">Nachname:</label>
+        <input id="new_Nachname" name="Nachname" type="text" maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <button id ='update' type='submit'>
+            Update
+        </button>
+    </div>
+</form>
+<br>
+<hr>
+
+<?php
+$Mitarbeiter_ID = '';
+if (isset($_GET['Mitarbeiter_ID'])) {
+    $Mitarbeiter_ID  = $_GET['Mitarbeiter_ID'];
+}
+
+$Studio_ID= '';
+if (isset($_GET['Studio_ID'])) {
+    $Studio_ID = $_GET['Studio_ID'];
+}
+
+$Vorname = '';
+if (isset($_GET['Vorname'])) {
+    $Vorname = $_GET['Vorname'];
+}
+
+$Nachname = '';
+if (isset($_GET['Nachname'])) {
+    $Nachname = $_GET['Nachname'];
+}
+
+
+//Fetch data from database
+$studio_array = $database->selectAllMitarbeiter($Mitarbeiter_ID, $Studio_ID, $Vorname, $Nachname);
+?>
+
+<h2>Mitarbeiter Search:</h2>
+<form method="get">
+    <!-- ID textbox:-->
+    <div>
+        <label for="Mitarbeiter_ID">ID:</label>
+        <input id="Mitarbeiter_ID" name="Mitarbeiter_ID" type="number" value='<?php echo $Mitarbeiter_ID; ?>'>
+    </div>
+    <br>
+
+    <div>
+        <label for="V_name">Vorname:</label>
+        <input id="V_name" name="Vorname" type ="text" class="form-control input-md" value='<?php echo $Vorname; ?>'
+               maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <label for="N_name">Nachname:</label>
+        <input id="N_name" name="Nachname" type="text" class="form-control input-md" value='<?php echo $F_Name; ?>'
+               maxlength="20">
+    </div>
+    <br>
+
+    <!-- Submit button -->
+    <div>
+        <button id='submit_2' type='submit'>
+            Search
+        </button>
+    </div>
+</form>
+<br>
+<hr>
+
+<!-- Search result -->
+<h2>Mitarbeiter Search Result:</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Studio-ID</th>
+        <th>Vorname</th>
+        <th>Nachname</th>
+
+    </tr>
+    <?php foreach ($studio_array as $Mitarbeiter) : ?>
+        <tr>
+            <td><?php echo $Mitarbeiter['MITARBEITER_ID']; ?>  </td>
+            <td><?php echo $Mitarbeiter['STUDIO_ID']; ?>  </td>
+            <td><?php echo $Mitarbeiter['VORNAME']; ?>  </td>
+            <td><?php echo $Mitarbeiter['NACHNAME']; ?>  </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+
+<br>
+<hr>
+
+<h2>Add Personal Trainer: </h2>
+<form method="post" action="addPersonalTrainer.php">
+
+    <div>
+        <label for="P_ID">ID:</label>
+        <input id="P_ID" name="Mitarbeiter_ID" type="number">
+    </div>
+    <br>
+
+    <div>
+        <label for="Geschlecht">Geschlecht (Male/Female):</label>
+        <input id="Geschlecht" name="Geschlecht" type="text" maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <label for="Sprachkenntnisse">Sprachkenntnisse:</label>
+        <input id="Sprachkenntnisse" name="Sprachkenntnisse" type="text" maxlength="20">
+    </div>
+    <br>
+
+    <!-- Submit button -->
+    <div>
+        <button type="submit">
+            Add Personal Trainer
+        </button>
+    </div>
+</form>
+<br>
+<hr>
+
+<h2>Update Personal Trainer: </h2>
+<form method="post" action="updatePersonalTrainer.php">
+    <div>
+        <label for="Personal_IDs">ID:</label>
+        <input id="Personal_IDs" name="Mitarbeiter_ID" type="number">
+    </div>
+    <br>
+    <h3>Update Values: </h3>
+    <div>
+        <label for="new_Personal_IDs">ID:</label>
+        <input id="new_Personal_IDs" name ="Mitarbeiter_IDs" type="number">
+    </div>
+    <br>
+    <div>
+        <label for="Personal_G">Geschlecht:</label>
+        <input id="Personal_G" name="Geschlecht"  type="text" maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <label for="Personal_S">Sprachkenntnisse:</label>
+        <input id="Personal_S" name="Sprachkenntnisse" type="text" maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <button id ='update_3' type='submit'>
+            Update
+        </button>
+    </div>
+</form>
+<br>
+<hr>
+
+<?php
+$Mitarbeiter_ID = '';
+if (isset($_GET['Mitarbeiter_ID'])) {
+$Mitarbeiter_ID  = $_GET['Mitarbeiter_ID'];
+}
+
+$Geschlecht= '';
+if (isset($_GET['Geschlecht'])) {
+$Geschlecht = $_GET['Geschlecht'];
+}
+
+$Sprachkenntnisse= '';
+if (isset($_GET['Sprachkenntnisse'])) {
+    $Sprachkenntnisse = $_GET['Sprachkenntnisse'];
+}
+
+
+//Fetch data from database
+$studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht, $Sprachkenntnisse);
+?>
+
+<h2>Personal Trainer Search:</h2>
+<form method="get">
+    <!-- ID textbox:-->
+    <div>
+        <label for="Mitarbeiter_ID">ID:</label>
+        <input id="Mitarbeiter_ID" name="Mitarbeiter_ID" type="number" value='<?php echo $Mitarbeiter_ID; ?>'>
+    </div>
+    <br>
+
+    <div>
+        <label for="P_G">Geschlecht:</label>
+        <input id="P_G" name="Geschlecht" type ="text" class="form-control input-md" value='<?php echo $Geschlecht; ?>'
+               maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <label for="P_S">Sprachkenntnisse:</label>
+        <input id="P_S" name="Sprachkenntnisse" type="text" class="form-control input-md" value='<?php echo $Sprachkenntnisse; ?>'
+               maxlength="20">
+    </div>
+    <br>
+
+    <!-- Submit button -->
+    <div>
+        <button id='submit_4' type='submit'>
+            Search
+        </button>
+    </div>
+</form>
+<br>
+<hr>
+
+<!-- Search result -->
+<h2>Personal Trainer Search Result:</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Geschlecht</th>
+        <th>Sprachkenntnisse</th>
+
+    </tr>
+    <?php foreach ($studio_array as $Personal_Trainer) : ?>
+        <tr>
+            <td><?php echo $Personal_Trainer['MITARBEITER_ID']; ?>  </td>
+            <td><?php echo $Personal_Trainer['GESCHLECHT']; ?>  </td>
+            <td><?php echo $Personal_Trainer['SPRACHKENNTNISSE']; ?>  </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+
+<br>
+<hr>
+
+
+
+
+
 </body>
 </html>
