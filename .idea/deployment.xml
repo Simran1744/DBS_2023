@@ -5,7 +5,7 @@
       <paths name="Almighty">
         <serverdata>
           <mappings>
-            <mapping deploy="/myProjectDir" local="$PROJECT_DIR$" web="/myProjectDir" />
+            <mapping deploy="/myProjectDir" local="$USER_HOME$/Desktop/DBS_2023" web="/myProjectDir" />
           </mappings>
         </serverdata>
       </paths>

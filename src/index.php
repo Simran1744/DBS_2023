@@ -547,6 +547,41 @@ $studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht
 <hr>
 
 
+<h2>Add Rezeptionist: </h2>
+<form method="post" action="addRezeptionist.php">
+
+    <div>
+        <label for="R_ID">ID:</label>
+        <input id="R_ID" name="Mitarbeiter_ID" type="number">
+    </div>
+    <br>
+
+    <div>
+        <label for="Arbeitszeiten">Arbeitszeiten:</label>
+        <input id="Arbeitszeiten" name="Arbeitszeiten" type="text" maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <label for="Sprachkenntnisse">Sprachkenntnisse:</label>
+        <input id="Sprachkenntnisse" name="Sprachkenntnisse" type="text" maxlength="20">
+    </div>
+    <br>
+
+    <!-- Submit button -->
+    <div>
+        <button type="submit">
+            Add Rezeptionist
+        </button>
+    </div>
+</form>
+<br>
+<hr>
+
+
+
+
+
 
 
 
