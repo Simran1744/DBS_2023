@@ -54,22 +54,11 @@ class DatabaseHelper
               AND upper(strasse) LIKE upper('%{$Strasse}%')";
 
 
-        // oci_parse(...) prepares the Oracle statement for execution
-        // notice the reference to the class variable $this->conn (set in the constructor)
         $statement = oci_parse($this->conn, $sql);
 
         // Executes the statement
         oci_execute($statement);
 
-        // Fetches multiple rows from a query into a two-dimensional array
-        // Parameters of oci_fetch_all:
-        //   $statement: must be executed before
-        //   $res: will hold the result after the execution of oci_fetch_all
-        //   $skip: it's null because we don't need to skip rows
-        //   $maxrows: it's null because we want to fetch all rows
-        //   $flag: defines how the result is structured: 'by rows' or 'by columns'
-        //      OCI_FETCHSTATEMENT_BY_ROW (The outer array will contain one sub-array per query row)
-        //      OCI_FETCHSTATEMENT_BY_COLUMN (The outer array will contain one sub-array per query column. This is the default.)
         oci_fetch_all($statement, $res, null, null, OCI_FETCHSTATEMENT_BY_ROW);
 
         //clean up;
@@ -104,6 +93,45 @@ class DatabaseHelper
             WHERE MITARBEITER_ID LIKE '%{$Mitarbeiter_ID}%'
               AND upper(GESCHLECHT) LIKE upper('%{$Geschlecht}%')
               AND upper(SPRACHKENNTNISSE) LIKE upper('%{$Sprachkenntnisse}%')";
+        $statement = oci_parse($this->conn, $sql);
+
+        // Executes the statement
+        oci_execute($statement);
+
+        oci_fetch_all($statement, $res, null, null, OCI_FETCHSTATEMENT_BY_ROW);
+
+        //clean up;
+        oci_free_statement($statement);
+
+        return $res;
+    }
+
+    public function selectAllRezeptionist($Mitarbeiter_ID, $Arbeitszeiten, $Sprachkenntnisse){
+
+        $sql = "SELECT * FROM REZEPTIONIST
+            WHERE MITARBEITER_ID LIKE '%{$Mitarbeiter_ID}%'
+              AND upper(ARBEITSZEITEN) LIKE upper('%{$Arbeitszeiten}%')
+              AND upper(SPRACHKENNTNISSE) LIKE upper('%{$Sprachkenntnisse}%')";
+        $statement = oci_parse($this->conn, $sql);
+
+        // Executes the statement
+        oci_execute($statement);
+
+        oci_fetch_all($statement, $res, null, null, OCI_FETCHSTATEMENT_BY_ROW);
+
+        //clean up;
+        oci_free_statement($statement);
+
+        return $res;
+    }
+
+    public function selectAllKunde($Kundennummer, $Studio_ID, $Vorname, $Nachname, $Geschlecht){
+        $sql = "SELECT * FROM KUNDE
+            WHERE KUNDENNUMMER LIKE '%{$Kundennummer}%'
+              AND upper(STUDIO_ID) LIKE upper('%{$Studio_ID}%')
+              AND upper(VORNAME) LIKE upper('%{$Vorname}%')
+              AND upper(NACHNAME) LIKE upper('%{$Nachname}%')
+              AND upper(GESCHLECHT) LIKE upper('%{$Geschlecht}%')";
         $statement = oci_parse($this->conn, $sql);
 
         // Executes the statement
@@ -288,6 +316,116 @@ class DatabaseHelper
         $success = oci_execute($statement) && oci_commit($this->conn);
         oci_free_statement($statement);
 
+        return $success;
+    }
+
+    public function insertIntoRezeptionist($Mitarbeiter_ID,$Arbeitszeiten, $Sprachkenntnisse){
+        $sql = "INSERT INTO REZEPTIONIST (MITARBEITER_ID,ARBEITSZEITEN,SPRACHKENNTNISSE) VALUES ('{$Mitarbeiter_ID}','{$Arbeitszeiten}','{$Sprachkenntnisse}')";
+
+        $statement = oci_parse($this->conn, $sql);
+        $success = oci_execute($statement) && oci_commit($this->conn);
+        oci_free_statement($statement);
+        return $success;
+    }
+
+    public function updateRezeptionist_($Mitarbeiter_ID, $New_Mitarbeiter_ID, $Arbeitszeiten, $Sprachkenntnisse)
+    {
+        if($New_Mitarbeiter_ID != null){
+            $setClauses[] = "Mitarbeiter_ID = '{$New_Mitarbeiter_ID}'";
+        }
+        if ($Arbeitszeiten != null) {
+            $setClauses[] = "Arbeitszeiten = '{$Arbeitszeiten}'";
+        }
+        if ($Sprachkenntnisse != null) {
+            $setClauses[] = "Sprachkenntnisse = '{$Sprachkenntnisse}'";
+        }
+
+        // If no parameters were provided, return false as nothing to update
+        if (empty($setClauses)) {
+            return false;
+        }
+
+        // Construct the SQL query with the dynamic SET clause
+        $setClause = implode(', ', $setClauses);
+        $sql = "UPDATE REZEPTIONIST SET {$setClause} WHERE MITARBEITER_ID = '{$Mitarbeiter_ID}'";
+
+        $statement = oci_parse($this->conn, $sql);
+        $success = oci_execute($statement) && oci_commit($this->conn);
+        oci_free_statement($statement);
+
+        return $success;
+    }
+
+    public function insertIntoKunde($Kundennummer, $Studio_ID, $Vorname, $Nachname, $Geschlecht){
+        $sql = "INSERT INTO KUNDE (KUNDENNUMMER,STUDIO_ID,VORNAME, NACHNAME, GESCHLECHT) 
+        VALUES ('{$Kundennummer}','{$Studio_ID}','{$Vorname}', '{$Nachname}','{$Geschlecht}')";
+
+        $statement = oci_parse($this->conn, $sql);
+        $success = oci_execute($statement) && oci_commit($this->conn);
+        oci_free_statement($statement);
+        return $success;
+    }
+
+    public function deleteKunde_($Kundennummer){
+        $errorcode = 0;
+
+        $sql = "DELETE FROM KUNDE WHERE KUNDENNUMMER = '{$Kundennummer}'";
+
+        $statement = oci_parse($this->conn, $sql);
+        oci_bind_by_name($statement, ":Mitarbeiter_ID", $Studio_ID);
+        if (!oci_execute($statement)) {
+            $errorcode = 1;
+        }elseif(oci_num_rows($statement)==0){
+            $errorcode = 2;
+        }
+        oci_commit($this->conn);
+        oci_free_statement($statement);
+        return $errorcode;
+    }
+
+    public function updateKunde_($Kundennummer, $new_Kundennummer, $Studio_ID, $Vorname, $Nachname, $Geschlecht){
+        if($new_Kundennummer != null){
+            $setClauses[] = "Kundennummer = '{$new_Kundennummer}'";
+        }
+        if ($Studio_ID != null) {
+            $setClauses[] = "Studio_ID = '{$Studio_ID}'";
+        }
+        if ($Vorname != null) {
+            $setClauses[] = "Vorname = '{$Vorname}'";
+        }
+
+        if ($Nachname != null) {
+            $setClauses[] = "Nachname = '{$Nachname}'";
+        }
+
+        if ($Geschlecht != null) {
+            $setClauses[] = "Geschlecht = '{$Geschlecht}'";
+        }
+
+        // If no parameters were provided, return false as nothing to update
+        if (empty($setClauses)) {
+            return false;
+        }
+
+        // Construct the SQL query with the dynamic SET clause
+        $setClause = implode(', ', $setClauses);
+        $sql = "UPDATE KUNDE SET {$setClause} WHERE KUNDENNUMMER = '{$Kundennummer}'";
+
+        $statement = oci_parse($this->conn, $sql);
+        $success = oci_execute($statement) && oci_commit($this->conn);
+        oci_free_statement($statement);
+
+        return $success;
+    }
+
+    public function insertIntoCoacht($Mitarbeiter_ID, $Kundennummer, $Beginnzeit, $Endzeit, $Trainingsdatum, $Trainingsdauer)
+    {
+        $sql = "INSERT INTO COACHT (MITARBEITER_ID, KUNDENNUMMER, BEGINNZEIT, ENDZEIT, TRAININGSDATUM, TRAININGSDAUER) 
+        VALUES ('{$Mitarbeiter_ID}','{$Kundennummer}','{$Beginnzeit}', '{$Endzeit}','{$Trainingsdatum}', '{$Trainingsdauer}')";
+
+        $statement = oci_parse($this->conn, $sql);
+        $success = oci_execute($statement) && oci_commit($this->conn);
+        oci_free_statement($statement);
         return $success;
     }
 }

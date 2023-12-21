@@ -546,9 +546,8 @@ $studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht
 <br>
 <hr>
 
-
 <h2>Add Rezeptionist: </h2>
-<form method="post" action="addRezeptionist.php">
+<form method="post" action="Rezeptionist.php">
 
     <div>
         <label for="R_ID">ID:</label>
@@ -563,14 +562,14 @@ $studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht
     <br>
 
     <div>
-        <label for="Sprachkenntnisse">Sprachkenntnisse:</label>
-        <input id="Sprachkenntnisse" name="Sprachkenntnisse" type="text" maxlength="20">
+        <label for="Sprachkenntnisse_">Sprachkenntnisse:</label>
+        <input id="Sprachkenntnisse_" name="Sprachkenntnisse" type="text" maxlength="20">
     </div>
     <br>
 
     <!-- Submit button -->
     <div>
-        <button type="submit">
+        <button type="submit" name="submitForm">
             Add Rezeptionist
         </button>
     </div>
@@ -578,11 +577,374 @@ $studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht
 <br>
 <hr>
 
+<h2>Update Rezeptionist: </h2>
+<form method="post" action="Rezeptionist.php">
+    <div>
+        <label for="Rez_IDs">ID:</label>
+        <input id="Rez_IDs" name="Mitarbeiter_ID" type="number">
+    </div>
+    <br>
+    <h3>Update Values: </h3>
+    <div>
+        <label for="new_Rez_IDs">ID:</label>
+        <input id="new_Rez_IDs" name ="Mitarbeiter_IDs" type="number">
+    </div>
+    <br>
+    <div>
+        <label for="Rez_A">Arbeitszeiten:</label>
+        <input id="Rez_A" name="Arbeitszeiten"  type="text" maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <label for="Rez_S">Sprachkenntnisse:</label>
+        <input id="Rez_S" name="Sprachkenntnisse" type="text" maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <button id ='update_4' type='submit' name="submitUpdate">
+            Update
+        </button>
+    </div>
+</form>
+<br>
+<hr>
+
+<?php
+$Mitarbeiter_ID = '';
+if (isset($_GET['Mitarbeiter_ID'])) {
+    $Mitarbeiter_ID  = $_GET['Mitarbeiter_ID'];
+}
+
+$Arbeitszeiten= '';
+if (isset($_GET['Arbeitszeiten'])) {
+    $Arbeitszeiten = $_GET['Arbeitszeiten'];
+}
+
+$Sprachkenntnisse= '';
+if (isset($_GET['Sprachkenntnisse'])) {
+    $Sprachkenntnisse = $_GET['Sprachkenntnisse'];
+}
 
 
+//Fetch data from database
+$studio_array = $database->selectAllRezeptionist($Mitarbeiter_ID, $Arbeitszeiten, $Sprachkenntnisse);
+?>
+
+<h2>Rezeptionist Search:</h2>
+<form method="get">
+    <div>
+        <label for="Mitarbeiter_ID">ID:</label>
+        <input id="Mitarbeiter_ID" name="Mitarbeiter_ID" type="number" value='<?php echo $Mitarbeiter_ID; ?>'>
+    </div>
+    <br>
+
+    <div>
+        <label for="R_A">Arbeitszeiten:</label>
+        <input id="R_A" name="Arbeitszeiten" type ="text" class="form-control input-md" value='<?php echo $Arbeitszeiten; ?>'
+               maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <label for="R_S">Sprachkenntnisse:</label>
+        <input id="R_S" name="Sprachkenntnisse" type="text" class="form-control input-md" value='<?php echo $Sprachkenntnisse; ?>'
+               maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <button id='submit_5' type='submit' >
+            Search
+        </button>
+    </div>
+</form>
+<br>
+<hr>
+
+<!-- Search result -->
+<h2>Rezeptionist Search Result:</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Arbeitszeiten</th>
+        <th>Sprachkenntnisse</th>
+
+    </tr>
+    <?php foreach ($studio_array as $Rezeptionist) : ?>
+        <tr>
+            <td><?php echo $Rezeptionist['MITARBEITER_ID']; ?>  </td>
+            <td><?php echo $Rezeptionist['ARBEITSZEITEN']; ?>  </td>
+            <td><?php echo $Rezeptionist['SPRACHKENNTNISSE']; ?>  </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+
+<br>
+<hr>
 
 
+<h2>Add Kunde: </h2>
+<form method="post" action="Kunde.php">
 
+    <div>
+        <label for="K_N">ID:</label>
+        <input id="K_N" name="Kundennummer" type="number">
+    </div>
+    <br>
+
+    <div>
+        <label for="F_ID">Studio-ID:</label>
+        <input id="F_ID" name="Studio_ID" type="number" min="1">
+    </div>
+    <br>
+
+    <div>
+        <label for="Vorname">Vorname:</label>
+        <input id="Vorname" name="Vorname" type="text" maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <label for="Nachname">Nachname:</label>
+        <input id="Nachname" name="Nachname" type="text" maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <label for="Geschlecht">Geschlecht:</label>
+        <input id="Geschlecht" name="Geschlecht" type ="text"
+               maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <button type="submit" name="submitForm_2">
+            Add Kunde
+        </button>
+    </div>
+</form>
+<br>
+<hr>
+
+
+<h2>Delete Kunde: </h2>
+<form method="post" action="Kunde.php">
+
+    <div>
+        <label for="Kundennummer_">ID:</label>
+        <input id="Kundennummer_" name="Kundennummer" type="number">
+    </div>
+    <br>
+
+    <!-- Submit button -->
+    <div>
+        <button type="submit" name="submitDelete">
+            Delete Kunde
+        </button>
+    </div>
+</form>
+<br>
+<hr>
+
+
+<h2>Update Kunde: </h2>
+<form method="post" action="Kunde.php">
+    <div>
+        <label for="Kundennummer__">ID:</label>
+        <input id="Kundennummer__" name="Kundennummer" type="number">
+    </div>
+    <br>
+
+    <h3>Update Values: </h3>
+    <div>
+        <label for="new_Kundennummer__">ID:</label>
+        <input id="new_Kundennummer__" name ="Kundennummers" type="number">
+    </div>
+    <br>
+    <div>
+        <label for="Studio_ID">Studio-ID:</label>
+        <input id="Studio_ID" name="Studio_ID"  type="number">
+    </div>
+    <br>
+
+    <div>
+        <label for="Vorname_">Vorname:</label>
+        <input id="Vorname_" name="Vorname" type="text" maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <label for="Nachname_">Nachname:</label>
+        <input id="Nachname_" name="Nachname" type="text" maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <label for="Geschlecht_">Geschlecht:</label>
+        <input id="Geschlecht_" name="Geschlecht" type="text" maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <button id ='update_5' type='submit' name="submitUpdateK">
+            Update
+        </button>
+    </div>
+</form>
+<br>
+<hr>
+
+<?php
+
+    $Kundennummer = '';
+    if (isset($_GET['Kundennummer'])) {
+        $Kundennummer = $_GET['Kundennummer'];
+    }
+
+    $Studio_ID = '';
+    if (isset($_GET['Studio_ID'])) {
+        $Studio_ID = $_GET['Studio_ID'];
+    }
+
+
+    $Vorname = '';
+    if (isset($_GET['Vorname'])) {
+        $Vorname = $_GET['Vorname'];
+    }
+
+    $Nachname = '';
+    if (isset($_GET['Nachname'])) {
+        $Nachname = $_GET['Nachname'];
+    }
+
+    $Geschlecht = '';
+    if (isset($_GET['Geschlecht'])) {
+        $Geschlecht = $_GET['Geschlecht'];
+    }
+
+//Fetch data from database
+$studio_array = $database->selectAllKunde($Kundennummer, $Studio_ID, $Vorname, $Nachname, $Geschlecht);
+
+?>
+
+<h2>Kunde Search:</h2>
+<form method="get">
+    <div>
+        <label for="_Kundennummer">Kundennummer:</label>
+        <input id="_Kundennummer" name="Kundennummer" type="number" value='<?php echo $Kundennummer; ?>'>
+    </div>
+    <br>
+
+    <div>
+        <label for="_Studio_ID">Studio-ID:</label>
+        <input id="_Studio_ID" name="Studio_ID" type ="number" value='<?php echo $Studio_ID; ?>'>
+    </div>
+    <br>
+
+    <div>
+        <label for="_Vorname">Vorname:</label>
+        <input id="_Vorname" name="Vorname" type="text" class="form-control input-md" value='<?php echo $Vorname; ?>'
+               maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <label for="_Nachname">Nachname:</label>
+        <input id="_Nachname" name="Nachname" type="text" class="form-control input-md" value='<?php echo $Nachname; ?>'
+               maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <label for="_Geschlecht">Geschlecht:</label>
+        <input id="_Geschlecht" name="Geschlecht" type="text" class="form-control input-md" value='<?php echo $Geschlecht; ?>'
+               maxlength="20">
+    </div>
+    <br>
+
+    <div>
+        <button id='submit_7' type='submit'>
+            Search
+        </button>
+    </div>
+</form>
+<br>
+<hr>
+
+<h2>Kunde Search Result:</h2>
+<table>
+    <tr>
+        <th>Kundennummer</th>
+        <th>Studio-ID</th>
+        <th>Vorname</th>
+        <th>Nachname</th>
+        <th>Geschlecht</th>
+
+    </tr>
+    <?php foreach ($studio_array as $Kunde) : ?>
+        <tr>
+            <td><?php echo $Kunde['KUNDENNUMMER']; ?>  </td>
+            <td><?php echo $Kunde['STUDIO_ID']; ?>  </td>
+            <td><?php echo $Kunde['VORNAME']; ?>  </td>
+            <td><?php echo $Kunde['NACHNAME']; ?>  </td>
+            <td><?php echo $Kunde['GESCHLECHT']; ?>  </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+<br>
+<hr>
+
+<h2>Add Trainingseinheit: </h2>
+<form method="post" action="Coacht.php">
+
+    <div>
+        <label for="M_ID">Mitarbeiter-ID:</label>
+        <input id="K_N" name="Kundennummer" type="number">
+    </div>
+    <br>
+
+    <div>
+        <label for="K_ID">Kundennummer:</label>
+        <input id=K_ID" name="Kundennummer" type="number">
+    </div>
+    <br>
+
+    <div>
+        <label for="Beginnzeit">Beginnzeit:</label>
+        <input id="Beginnzeit" name="Beginnzeit" type="time">
+    </div>
+    <br>
+
+    <div>
+        <label for="Endzeit">Endzeit:</label>
+        <input id="Endzeit" name="Endzeit" type="time">
+    </div>
+    <br>
+
+
+    <div>
+        <label for="Trainingsdatum">Trainingsdatum:</label>
+        <input id="Trainingsdatum" name="Trainingsdatum" type="date">
+    </div>
+    <br>
+
+    <div>
+        <label for="Trainingsdauer">Trainingsdauer:</label>
+        <input id="Trainingsdauer" name="Trainingsdauer" type="number">
+    </div>
+    <br>
+
+
+    <div>
+        <button type="submit" name="submitForm_4">
+            Add Trainingseinheit
+        </button>
+    </div>
+</form>
+<br>
+<hr>
 
 
 </body>
