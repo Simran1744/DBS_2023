@@ -418,14 +418,55 @@ class DatabaseHelper
         return $success;
     }
 
-    public function insertIntoCoacht($Mitarbeiter_ID, $Kundennummer, $Beginnzeit, $Endzeit, $Trainingsdatum, $Trainingsdauer)
+    public function insertIntoCoacht($Mitarbeiter_ID, $Kundennummer, $Beginnzeit, $Endzeit, $Trainingsdatum)
     {
-        $sql = "INSERT INTO COACHT (MITARBEITER_ID, KUNDENNUMMER, BEGINNZEIT, ENDZEIT, TRAININGSDATUM, TRAININGSDAUER) 
-        VALUES ('{$Mitarbeiter_ID}','{$Kundennummer}','{$Beginnzeit}', '{$Endzeit}','{$Trainingsdatum}', '{$Trainingsdauer}')";
+        $f_beginnzeit = date('Y-m-d H:i:s', strtotime($Beginnzeit));
+        $f_endzeit = date('Y-m-d H:i:s', strtotime($Endzeit));
+        $f_trainingsdatum = date('Y-m-d', strtotime($Trainingsdatum));
+
+        $str_beg = strval($f_beginnzeit);
+        $str_end = strval($f_endzeit);
+        $str_dat = strval($f_trainingsdatum);
+
+        $sql = "INSERT INTO COACHT (MITARBEITER_ID, KUNDENNUMMER, BEGINNZEIT, ENDZEIT, TRAININGSDATUM) 
+        VALUES ('{$Mitarbeiter_ID}',
+               '{$Kundennummer}',
+        TO_TIMESTAMP('{$str_beg}', 'YYYY-MM-DD HH24:MI:SS'),
+        TO_TIMESTAMP('{$str_end}', 'YYYY-MM-DD HH24:MI:SS'),
+        TO_DATE('{$str_dat}', 'YYYY-MM-DD'))";
 
         $statement = oci_parse($this->conn, $sql);
         $success = oci_execute($statement) && oci_commit($this->conn);
         oci_free_statement($statement);
         return $success;
+    }
+
+    public function deleteCoacht_($Mitarbeiter_ID, $Kundennummer, $Beginnzeit, $Endzeit){
+
+        $f_beginnzeit = date('Y-m-d H:i:s', strtotime($Beginnzeit));
+        $f_endzeit = date('Y-m-d H:i:s', strtotime($Endzeit));
+
+        $str_beg = strval($f_beginnzeit);
+        $str_end = strval($f_endzeit);
+
+        $errorcode = 0;
+
+        $sql = "DELETE FROM COACHT 
+       WHERE MITARBEITER_ID  = '{$Mitarbeiter_ID}'
+       AND KUNDENNUMMER = '{$Kundennummer}'
+       AND BEGINNZEIT = TO_TIMESTAMP('{$str_beg}', 'YYYY-MM-DD HH24:MI:SS')
+       AND ENDZEIT = TO_TIMESTAMP('{$str_end}', 'YYYY-MM-DD HH24:MI:SS')";
+
+        $statement = oci_parse($this->conn, $sql);
+        if (!oci_execute($statement)) {
+            $errorcode = 1;
+        }elseif(oci_num_rows($statement)==0){
+            $errorcode = 2;
+        }
+        oci_commit($this->conn);
+        oci_free_statement($statement);
+        return $errorcode;
+
+
     }
 }

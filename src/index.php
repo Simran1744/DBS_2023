@@ -900,26 +900,26 @@ $studio_array = $database->selectAllKunde($Kundennummer, $Studio_ID, $Vorname, $
 <form method="post" action="Coacht.php">
 
     <div>
-        <label for="M_ID">Mitarbeiter-ID:</label>
-        <input id="K_N" name="Kundennummer" type="number">
+        <label for="M_IDS">Mitarbeiter-ID:</label>
+        <input id="M_IDS" name="Mitarbeiter_ID" type="number">
     </div>
     <br>
 
     <div>
-        <label for="K_ID">Kundennummer:</label>
-        <input id=K_ID" name="Kundennummer" type="number">
+        <label for="K_IDS">Kundennummer:</label>
+        <input id="K_IDS" name="Kundennummer" type="number">
     </div>
     <br>
 
     <div>
         <label for="Beginnzeit">Beginnzeit:</label>
-        <input id="Beginnzeit" name="Beginnzeit" type="time">
+        <input id="Beginnzeit" name="Beginnzeit" type="datetime-local">
     </div>
     <br>
 
     <div>
         <label for="Endzeit">Endzeit:</label>
-        <input id="Endzeit" name="Endzeit" type="time">
+        <input id="Endzeit" name="Endzeit" type="datetime-local">
     </div>
     <br>
 
@@ -931,20 +931,53 @@ $studio_array = $database->selectAllKunde($Kundennummer, $Studio_ID, $Vorname, $
     <br>
 
     <div>
-        <label for="Trainingsdauer">Trainingsdauer:</label>
-        <input id="Trainingsdauer" name="Trainingsdauer" type="number">
-    </div>
-    <br>
-
-
-    <div>
-        <button type="submit" name="submitForm_4">
+        <button type="submit" name="submitForm_5">
             Add Trainingseinheit
         </button>
     </div>
 </form>
 <br>
 <hr>
+
+<h2>Delete Trainingseinheit: </h2>
+<form method="post" action="Coacht.php">
+
+    <div>
+        <label for="_Mitarbeiter-ID_">Mitarbeiter-ID:</label>
+        <input id="_Mitarbeiter-ID_" name="Mitarbeiter_ID" type="number">
+    </div>
+    <br>
+
+
+    <div>
+        <label for="_Kundennummer_">Kundennummer:</label>
+        <input id="_Kundennummer_" name="Kundennummer" type="number">
+    </div>
+    <br>
+
+    <div>
+        <label for="Beginnzeit_">Beginnzeit:</label>
+        <input id="Beginnzeit_" name="Beginnzeit" type="datetime-local">
+    </div>
+    <br>
+
+    <div>
+        <label for="Endzeit_">Endzeit:</label>
+        <input id="Endzeit_" name="Endzeit" type="datetime-local">
+    </div>
+    <br>
+
+
+    <div>
+        <button type="submit" name="submitDelete_">
+            Delete Kunde
+        </button>
+    </div>
+</form>
+<br>
+<hr>
+
+
 
 
 </body>
