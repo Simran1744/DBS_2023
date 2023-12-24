@@ -145,6 +145,105 @@ class DatabaseHelper
         return $res;
     }
 
+    public function selectAllCoacht($Mitarbeiter_ID, $Kundennummer, $Beginnzeit, $Endzeit){
+        $f_beginnzeit = date('Y-m-d H:i:s', strtotime($Beginnzeit));
+        $f_endzeit = date('Y-m-d H:i:s', strtotime($Endzeit));
+
+        $str_beg = strval($f_beginnzeit);
+        $str_end = strval($f_endzeit);
+
+        $sql = "SELECT * FROM COACHT
+            WHERE MITARBEITER_ID =  '{$Mitarbeiter_ID}'
+            AND KUNDENNUMMER = '{$Kundennummer}'
+            AND BEGINNZEIT = TO_TIMESTAMP('{$str_beg}', 'YYYY-MM-DD HH24:MI:SS')
+            AND ENDZEIT = TO_TIMESTAMP('{$str_end}', 'YYYY-MM-DD HH24:MI:SS')";
+        $statement = oci_parse($this->conn, $sql);
+
+        // Executes the statements
+        oci_execute($statement);
+
+        oci_fetch_all($statement, $res, null, null, OCI_FETCHSTATEMENT_BY_ROW);
+
+        //clean up;
+        oci_free_statement($statement);
+
+        return $res;
+    }
+
+    public function selectAllBetreut($Mitarbeiter_ID, $Kundennummer){
+
+
+    $sql = "SELECT * FROM BETREUT
+            WHERE upper(MITARBEITER_ID) LIKE upper('%{$Mitarbeiter_ID}%')
+            AND upper(KUNDENNUMMER) LIKE upper('%{$Kundennummer}%')";
+
+    $statement = oci_parse($this->conn, $sql);
+
+    // Executes the statements
+    oci_execute($statement);
+
+    oci_fetch_all($statement, $res, null, null, OCI_FETCHSTATEMENT_BY_ROW);
+
+    //clean up;
+    oci_free_statement($statement);
+
+    return $res;
+    }
+
+    public function selectAllMGs($Kundennummer, $Mitgliedschaftsnummer, $Mitgliedschafts_Stufe, $Monatskosten, $Gueltigkeit, $Erstellungsdatum){
+
+        $f_erstellungsdatum = date('Y-m-d', strtotime($Erstellungsdatum));
+
+        $str_dat = strval($f_erstellungsdatum);
+
+        $sql = "SELECT * FROM MITGLIEDSCHAFT
+            WHERE upper(KUNDENNUMMER) LIKE upper('%{$Kundennummer}%')
+            AND upper(MITGLIEDSCHAFTSNUMMER) LIKE upper('%{$Mitgliedschaftsnummer}%')
+            AND upper(MITGLIEDSCHAFTS_STUFE) LIKE upper('%{$Mitgliedschafts_Stufe}%')
+            AND upper(MONATSKOSTEN) LIKE upper('%{$Monatskosten}%')
+            AND upper(GUELTIGKEIT) LIKE upper('{$Gueltigkeit}')
+            AND ERSTELLUNGSDATUM LIKE upper(TO_DATE(('{$str_dat}'), 'YYYY-MM-DD'))
+            
+            ";
+
+        $statement = oci_parse($this->conn, $sql);
+
+        // Executes the statements
+        oci_execute($statement);
+
+        oci_fetch_all($statement, $res, null, null, OCI_FETCHSTATEMENT_BY_ROW);
+
+        //clean up;
+        oci_free_statement($statement);
+
+        return $res;
+    }
+    public function selectAllKons($Mitarbeiter_ID, $Kundennummer, $Mitgliedschaftsnummer){
+
+
+        $sql = "SELECT * FROM KONTROLLIERT
+            WHERE upper(MITARBEITER_ID) LIKE upper('{$Mitarbeiter_ID}')
+            AND upper(KUNDENNUMMER) LIKE upper('{$Kundennummer}')
+            AND upper(MITGLIEDSCHAFTSNUMMER) LIKE upper('{$Mitgliedschaftsnummer}')       
+            ";
+
+        $statement = oci_parse($this->conn, $sql);
+
+        // Executes the statements
+        oci_execute($statement);
+
+        oci_fetch_all($statement, $res, null, null, OCI_FETCHSTATEMENT_BY_ROW);
+
+        //clean up;
+        oci_free_statement($statement);
+
+        return $res;
+    }
+
+
+
+
+
     // This function creates and executes a SQL insert statement and returns true or false
     public function insertIntoFitnessstudio($Studio_ID, $F_Name, $Ort, $Platz, $Strasse)
     {
@@ -468,5 +567,108 @@ class DatabaseHelper
         return $errorcode;
 
 
+    }
+
+    public function insertIntoBetreut($Mitarbeiter_ID, $Kundennummer)
+    {
+        $sql = "INSERT INTO BETREUT (MITARBEITER_ID, KUNDENNUMMER) 
+        VALUES ('{$Mitarbeiter_ID}','{$Kundennummer}')";
+
+        $statement = oci_parse($this->conn, $sql);
+        $success = oci_execute($statement) && oci_commit($this->conn);
+        oci_free_statement($statement);
+        return $success;
+    }
+
+    public function deleteBetreut_($Mitarbeiter_ID, $Kundennummer){
+        $errorcode = 0;
+
+        $sql = "DELETE FROM BETREUT
+       WHERE MITARBEITER_ID  = '{$Mitarbeiter_ID}'
+       AND KUNDENNUMMER = '{$Kundennummer}'";
+
+        $statement = oci_parse($this->conn, $sql);
+        if (!oci_execute($statement)) {
+            $errorcode = 1;
+        }elseif(oci_num_rows($statement)==0){
+            $errorcode = 2;
+        }
+        oci_commit($this->conn);
+        oci_free_statement($statement);
+        return $errorcode;
+    }
+
+    public function insertIntoMG($Kundennummer, $Mitgliedschaftsnummer, $Mitgliedschafts_Stufe, $Monatskosten,
+    $Gueltigkeit, $Erstellungsdatum)
+    {
+
+        $f_erstellungsdatum = date('Y-m-d', strtotime($Erstellungsdatum));
+
+        $str_dat = strval($f_erstellungsdatum);
+
+        $sql = "INSERT INTO MITGLIEDSCHAFT (KUNDENNUMMER, MITGLIEDSCHAFTSNUMMER, MITGLIEDSCHAFTS_STUFE, MONATSKOSTEN, GUELTIGKEIT, ERSTELLUNGSDATUM) 
+        VALUES ('{$Kundennummer}',
+                '{$Mitgliedschaftsnummer}',
+                '{$Mitgliedschafts_Stufe}',
+                '{$Monatskosten}',
+                '{$Gueltigkeit}',
+        TO_DATE('{$str_dat}', 'YYYY-MM-DD'))";
+
+        $statement = oci_parse($this->conn, $sql);
+        $success = oci_execute($statement) && oci_commit($this->conn);
+        oci_free_statement($statement);
+        return $success;
+    }
+
+    public function deleteMG_($Kundennummer, $Mitgliedschaftsnummer){
+        $errorcode = 0;
+
+        $sql = "DELETE FROM MITGLIEDSCHAFT
+       WHERE KUNDENNUMMER  = '{$Kundennummer}'
+       AND MITGLIEDSCHAFTSNUMMER = '{$Mitgliedschaftsnummer}'";
+
+        $statement = oci_parse($this->conn, $sql);
+        if (!oci_execute($statement)) {
+            $errorcode = 1;
+        }elseif(oci_num_rows($statement)==0){
+            $errorcode = 2;
+        }
+        oci_commit($this->conn);
+        oci_free_statement($statement);
+        return $errorcode;
+    }
+
+    public function insertIntoKon($Mitarbeiter_ID, $Kundennummer, $Mitgliedschaftsnummer)
+    {
+
+        $sql = "INSERT INTO KONTROLLIERT (MITARBEITER_ID, KUNDENNUMMER, MITGLIEDSCHAFTSNUMMER) 
+        VALUES ('{$Mitarbeiter_ID}',
+                '{$Kundennummer}',
+                '{$Mitgliedschaftsnummer}')";
+
+        $statement = oci_parse($this->conn, $sql);
+        $success = oci_execute($statement) && oci_commit($this->conn);
+        oci_free_statement($statement);
+        return $success;
+    }
+
+    public function deleteKon_($Mitarbeiter_ID, $Kundennummer, $Mitgliedschaftsnummer){
+
+        $errorcode = 0;
+
+        $sql = "DELETE FROM KONTROLLIERT
+        WHERE MITARBEITER_ID = '{$Mitarbeiter_ID}'
+        AND KUNDENNUMMER  = '{$Kundennummer}'
+        AND MITGLIEDSCHAFTSNUMMER = '{$Mitgliedschaftsnummer}'";
+
+        $statement = oci_parse($this->conn, $sql);
+        if (!oci_execute($statement)) {
+            $errorcode = 1;
+        }elseif(oci_num_rows($statement)==0){
+            $errorcode = 2;
+        }
+        oci_commit($this->conn);
+        oci_free_statement($statement);
+        return $errorcode;
     }
 }

@@ -978,6 +978,531 @@ $studio_array = $database->selectAllKunde($Kundennummer, $Studio_ID, $Vorname, $
 <hr>
 
 
+<?php
+
+$Mitarbeiter_ID = '';
+if (isset($_GET['Mitarbeiter_ID'])) {
+    $Mitarbeiter_ID = $_GET['Mitarbeiter_ID'];
+}
+
+$Kundennummer = '';
+if (isset($_GET['Kundennummer'])) {
+    $Kundennummer = $_GET['Kundennummer'];
+}
+
+
+$Beginnzeit = '';
+if (isset($_GET['Beginnzeit'])) {
+    $Beginnzeit  = $_GET['Beginnzeit'];
+}
+
+$Endzeit = '';
+if (isset($_GET['Endzeit'])) {
+    $Endzeit = $_GET['Endzeit'];
+}
+
+//Fetch data from database
+$studio_array = $database->selectAllCoacht($Mitarbeiter_ID, $Kundennummer, $Beginnzeit, $Endzeit);
+?>
+
+<h2>Coacht Search:</h2>
+<form method="get">
+
+    <div>
+        <label for="_Mitarbeiter-IDs_">Mitarbeiter-ID:</label>
+        <input id="_Mitarbeiter-IDs_" name="Mitarbeiter_ID" type ="number" value='<?php echo $Mitarbeiter_ID; ?>'>
+    </div>
+    <br>
+
+    <div>
+        <label for="_Kundennummers">Kundennummer:</label>
+        <input id="_Kundennummers" name="Kundennummer" type="number" value='<?php echo $Kundennummer; ?>'>
+    </div>
+    <br>
+
+    <div>
+        <label for="_Beginnzeit">Beginnezeit:</label>
+        <input id="_Beginnzeit" name="Beginnzeit" type="datetime-local"  value='<?php echo $Beginnzeit; ?>'>
+    </div>
+    <br>
+
+    <div>
+        <label for="_Endzeit">Endzeit:</label>
+        <input id="_Endzeit" name="Endzeit" type="datetime-local" value='<?php echo $Endzeit; ?>'>
+    </div>
+    <br>
+
+    <div>
+        <button id='submit_8' type='submit'>
+            Search
+        </button>
+    </div>
+</form>
+<br>
+<hr>
+
+<h2>Trainingseinheit Search Result:</h2>
+<table>
+    <tr>
+        <th>Mitarbeiter-ID</th>
+        <th>Kundennummer</th>
+        <th>Beginnzeit</th>
+        <th>Endzeit</th>
+        <th>Trainingsdatum</th>
+    </tr>
+    <?php foreach ($studio_array as $Coacht) : ?>
+        <tr>
+            <td><?php echo $Coacht['MITARBEITER_ID']; ?>  </td>
+            <td><?php echo $Coacht['KUNDENNUMMER']; ?>  </td>
+            <td><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['BEGINNZEIT'])->format('H:i:s'); ?>  </td>
+            <td><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['ENDZEIT'])->format('H:i:s'); ?>  </td>
+            <td><?php echo date('d-m-Y', strtotime($Coacht['TRAININGSDATUM'])); ?>  </td>
+        </tr
+    <?php endforeach; ?>
+</table>
+<br>
+<hr>
+
+
+<h2>Add Betreung: </h2>
+<form method="post" action="Betreut.php">
+
+    <div>
+        <label for="M_IDS_">Mitarbeiter-ID:</label>
+        <input id="M_IDS_" name="Mitarbeiter_ID" type="number">
+    </div>
+    <br>
+
+    <div>
+        <label for="K_IDS_">Kundennummer:</label>
+        <input id="K_IDS_" name="Kundennummer" type="number">
+    </div>
+    <br>
+
+    <div>
+        <button type="submit" name="submitForm_6">
+            Add Betreung
+        </button>
+    </div>
+
+</form>
+<br>
+<hr>
+
+
+<h2>Delete Betreung: </h2>
+<form method="post" action="Betreut.php">
+
+    <div>
+        <label for="_M_IDS_">Mitarbeiter-ID:</label>
+        <input id="_M_IDS_" name="Mitarbeiter_ID" type="number">
+    </div>
+    <br>
+
+    <div>
+        <label for="_K_IDS_">Kundennummer:</label>
+        <input id="_K_IDS_" name="Kundennummer" type="number">
+    </div>
+    <br>
+
+    <div>
+        <button type="submit" name="submitDelete_6">
+            Delete Betreung
+        </button>
+    </div>
+
+</form>
+<br>
+<hr>
+
+<?php
+
+$Mitarbeiter_ID = '';
+if (isset($_GET['Mitarbeiter_ID'])) {
+    $Mitarbeiter_ID = $_GET['Mitarbeiter_ID'];
+}
+
+$Kundennummer = '';
+if (isset($_GET['Kundennummer'])) {
+    $Kundennummer = $_GET['Kundennummer'];
+}
+
+//Fetch data from database
+$studio_array = $database->selectAllBetreut($Mitarbeiter_ID, $Kundennummer);
+?>
+
+
+<h2>Betreung Search:</h2>
+<form method="get">
+
+    <div>
+        <label for="_Mitarbeiter-IDs__">Mitarbeiter-ID:</label>
+        <input id="_Mitarbeiter-IDs__" name="Mitarbeiter_ID" type ="number" value='<?php echo $Mitarbeiter_ID; ?>'>
+    </div>
+    <br>
+
+    <div>
+        <label for="_Kundennummers_">Kundennummer:</label>
+        <input id="_Kundennummers_" name="Kundennummer" type="number" value='<?php echo $Kundennummer; ?>'>
+    </div>
+    <br>
+
+
+    <div>
+        <button id='9' type='submit'>
+            Search
+        </button>
+    </div>
+</form>
+<br>
+<hr>
+
+<h2>Betreung Search Result:</h2>
+
+<table>
+    <tr>
+        <th>Mitarbeiter-ID</th>
+        <th>Kundennummer</th>
+    </tr>
+
+    <?php foreach ($studio_array as $Betreut) : ?>
+        <tr>
+            <td><?php echo $Betreut['MITARBEITER_ID']; ?>  </td>
+            <td><?php echo $Betreut['KUNDENNUMMER']; ?>  </td>
+        </tr
+    <?php endforeach; ?>
+</table>
+<br>
+<hr>
+
+
+<h2>Add Mitgliedschaft: </h2>
+<form method="post" action="Mitgliedschaft.php">
+
+
+    <div>
+        <label for="KN">Kundennummer:</label>
+        <input id="KN" name="Kundennummer" type="number">
+    </div>
+    <br>
+
+    <div>
+        <label for="MN">Mitgliedschaftsnummer:</label>
+        <input id="MN" name="Mitgliedschaftsnummer" type="number">
+    </div>
+    <br>
+
+    <div>
+        <label for="MS">Mitgliedschafts-Stufe:</label>
+        <input id="MS" name="Mitgliedschafts_Stufe" type="text">
+    </div>
+    <br>
+
+    <div>
+        <label for="MK">Monatskosten:</label>
+        <input id="MK" name="Monatskosten" type="number">
+    </div>
+    <br>
+
+    <div>
+        <label for="G">Gültigkeit:</label>
+        <input id="G" name="Gueltigkeit" type="text">
+    </div>
+    <br>
+
+    <div>
+        <label for="ED">Erstellungsdatum:</label>
+        <input id="ED" name="Erstellungsdatum" type="date">
+    </div>
+    <br>
+
+    <div>
+        <button type="submit" name="submitForm_7">
+            Add Mitgliedschaft
+        </button>
+    </div>
+
+</form>
+<br>
+<hr>
+
+
+<h2>Delete Mitgliedschaft: </h2>
+<form method="post" action="Mitgliedschaft.php">
+
+
+    <div>
+        <label for="_K_IDS_">Kundennummer:</label>
+        <input id="_K_IDS_" name="Kundennummer" type="number">
+    </div>
+    <br>
+
+    <div>
+        <label for="MN_">Mitgliedschaftsnummer:</label>
+        <input id="MN_" name="Mitgliedschaftsnummer" type="number">
+    </div>
+    <br>
+
+    <div>
+        <button type="submit" name="submitDelete_7">
+            Delete Mitgliedschaft
+        </button>
+    </div>
+
+</form>
+<br>
+<hr>
+
+
+<?php
+
+$Kundennummer = '';
+if (isset($_GET['Kundennummer'])) {
+    $Kundennummer = $_GET['Kundennummer'];
+}
+
+$Mitgliedschaftsnummer = '';
+if (isset($_GET['Mitgliedschaftsnummer'])) {
+    $Mitgliedschaftsnummer = $_GET['Mitgliedschaftsnummer'];
+}
+
+$Mitgliedschafts_Stufe = '';
+if (isset($_GET['Mitgliedschafts_Stufe'])) {
+    $Mitgliedschafts_Stufe = $_GET['Mitgliedschafts_Stufe'];
+}
+
+$Monatskosten = '';
+if (isset($_GET['Monatskosten'])) {
+    $Monatskosten = $_GET['Monatskosten'];
+}
+
+$Gueltigkeit = '';
+if (isset($_GET['Gueltigkeit'])) {
+    $Gueltigkeit= $_GET['Gueltigkeit'];
+}
+
+$Erstellungsdatum = '';
+if (isset($_GET['Erstellungsdatum'])) {
+    $Erstellungsdatum = $_GET['Erstellungsdatum'];
+}
+
+
+
+//Fetch data from database
+$studio_array = $database->selectAllMGs($Kundennummer, $Mitgliedschaftsnummer, $Mitgliedschafts_Stufe, $Monatskosten, $Gueltigkeit, $Erstellungsdatum);
+?>
+
+
+<h2>Mitgliedschaft Search:</h2>
+<form method="get">
+
+    <div>
+        <label for="KNS">Kundennummer:</label>
+        <input id="KNS" name="Kundennummer" type="number" value='<?php echo $Kundennummer; ?>'>
+    </div>
+    <br>
+    <div>
+        <label for="MNS">Mitgliedschaftsnummer:</label>
+        <input id="MNS" name="Mitgliedschaftsnummer" type="number" value='<?php echo $Mitgliedschaftsnummer; ?>'>
+    </div>
+    <br>
+    <div>
+        <label for="MSS">Mitgliedschafts_Stufe:</label>
+        <input id="MSS" name="Mitgliedschafts_Stufe" type="text" value='<?php echo $Mitgliedschaftsnummer; ?>'>
+    </div>
+    <br>
+    <div>
+        <label for="MKS">Monatskosten:</label>
+        <input id="MKS" name="Monatskosten" type="number" value='<?php echo $Monatskosten; ?>'>
+    </div>
+    <br>
+    <div>
+        <label for="GKS">Gueltigkeit:</label>
+        <input id="GKS" name="Gueltigkeit" type="text" value='<?php echo $Gueltigkeit; ?>'>
+    </div>
+    <br>
+    <div>
+        <label for="ESD">Erstellungsdatummer:</label>
+        <input id="ESD" name="Erstellungsdatum" type="date" value='<?php echo $Erstellungsdatum; ?>'>
+    </div>
+    <br>
+
+    <div>
+        <button id='10' type='submit'>
+            Search
+        </button>
+    </div>
+</form>
+<br>
+<hr>
+
+<h2>Mitgliedschaft Search Result:</h2>
+
+<table>
+    <tr>
+        <th>Kundennummer</th>
+        <th>Mitgliedschaftsnummer</th>
+        <th>Mitgliedschafts_Stufe</th>
+        <th>Monatskosten</th>
+        <th>Gueltigkeit</th>
+        <th>Erstellungsdatum</th>
+    </tr>
+
+    <?php foreach ($studio_array as $MG) : ?>
+        <tr>
+            <td><?php echo $MG['KUNDENNUMMER']; ?>  </td>
+            <td><?php echo $MG['MITGLIEDSCHAFTSNUMMER']; ?>  </td>
+            <td><?php echo $MG['MITGLIEDSCHAFTS_STUFE']; ?>  </td>
+            <td><?php echo $MG['MONATSKOSTEN']; ?>  </td>
+            <td><?php echo $MG['GUELTIGKEIT']; ?>  </td>
+            <td><?php echo date('d-m-Y', strtotime($MG['ERSTELLUNGSDATUM'])); ?>  </td>
+        </tr
+    <?php endforeach; ?>
+</table>
+<br>
+<hr>
+
+<h2>Add Kontrolliert: </h2>
+<form method="post" action="Kontrolliert.php">
+    <div>
+        <label for="_M_ID">Mitarbeiter-ID:</label>
+        <input id="_M_ID" name="Mitarbeiter_ID" type="number">
+    </div>
+    <br>
+
+    <div>
+        <label for="KN_">Kundennummer:</label>
+        <input id="KN_" name="Kundennummer" type="number">
+    </div>
+    <br>
+
+    <div>
+        <label for="MN_">Mitgliedschaftsnummer:</label>
+        <input id="MN_" name="Mitgliedschaftsnummer" type="number">
+    </div>
+    <br>
+
+
+    <div>
+        <button type="submit" name="submitForm_8">
+            Add Kontrolle
+        </button>
+    </div>
+
+</form>
+<br>
+<hr>
+
+<h2>Delete Kontrolle: </h2>
+<form method="post" action="Kontrolliert.php">
+
+    <div>
+        <label for="M">Mitarbeiter-ID:</label>
+        <input id="M" name="Mitarbeiter_ID" type="number">
+    </div>
+    <br>
+
+    <div>
+        <label for="KS">Kundennummer:</label>
+        <input id="KS" name="Kundennummer" type="number">
+    </div>
+    <br>
+
+    <div>
+        <label for="_MN_">Mitgliedschaftsnummer:</label>
+        <input id="_MN_" name="Mitgliedschaftsnummer" type="number">
+    </div>
+    <br>
+
+    <div>
+        <button type="submit" name="submitDelete_8">
+            Delete Kontrolle
+        </button>
+    </div>
+
+</form>
+<br>
+<hr>
+
+
+<?php
+
+
+$Mitarbeiter_ID = '';
+if (isset($_GET['Mitarbeiter_ID'])) {
+    $Mitarbeiter_ID = $_GET['Mitarbeiter_ID'];
+}
+
+$Kundennummer = '';
+if (isset($_GET['Kundennummer'])) {
+    $Kundennummer = $_GET['Kundennummer'];
+}
+
+$Mitgliedschaftsnummer = '';
+if (isset($_GET['Mitgliedschaftsnummer'])) {
+    $Mitgliedschaftsnummer = $_GET['Mitgliedschaftsnummer'];
+}
+
+
+
+//Fetch data from database
+$studio_array = $database->selectAllKons($Mitarbeiter_ID, $Kundennummer, $Mitgliedschaftsnummer);
+?>
+
+
+
+<h2>Mitgliedschaft Search:</h2>
+<form method="get">
+
+
+    <div>
+        <label for="MIDSS">Mitarbeiter-ID:</label>
+        <input id="MIDSS" name="Mitarbeiter_ID" type="number" value='<?php echo $Mitarbeiter_ID; ?>'>
+    </div>
+    <br>
+
+    <div>
+        <label for="KNDS">Kundennummer:</label>
+        <input id="KNDS" name="Kundennummer" type="number" value='<?php echo $Kundennummer; ?>'>
+    </div>
+    <br>
+
+    <div>
+        <label for="MGNS">Mitgliedschaftsnummer:</label>
+        <input id="MGNS" name="Mitgliedschaftsnummer" type="number" value='<?php echo $Mitgliedschaftsnummer; ?>'>
+    </div>
+    <br>
+
+    <div>
+        <button id='11' type='submit'>
+            Search
+        </button>
+    </div>
+</form>
+<br>
+<hr>
+
+<h2>Kontrolle Search Result:</h2>
+
+<table>
+    <tr>
+        <th>Mitarbeiter-ID</th>
+        <th>Kundennummer</th>
+        <th>Mitgliedschaftsnummer</th>
+    </tr>
+
+    <?php foreach ($studio_array as $Kon) : ?>
+        <tr>
+            <td><?php echo $Kon['MITARBEITER_ID']; ?>  </td>
+            <td><?php echo $Kon['KUNDENNUMMER']; ?>  </td>
+            <td><?php echo $Kon['MITGLIEDSCHAFTSNUMMER']; ?>  </td>
+        </tr
+    <?php endforeach; ?>
+</table>
+<br>
+<hr>
+
+
 
 
 </body>
