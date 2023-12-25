@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.ArrayList;
 
 public class InsertClass {
     public static void main(String args[]) {
@@ -13,14 +14,30 @@ public class InsertClass {
             // Establish a connection to the database
             Connection connection = DriverManager.getConnection(database, user, pass);
 
+            /*
             String mitInsert = "INSERT INTO Mitarbeiter VALUES (?,?,?,?)";
             String sqlQuery = "INSERT INTO Fitnessstudio VALUES (?,?,?,?,?)";
             PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
             PreparedStatement mitstmt = connection.prepareStatement(mitInsert);
             connection.setAutoCommit(false);
-
+            */
             try {
 
+                MitarbeiterClass mitIns = new MitarbeiterClass(connection);
+                FitnessstudioClass fitIns = new FitnessstudioClass(connection);
+                /*
+                int m = 4;
+                int studio_id_ = 1;
+                String vorname = "simran";
+                String nachname = "str";
+                mitIns.insertIntoMitarbeiter(m, studio_id_, vorname, nachname);
+                */
+                mitIns.insertIntoMitarbeiterFromCSV("/Users/simra/Desktop/DBS_2023/MOCK_DATA.csv", fitIns.getAllFitnessstudioIds() );
+                //ArrayList<Integer> newList;
+
+
+
+                /*
                 for (int i = 210; i <= 220; i++) {
                     pstmt.setInt(1, i);
                     pstmt.setString(2, "Fitinn");
@@ -42,6 +59,8 @@ public class InsertClass {
                 int[] result2 = mitstmt.executeBatch();
                 System.out.println("The number of rows inserted: " + result.length);
                 System.out.println("The number of rows inserted into Mitarbeiter: " + result2.length);
+
+                 */
                 connection.commit();
 
             } catch (Exception e) {
@@ -50,12 +69,6 @@ public class InsertClass {
                 connection.rollback();
 
             } finally {
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-                if(mitstmt != null){
-                    mitstmt.close();
-                }
                 if(connection != null){
                     connection.close();
                 }
