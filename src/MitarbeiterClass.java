@@ -1,6 +1,6 @@
 import com.opencsv.CSVReader;
 import java.sql.*;
-
+import java.util.Random;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,20 +31,22 @@ public class MitarbeiterClass {
                 reader.readNext();
                 reader.readNext();
 
-                //TODO: Change Code here
                 while ((nextLine = reader.readNext()) != null) {
                     int m_id = Integer.parseInt(nextLine[0]); // Assuming id is the first column
                     String vorname = nextLine[1];
                     String nachname = nextLine[2];
 
-                    for (Integer studio_id : fitIDs) {
-                        mitstmt.setInt(1, m_id);
-                        mitstmt.setInt(2, studio_id);
-                        mitstmt.setString(3, vorname);
-                        mitstmt.setString(4, nachname);
-                        mitstmt.addBatch();
-                        break;
-                    }
+                    Random r = new Random();
+
+                    int studio_id = fitIDs.get(r.nextInt(fitIDs.size()));
+
+                    mitstmt.setInt(1, m_id);
+                    mitstmt.setInt(2, studio_id);
+                    mitstmt.setString(3, vorname);
+                    mitstmt.setString(4, nachname);
+                    mitstmt.addBatch();
+
+
                 }
 
                 int[] result = mitstmt.executeBatch();
@@ -63,5 +65,26 @@ public class MitarbeiterClass {
             e.printStackTrace();
         }
         return mitarbeiterIds;
+    }
+
+    public ArrayList<Integer> getAllMitarbeiterIds() {
+        ArrayList<Integer> mitIDs = new ArrayList<>();
+
+        try {
+            connection.setAutoCommit(false);
+            String sqlQuery = "SELECT MITARBEITER_ID FROM MITARBEITER";
+            try (PreparedStatement stmt = connection.prepareStatement(sqlQuery);
+                 ResultSet rs = stmt.executeQuery()) {
+
+                while (rs.next()) {
+                    int mitID = rs.getInt("Mitarbeiter_ID");
+                    mitIDs.add(mitID);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return mitIDs;
     }
 }

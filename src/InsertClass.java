@@ -25,14 +25,22 @@ public class InsertClass {
 
                 MitarbeiterClass mitIns = new MitarbeiterClass(connection);
                 FitnessstudioClass fitIns = new FitnessstudioClass(connection);
-                /*
-                int m = 4;
-                int studio_id_ = 1;
-                String vorname = "simran";
-                String nachname = "str";
-                mitIns.insertIntoMitarbeiter(m, studio_id_, vorname, nachname);
-                */
-                mitIns.insertIntoMitarbeiterFromCSV("/Users/simra/Desktop/DBS_2023/MOCK_DATA.csv", fitIns.getAllFitnessstudioIds() );
+                PersonalTrainerClass persIns = new PersonalTrainerClass(connection);
+                RezeptionistClass rezIns= new RezeptionistClass(connection);
+
+
+                //fitIns.insertIntoFitnessstudio();
+
+                //mitIns.insertIntoMitarbeiterFromCSV("/Users/simra/Desktop/DBS_2023/MOCK_DATA.csv", fitIns.getAllFitnessstudioIds());
+
+                ArrayList<Integer> usedIds = new ArrayList<>();
+                usedIds = persIns.insertIntoTrainerFromCSV("/Users/simra/Desktop/DBS_2023/Trainer_DATA.csv", mitIns.getAllMitarbeiterIds());
+
+                usedIds = rezIns.insertIntoRezeptionistCSV("/Users/simra/Desktop/DBS_2023/Rezeptionist_DATA.csv", usedIds);
+
+
+
+
                 //ArrayList<Integer> newList;
 
 

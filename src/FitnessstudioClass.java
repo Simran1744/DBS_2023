@@ -19,7 +19,7 @@ public class FitnessstudioClass {
             PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
             connection.setAutoCommit(false);
             try {
-                for (int i = 601; i <= 700; i++) {
+                for (int i = 1; i <= 100; i++) {
                     pstmt.setInt(1, i);
                     pstmt.setString(2, "Fitinn");
                     pstmt.setString(3, "Wien");
@@ -29,7 +29,7 @@ public class FitnessstudioClass {
                     list_.add(i);
                 }
                     int[] result = pstmt.executeBatch();
-                    System.out.println("The number of rows inserted into Mitarbeiter: " + result.length);
+                    System.out.println("The number of rows inserted into Fitnessstudio: " + result.length);
                     connection.commit();
 
 
