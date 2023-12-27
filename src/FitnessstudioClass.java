@@ -1,10 +1,14 @@
+import com.opencsv.CSVReader;
+
+import java.io.FileReader;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 
 public class FitnessstudioClass {
 
-    private ArrayList<Integer> list_;
 
     private Connection connection;
 
@@ -12,27 +16,49 @@ public class FitnessstudioClass {
         this.connection = connection;
     }
 
-    public ArrayList<Integer> insertIntoFitnessstudio() {
-        list_ = new ArrayList<>();
+    public ArrayList<Integer> insertIntoFitnessstudio(String csvFilePath) {
+        ArrayList<Integer> fit_IDs = getAllFitnessstudioIds();
+
         try {
             String sqlQuery = "INSERT INTO Fitnessstudio VALUES (?,?,?,?,?)";
             PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
             connection.setAutoCommit(false);
-            try {
-                for (int i = 1; i <= 100; i++) {
-                    pstmt.setInt(1, i);
-                    pstmt.setString(2, "Fitinn");
-                    pstmt.setString(3, "Wien");
-                    pstmt.setInt(4, 1230);
-                    pstmt.setString(5, "Columbusplatz 7/8");
-                    pstmt.addBatch();
-                    list_.add(i);
+
+            try (CSVReader reader = new CSVReader(new FileReader(csvFilePath))) {
+                String[] nextLine;
+
+                reader.readNext();
+
+                int i;
+                if(fit_IDs.isEmpty()){
+                    i = 1;
+                }else{
+                    i = Collections.max(fit_IDs) + 1;
                 }
-                    int[] result = pstmt.executeBatch();
-                    System.out.println("The number of rows inserted into Fitnessstudio: " + result.length);
-                    connection.commit();
+
+                while ((nextLine = reader.readNext()) != null) {
+
+                    String f_Name = nextLine[0];
+                    String ort = "Wien";
+                    int platz = Integer.parseInt(nextLine[1]);
+                    String strasse = nextLine[2];
 
 
+                    pstmt.setInt(1, i++);
+                    pstmt.setString(2, f_Name);
+                    pstmt.setString(3, ort);
+                    pstmt.setInt(4, platz);
+                    pstmt.setString(5, strasse);
+                    pstmt.addBatch();
+
+
+                }
+
+
+                int[] result = pstmt.executeBatch();
+                System.out.println("The number of rows inserted into Fitnessstudio: " + result.length);
+
+                connection.commit();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -40,7 +66,7 @@ public class FitnessstudioClass {
             System.err.println(e.toString());
         }
 
-        return list_;
+        return fit_IDs;
 
     }
 
@@ -65,8 +91,5 @@ public class FitnessstudioClass {
         return fitnessstudioIds;
     }
 
-    public ArrayList<Integer> getList(){
-        return list_;
-    }
 
 }

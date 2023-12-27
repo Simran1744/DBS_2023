@@ -19,8 +19,9 @@ public class RezeptionistClass {
         ArrayList<Integer> newIDs = new ArrayList<>();
         newIDs = mitIDs;
 
-        try {
 
+
+        try {
             String rezInsert = "INSERT INTO REZEPTIONIST VALUES (?,?,?)";
             PreparedStatement stmt = connection.prepareStatement(rezInsert);
             connection.setAutoCommit(false);
@@ -66,4 +67,27 @@ public class RezeptionistClass {
 
         return newIDs;
     }
+
+    public ArrayList<Integer> getAllRezeptionistIds() {
+        ArrayList<Integer> mitIDs = new ArrayList<>();
+
+        try {
+            connection.setAutoCommit(false);
+            String sqlQuery = "SELECT MITARBEITER_ID FROM REZEPTIONIST";
+            try (PreparedStatement stmt = connection.prepareStatement(sqlQuery);
+                 ResultSet rs = stmt.executeQuery()) {
+
+                while (rs.next()) {
+                    int mitID = rs.getInt("Mitarbeiter_ID");
+                    mitIDs.add(mitID);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return mitIDs;
+    }
+
+
 }

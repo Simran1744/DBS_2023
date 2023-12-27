@@ -1,5 +1,6 @@
 import com.opencsv.CSVReader;
 import java.sql.*;
+import java.util.Collections;
 import java.util.Random;
 import java.io.FileReader;
 import java.sql.Connection;
@@ -9,7 +10,6 @@ import java.util.ArrayList;
 
 public class MitarbeiterClass {
 
-    private ArrayList<Integer> list_;
 
     private Connection connection;
 
@@ -19,7 +19,7 @@ public class MitarbeiterClass {
 
 
     public ArrayList<Integer> insertIntoMitarbeiterFromCSV(String csvFilePath, ArrayList<Integer> fitIDs) {
-        ArrayList<Integer> mitarbeiterIds = new ArrayList<>();
+        ArrayList<Integer> mitarbeiterIds = getAllMitarbeiterIds();
         try {
             String mitInsert = "INSERT INTO Mitarbeiter VALUES (?,?,?,?)";
             PreparedStatement mitstmt = connection.prepareStatement(mitInsert);
@@ -29,10 +29,16 @@ public class MitarbeiterClass {
                 String[] nextLine;
 
                 reader.readNext();
-                reader.readNext();
+
+                int i;
+                if(mitarbeiterIds.isEmpty()){
+                    i = 1;
+                }else{
+                    i = Collections.max(mitarbeiterIds) + 1;
+                }
 
                 while ((nextLine = reader.readNext()) != null) {
-                    int m_id = Integer.parseInt(nextLine[0]); // Assuming id is the first column
+
                     String vorname = nextLine[1];
                     String nachname = nextLine[2];
 
@@ -40,7 +46,7 @@ public class MitarbeiterClass {
 
                     int studio_id = fitIDs.get(r.nextInt(fitIDs.size()));
 
-                    mitstmt.setInt(1, m_id);
+                    mitstmt.setInt(1, i++);
                     mitstmt.setInt(2, studio_id);
                     mitstmt.setString(3, vorname);
                     mitstmt.setString(4, nachname);

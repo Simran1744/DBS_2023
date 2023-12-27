@@ -15,10 +15,18 @@ public class PersonalTrainerClass {
     }
 
 
-    public ArrayList<Integer> insertIntoTrainerFromCSV(String csvFilePath, ArrayList<Integer> mitIDs) {
+    public ArrayList<Integer> insertIntoTrainerFromCSV(String csvFilePath, ArrayList<Integer> mitIDs, ArrayList<Integer> rezIDs) {
 
-        ArrayList<Integer> newIDs = new ArrayList<>();
-        newIDs = mitIDs;
+        ArrayList<Integer> newIDs = mitIDs;
+
+        ArrayList<Integer> persIDs = getAllTrainerIds();
+        ArrayList<Integer> rezIDscopy = rezIDs;
+
+        persIDs.addAll(rezIDscopy);
+        newIDs.removeAll(persIDs);
+
+
+
 
         try {
 
@@ -67,5 +75,29 @@ public class PersonalTrainerClass {
 
         return newIDs;
     }
+
+
+    public ArrayList<Integer> getAllTrainerIds() {
+        ArrayList<Integer> mitIDs = new ArrayList<>();
+
+        try {
+            connection.setAutoCommit(false);
+            String sqlQuery = "SELECT MITARBEITER_ID FROM PERSONAL_TRAINER";
+            try (PreparedStatement stmt = connection.prepareStatement(sqlQuery);
+                 ResultSet rs = stmt.executeQuery()) {
+
+                while (rs.next()) {
+                    int mitID = rs.getInt("Mitarbeiter_ID");
+                    mitIDs.add(mitID);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return mitIDs;
+    }
+
+
 
 }
