@@ -276,50 +276,31 @@ class DatabaseHelper
         return $errorcode;
     }
 
-    public function updateFitnessstudio($Studio_ID, $New_Studio_ID, $F_Name, $Ort, $Platz, $Strasse)
+    public function updateFitnessstudio($column, $value, $rowId)
     {
+        $columns = ['STUDIO_ID', 'F_NAME', 'ORT', 'PLATZ', 'STRASSE'];
+        $sql = "UPDATE Fitnessstudio SET {$columns[$column]} = :value WHERE STUDIO_ID = :id";
 
-        /*$sql = "UPDATE Fitnessstudio SET F_Name = '{$F_Name}', Ort = '{$Ort}', Platz = '{$Platz}', Strasse = '{$Strasse}' WHERE Studio_ID = '{$Studio_ID}'";
-        $statement = oci_parse($this->conn, $sql);
-        $success = oci_execute($statement) && oci_commit($this->conn);
-        oci_free_statement($statement);
-
-        return $success;*/
-
-        $setClauses = [];
-
-        // Check each parameter and add it to the SET clause if it's provided
-        if($New_Studio_ID != null){
-            $setClauses[] = "Studio_ID = '{$New_Studio_ID}'";
-        }
-        if ($F_Name != null) {
-            $setClauses[] = "F_Name = '{$F_Name}'";
-        }
-        if ($Ort != null) {
-            $setClauses[] = "Ort = '{$Ort}'";
-        }
-        if ($Platz != null) {
-            $setClauses[] = "Platz = '{$Platz}'";
-        }
-        if ($Strasse != null) {
-            $setClauses[] = "Strasse = '{$Strasse}'";
+        if (!isset($columns[$column])) {
+            echo "Invalid column index";
+            return;
         }
 
-        // If no parameters were provided, return false as nothing to update
-        if (empty($setClauses)) {
-            return false;
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':value', $value);
+        oci_bind_by_name($stmt, ':id', $rowId);
+
+        if (oci_execute($stmt)) {
+            echo "Update 2 successful";
+        } else {
+            $e = oci_error($stmt);
+            echo "Update failed " . $e['message'];
         }
 
-        // Construct the SQL query with the dynamic SET clause
-        $setClause = implode(', ', $setClauses);
-        $sql = "UPDATE Fitnessstudio SET {$setClause} WHERE Studio_ID = '{$Studio_ID}'";
-
-        $statement = oci_parse($this->conn, $sql);
-        $success = oci_execute($statement) && oci_commit($this->conn);
-        oci_free_statement($statement);
-
-        return $success;
+        oci_free_statement($stmt);
     }
+
+
 
     public function insertIntoMitarbeiter($Mitarbeiter_ID, $Studio_ID, $Vorname, $Nachname){
         $sql = "INSERT INTO Mitarbeiter (Mitarbeiter_ID, Studio_ID, Vorname, Nachname) VALUES ('{$Mitarbeiter_ID}','{$Studio_ID}','{$Vorname}','{$Nachname}')";
