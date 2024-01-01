@@ -45,6 +45,7 @@ class Coacht
 
     }
 
+
     public function deleteCoacht(){
 
         $database = new DatabaseHelper();
@@ -82,21 +83,38 @@ class Coacht
 
     }
 
+
+    public function updateCoacht(){
+
+        $column = $_POST['column'];
+        $value = $_POST['value'];
+        $rowId = $_POST['rowId'];
+
+        $database = new DatabaseHelper();
+        $database->updateCoacht_($column, $value, $rowId);
+        echo "Update successful";
+        exit;
+
+    }
+
 }
 
 $coacht = new Coacht();
 
-if (isset($_POST['submitForm_5'])) {
+if (isset($_POST['addButton7'])) {
     $coacht->addCoacht();
 }
 
-if (isset($_POST['submitDelete_'])) {
+if (isset($_POST['deleteButton8'])) {
     $coacht->deleteCoacht();
 }
 
+if (isset($_POST['action'])) {
+    $coacht->updateCoacht();
+}
+
+header('Location: index.php');
+
+
 ?>
 
-<br>
-<a href="index.php">
-    go back
-</a>

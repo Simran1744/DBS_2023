@@ -145,18 +145,23 @@ class DatabaseHelper
         return $res;
     }
 
-    public function selectAllCoacht($Mitarbeiter_ID, $Kundennummer, $Beginnzeit, $Endzeit){
+    public function selectAllCoacht($Mitarbeiter_ID, $Kundennummer, $Beginnzeit, $Endzeit, $Trainingsdatum){
         $f_beginnzeit = date('Y-m-d H:i:s', strtotime($Beginnzeit));
         $f_endzeit = date('Y-m-d H:i:s', strtotime($Endzeit));
+        $f_trainingsdatum = date('Y-m-d', strtotime($Trainingsdatum));
+
+
 
         $str_beg = strval($f_beginnzeit);
         $str_end = strval($f_endzeit);
+        $str_dat = strval($f_trainingsdatum);
 
         $sql = "SELECT * FROM COACHT
             WHERE MITARBEITER_ID =  '{$Mitarbeiter_ID}'
             AND KUNDENNUMMER = '{$Kundennummer}'
             AND BEGINNZEIT = TO_TIMESTAMP('{$str_beg}', 'YYYY-MM-DD HH24:MI:SS')
-            AND ENDZEIT = TO_TIMESTAMP('{$str_end}', 'YYYY-MM-DD HH24:MI:SS')";
+            AND ENDZEIT = TO_TIMESTAMP('{$str_end}', 'YYYY-MM-DD HH24:MI:SS')
+            AND TRAININGSDATUM = TO_DATE('{$str_dat}', 'YYYY-MM-DD')";
         $statement = oci_parse($this->conn, $sql);
 
         // Executes the statements
@@ -311,7 +316,7 @@ class DatabaseHelper
         return $success;
     }
 
-    public function deleteMitarbeiter($Mitarbeiter_ID){
+    public function deleteMitarbeiter_($Mitarbeiter_ID){
         $errorcode = 0;
 
 
@@ -329,37 +334,27 @@ class DatabaseHelper
         return $errorcode;
     }
 
-    public function updateMitarbeiter($Mitarbeiter_ID, $New_Mitarbeiter_ID, $Studio_ID, $Vorname, $Nachname){
-        $setClauses = [];
+    public function updateMitarbeiter_($column, $value, $rowId){
+        $columns = ['Mitarbeiter_ID', 'Studio_ID', 'Vorname', 'Nachname'];
+        $sql = "UPDATE MITARBEITER SET {$columns[$column]} = :value WHERE MITARBEITER_ID = :id";
 
-        // Check each parameter and add it to the SET clause if it's provided
-        if($New_Mitarbeiter_ID != null){
-            $setClauses[] = "Mitarbeiter_ID = '{$New_Mitarbeiter_ID}'";
-        }
-        if ($Studio_ID != null) {
-            $setClauses[] = "Studio_ID = '{$Studio_ID}'";
-        }
-        if ($Vorname != null) {
-            $setClauses[] = "Vorname = '{$Vorname}'";
-        }
-        if ($Nachname != null) {
-            $setClauses[] = "Nachname = '{$Nachname}'";
+        if (!isset($columns[$column])) {
+            echo "Invalid column index";
+            return;
         }
 
-        // If no parameters were provided, return false as nothing to update
-        if (empty($setClauses)) {
-            return false;
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':value', $value);
+        oci_bind_by_name($stmt, ':id', $rowId);
+
+        if (oci_execute($stmt)) {
+            echo "Update 2 successful";
+        } else {
+            $e = oci_error($stmt);
+            echo "Update failed " . $e['message'];
         }
 
-        // Construct the SQL query with the dynamic SET clause
-        $setClause = implode(', ', $setClauses);
-        $sql = "UPDATE MITARBEITER SET {$setClause} WHERE MITARBEITER_ID = '{$Mitarbeiter_ID}'";
-
-        $statement = oci_parse($this->conn, $sql);
-        $success = oci_execute($statement) && oci_commit($this->conn);
-        oci_free_statement($statement);
-
-        return $success;
+        oci_free_statement($stmt);
     }
 
     public function insertIntoPersonalTrainer($Mitarbeiter_ID,$Geschlecht, $Sprachkenntnisse){
@@ -371,32 +366,27 @@ class DatabaseHelper
         return $success;
     }
 
-    public function updatePersonalTrainer($Mitarbeiter_ID, $New_Mitarbeiter_ID, $Geschlecht, $Sprachkenntnisse){
+    public function updatePersonalTrainer_($column, $value, $rowId){
+        $columns = ['Mitarbeiter_ID', 'Geschlecht', 'Sprachkenntnisse'];
+        $sql = "UPDATE PERSONAL_TRAINER SET {$columns[$column]} = :value WHERE MITARBEITER_ID = :id";
 
-        if($New_Mitarbeiter_ID != null){
-            $setClauses[] = "Mitarbeiter_ID = '{$New_Mitarbeiter_ID}'";
-        }
-        if ($Geschlecht != null) {
-            $setClauses[] = "Geschlecht = '{$Geschlecht}'";
-        }
-        if ($Sprachkenntnisse != null) {
-            $setClauses[] = "Sprachkenntnisse = '{$Sprachkenntnisse}'";
+        if (!isset($columns[$column])) {
+            echo "Invalid column index";
+            return;
         }
 
-        // If no parameters were provided, return false as nothing to update
-        if (empty($setClauses)) {
-            return false;
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':value', $value);
+        oci_bind_by_name($stmt, ':id', $rowId);
+
+        if (oci_execute($stmt)) {
+            echo "Update 2 successful";
+        } else {
+            $e = oci_error($stmt);
+            echo "Update failed " . $e['message'];
         }
 
-        // Construct the SQL query with the dynamic SET clause
-        $setClause = implode(', ', $setClauses);
-        $sql = "UPDATE PERSONAL_TRAINER SET {$setClause} WHERE MITARBEITER_ID = '{$Mitarbeiter_ID}'";
-
-        $statement = oci_parse($this->conn, $sql);
-        $success = oci_execute($statement) && oci_commit($this->conn);
-        oci_free_statement($statement);
-
-        return $success;
+        oci_free_statement($stmt);
     }
 
     public function insertIntoRezeptionist($Mitarbeiter_ID,$Arbeitszeiten, $Sprachkenntnisse){
@@ -408,32 +398,28 @@ class DatabaseHelper
         return $success;
     }
 
-    public function updateRezeptionist_($Mitarbeiter_ID, $New_Mitarbeiter_ID, $Arbeitszeiten, $Sprachkenntnisse)
+    public function updateRezeptionist_($column, $value, $rowId)
     {
-        if($New_Mitarbeiter_ID != null){
-            $setClauses[] = "Mitarbeiter_ID = '{$New_Mitarbeiter_ID}'";
-        }
-        if ($Arbeitszeiten != null) {
-            $setClauses[] = "Arbeitszeiten = '{$Arbeitszeiten}'";
-        }
-        if ($Sprachkenntnisse != null) {
-            $setClauses[] = "Sprachkenntnisse = '{$Sprachkenntnisse}'";
+        $columns = ['Mitarbeiter_ID', 'Arbeitszeiten', 'Sprachkenntnisse'];
+        $sql = "UPDATE REZEPTIONIST SET {$columns[$column]} = :value WHERE MITARBEITER_ID = :id";
+
+        if (!isset($columns[$column])) {
+            echo "Invalid column index";
+            return;
         }
 
-        // If no parameters were provided, return false as nothing to update
-        if (empty($setClauses)) {
-            return false;
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':value', $value);
+        oci_bind_by_name($stmt, ':id', $rowId);
+
+        if (oci_execute($stmt)) {
+            echo "Update 2 successful";
+        } else {
+            $e = oci_error($stmt);
+            echo "Update failed " . $e['message'];
         }
 
-        // Construct the SQL query with the dynamic SET clause
-        $setClause = implode(', ', $setClauses);
-        $sql = "UPDATE REZEPTIONIST SET {$setClause} WHERE MITARBEITER_ID = '{$Mitarbeiter_ID}'";
-
-        $statement = oci_parse($this->conn, $sql);
-        $success = oci_execute($statement) && oci_commit($this->conn);
-        oci_free_statement($statement);
-
-        return $success;
+        oci_free_statement($stmt);
     }
 
     public function insertIntoKunde($Kundennummer, $Studio_ID, $Vorname, $Nachname, $Geschlecht){
@@ -463,39 +449,27 @@ class DatabaseHelper
         return $errorcode;
     }
 
-    public function updateKunde_($Kundennummer, $new_Kundennummer, $Studio_ID, $Vorname, $Nachname, $Geschlecht){
-        if($new_Kundennummer != null){
-            $setClauses[] = "Kundennummer = '{$new_Kundennummer}'";
-        }
-        if ($Studio_ID != null) {
-            $setClauses[] = "Studio_ID = '{$Studio_ID}'";
-        }
-        if ($Vorname != null) {
-            $setClauses[] = "Vorname = '{$Vorname}'";
+    public function updateKunde_($column, $value, $rowId){
+        $columns = ['Kundennummer', 'Studio_ID', 'Vorname', 'Nachname', 'Geschlecht'];
+        $sql = "UPDATE KUNDE SET {$columns[$column]} = :value WHERE KUNDENNUMMER = :id";
+
+        if (!isset($columns[$column])) {
+            echo "Invalid column index";
+            return;
         }
 
-        if ($Nachname != null) {
-            $setClauses[] = "Nachname = '{$Nachname}'";
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':value', $value);
+        oci_bind_by_name($stmt, ':id', $rowId);
+
+        if (oci_execute($stmt)) {
+            echo "Update 2 successful";
+        } else {
+            $e = oci_error($stmt);
+            echo "Update failed " . $e['message'];
         }
 
-        if ($Geschlecht != null) {
-            $setClauses[] = "Geschlecht = '{$Geschlecht}'";
-        }
-
-        // If no parameters were provided, return false as nothing to update
-        if (empty($setClauses)) {
-            return false;
-        }
-
-        // Construct the SQL query with the dynamic SET clause
-        $setClause = implode(', ', $setClauses);
-        $sql = "UPDATE KUNDE SET {$setClause} WHERE KUNDENNUMMER = '{$Kundennummer}'";
-
-        $statement = oci_parse($this->conn, $sql);
-        $success = oci_execute($statement) && oci_commit($this->conn);
-        oci_free_statement($statement);
-
-        return $success;
+        oci_free_statement($stmt);
     }
 
     public function insertIntoCoacht($Mitarbeiter_ID, $Kundennummer, $Beginnzeit, $Endzeit, $Trainingsdatum)
@@ -549,6 +523,33 @@ class DatabaseHelper
 
 
     }
+
+
+    public function updateCoacht_($column, $value, $rowId){
+        $columns = ['Mitarbeiter_ID', 'Kundennummer', 'Beginnzeit', 'Endzeit', 'Trainingsdatum'];
+        $sql = "UPDATE COACHT SET {$columns[$column]} = :value WHERE MITARBEITER_ID = :id";
+
+        if (!isset($columns[$column])) {
+            echo "Invalid column index";
+            return;
+        }
+
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':value', $value);
+        oci_bind_by_name($stmt, ':id', $rowId);
+
+        if (oci_execute($stmt)) {
+            echo "Update 2 successful";
+        } else {
+            $e = oci_error($stmt);
+            echo "Update failed " . $e['message'];
+        }
+
+        oci_free_statement($stmt);
+    }
+
+
+
 
     public function insertIntoBetreut($Mitarbeiter_ID, $Kundennummer)
     {

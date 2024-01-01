@@ -19,7 +19,6 @@ class Kunde
             $Studio_ID = $_POST['Studio_ID'];
         }
 
-
         $Vorname = '';
         if (isset($_POST['Vorname'])) {
             $Vorname = $_POST['Vorname'];
@@ -44,8 +43,7 @@ class Kunde
             $message = "Error can't insert Kunde '{$Kundennummer} {$Nachname}'!";
         }
         echo $message;
-        header('Location: index.php');
-        exit();
+
     }
 
     public function deleteKunde(){
@@ -67,72 +65,39 @@ class Kunde
         }
 
         echo $message;
-        header('Location: index.php');
-        exit();
     }
 
     public function updateKunde(){
-        $database = new DatabaseHelper();
+
+        $column = $_POST['column'];
+        $value = $_POST['value'];
+        $rowId = $_POST['rowId'];
 
         $database = new DatabaseHelper();
-
-        $Kundennummer = '';
-        if (isset($_POST['Kundennummer'])) {
-            $Kundennummer = $_POST['Kundennummer'];
-        }
-
-        $new_Kundennummer = '';
-        if (isset($_POST['Kundennummers'])) {
-            $new_Kundennummer = $_POST['Kundennummers'];
-        }
-
-        $Studio_ID = '';
-        if (isset($_POST['Studio_ID'])) {
-            $Studio_ID = $_POST['Studio_ID'];
-        }
-
-
-        $Vorname = '';
-        if (isset($_POST['Vorname'])) {
-            $Vorname = $_POST['Vorname'];
-        }
-
-        $Nachname = '';
-        if (isset($_POST['Nachname'])) {
-            $Nachname = $_POST['Nachname'];
-        }
-
-        $Geschlecht = '';
-        if (isset($_POST['Geschlecht'])) {
-            $Geschlecht = $_POST['Geschlecht'];
-        }
-
-
-        $success = $database->updateKunde_($Kundennummer, $new_Kundennummer, $Studio_ID, $Vorname, $Nachname, $Geschlecht);
-
-        if ($success){
-            $message =  "Kunde with ID: '{$Kundennummer}' successfully updated!'";
-        }
-        else{
-            $message = "Error can't update Kunde with ID: '{$Kundennummer}'";
-        }
-        echo $message;
-        header('Location: index.php');
-        exit();
+        $database->updateKunde_($column, $value, $rowId);
+        echo "Update successful";
+        exit;
 
     }
 
 }
 
+
+
 $kunde = new Kunde();
 
-if (isset($_POST['submitForm_2'])) {
+if (isset($_POST['addButton5'])) {
     $kunde->addKunde();
 }
-if (isset($_POST['submitDelete'])) {
+if (isset($_POST['deleteButton3'])) {
     $kunde->deleteKunde();
 }
 
-if (isset($_POST['submitUpdateK'])) {
+if (isset($_POST['action'])) {
     $kunde->updateKunde();
 }
+
+
+header('Location: index.php');
+
+?>

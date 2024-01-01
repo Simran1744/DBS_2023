@@ -31,56 +31,35 @@ class Rezeptionist
             $message = "Error can't insert Rezeptionist '{$Mitarbeiter_ID}'!";
         }
         echo $message;
-        header('Location: index.php');
-        exit();
     }
 
     public function updateRezeptionist(){
+
+        $column = $_POST['column'];
+        $value = $_POST['value'];
+        $rowId = $_POST['rowId'];
+
         $database = new DatabaseHelper();
-
-        $Mitarbeiter_ID = '';
-        if(isset($_POST['Mitarbeiter_ID'])){
-            $Mitarbeiter_ID = $_POST['Mitarbeiter_ID'];
-        }
-
-        $New_Mitarbeiter_ID = '';
-        if(isset($_POST['Mitarbeiter_IDs'])){
-            $New_Mitarbeiter_ID = $_POST['Mitarbeiter_IDs'];
-        }
-        $Arbeitszeiten = '';
-        if(isset($_POST['Arbeitszeiten'])){
-            $Arbeitszeiten = $_POST['Arbeitszeiten'];
-        }
-
-        $Sprachkenntnisse = '';
-        if(isset($_POST['Sprachkenntnisse'])){
-            $Sprachkenntnisse = $_POST['Sprachkenntnisse'];
-        }
-        $success = $database->updateRezeptionist_($Mitarbeiter_ID, $New_Mitarbeiter_ID, $Arbeitszeiten, $Sprachkenntnisse);
-
-        if ($success){
-            $message =  "Rezeptionist with ID: '{$Mitarbeiter_ID}' successfully updated!'";
-        }
-        else{
-            $message = "Error can't update Rezeptionist with ID: '{$Mitarbeiter_ID}'";
-        }
-        echo $message;
-        header('Location: index.php');
-        exit();
+        $database->updateRezeptionist_($column, $value, $rowId);
+        echo "Update successful";
+        exit;
     }
 
 
 
 }
 
-$rezeptionist = new Rezeptionist();
 
-if (isset($_POST['submitForm'])) {
-    $rezeptionist->addRezeptionist();
+$rez = new Rezeptionist();
+
+if (isset($_POST['addButton4'])) {
+    $rez->addRezeptionist();
 }
 
-if (isset($_POST['submitUpdate'])) {
-    $rezeptionist->updateRezeptionist();
+if (isset($_POST['action'])) {
+    $rez->updateRezeptionist();
 }
 
+header("Location: index.php");
 
+?>
