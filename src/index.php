@@ -85,17 +85,33 @@ $studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Ort, $Pl
             editedCell = $(this);
             let currentValue = editedCell.text();
             //if klausel für datum hinzufügen für type = "date"
-            $(this).html('<input id="html_id1" type="text" class="form-control edit-field"  value="' + currentValue + '" >');
+
+            let inputType;
+            if (editedCell.hasClass('timestamp-cell')) {
+                inputType = 'datetime-local';
+            } else if (editedCell.hasClass('date-cell')) {
+                inputType = 'date';
+            } else {
+                inputType = 'text';
+            }
+
+
+            $(this).html(`<input id="html_id1" type="${inputType}" class="form-control edit-field"  value="` + currentValue + '" >');
+
+
             $('#html_id1').focus().select();
+
         });
 
         $('.data-table').on('blur', 'input.edit-field', function () {
+
             console.log($(this))
             let newValue = $(this).val();
             let column = $(this).closest('td').index();
             let rowId = $(this).closest('tr').find('td:first').text();
             let phpFile = editedCell.closest('.data-table').data('php-file');
             editedCell.text(newValue);
+
 
             // Use AJAX to update the value in the database
             $.ajax({
@@ -888,9 +904,9 @@ $studio_array = $database->selectAllCoacht($Mitarbeiter_ID, $Kundennummer, $Begi
                         <tr>
                             <td contenteditable="true"><?php echo $Coacht['MITARBEITER_ID']; ?>  </td>
                             <td contenteditable="true"><?php echo $Coacht['KUNDENNUMMER']; ?>  </td>
-                            <td contenteditable="true"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['BEGINNZEIT'])->format('H:i:s'); ?>  </td>
-                            <td contenteditable="true"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['ENDZEIT'])->format('H:i:s'); ?>  </td>
-                            <td contenteditable="true"><?php echo date('d-m-Y', strtotime($Coacht['TRAININGSDATUM'])); ?>  </td>
+                            <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['BEGINNZEIT'])->format('H:i:s'); ?>  </td>
+                            <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['ENDZEIT'])->format('H:i:s'); ?>  </td>
+                            <td contenteditable="true" class="date-cell"><?php echo date('d-m-Y', strtotime($Coacht['TRAININGSDATUM'])); ?>  </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -995,59 +1011,6 @@ $studio_array = $database->selectAllCoacht($Mitarbeiter_ID, $Kundennummer, $Begi
 <hr>
 
 
-
-
-<h2>Add Betreung: </h2>
-<form method="post" action="Betreut.php">
-
-    <div>
-        <label for="M_IDS_">Mitarbeiter-ID:</label>
-        <input id="M_IDS_" name="Mitarbeiter_ID" type="number">
-    </div>
-    <br>
-
-    <div>
-        <label for="K_IDS_">Kundennummer:</label>
-        <input id="K_IDS_" name="Kundennummer" type="number">
-    </div>
-    <br>
-
-    <div>
-        <button type="submit" name="submitForm_6">
-            Add Betreung
-        </button>
-    </div>
-
-</form>
-<br>
-<hr>
-
-
-<h2>Delete Betreung: </h2>
-<form method="post" action="Betreut.php">
-
-    <div>
-        <label for="_M_IDS_">Mitarbeiter-ID:</label>
-        <input id="_M_IDS_" name="Mitarbeiter_ID" type="number">
-    </div>
-    <br>
-
-    <div>
-        <label for="_K_IDS_">Kundennummer:</label>
-        <input id="_K_IDS_" name="Kundennummer" type="number">
-    </div>
-    <br>
-
-    <div>
-        <button type="submit" name="submitDelete_6">
-            Delete Betreung
-        </button>
-    </div>
-
-</form>
-<br>
-<hr>
-
 <?php
 
 $Mitarbeiter_ID = '';
@@ -1060,53 +1023,126 @@ if (isset($_GET['Kundennummer'])) {
     $Kundennummer = $_GET['Kundennummer'];
 }
 
+$Zeitpunkt = '';
+if (isset($_GET['Zeitpunkt'])) {
+    $Zeitpunkt = $_GET['Zeitpunkt'];
+}
+
 //Fetch data from database
-$studio_array = $database->selectAllBetreut($Mitarbeiter_ID, $Kundennummer);
+$studio_array = $database->selectAllBetreut($Mitarbeiter_ID, $Kundennummer, $Zeitpunkt);
 ?>
 
 
-<h2>Betreung Search:</h2>
-<form method="get">
 
-    <div>
-        <label for="_Mitarbeiter-IDs__">Mitarbeiter-ID:</label>
-        <input id="_Mitarbeiter-IDs__" name="Mitarbeiter_ID" type ="number" value='<?php echo $Mitarbeiter_ID; ?>'>
+<div class="container ml-2" >
+    <div class="row">
+        <div class="col-md-7">
+            <h2>Betreut Table:</h2>
+            <div class="table-container table-responsive" >
+                <table class="table table-bordered table-hover data-table" data-php-file="Betreut.php" id="data-table-7">
+                    <thead  class="thead-dark">
+                    <tr>
+                        <th scope="col">Mitarbeiter_ID</th>
+                        <th scope="col">Kundennummer</th>
+                        <th scope="col">Zeitpunkt</th>
+                    </tr>
+                    </thead>
+                    <style>
+                        .table-container{
+                            background-color: mintcream;
+                            max-height: 500px;
+                            overflow-y: auto;
+                        }
+                    </style>
+                    <tbody>
+                    <?php foreach ($studio_array as $Betreut) : ?>
+                        <tr>
+                            <td contenteditable="true"><?php echo $Betreut['MITARBEITER_ID']; ?>  </td>
+                            <td contenteditable="true"><?php echo $Betreut['KUNDENNUMMER']; ?>  </td>
+                            <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Betreut['ZEITPUNKT'])->format('H:i:s d-m-y'); ?>  </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <h2>Input: </h2>
+            <form method="post" action="Betreut.php" class="row g-3">
+
+                <div class=col-md-6">
+                    <label for="M_IDS" class="form-label">Mitarbeiter-ID:</label>
+                    <input id="M_IDS" name="Mitarbeiter_ID" type="number" class="form-control">
+                </div>
+
+                <div class=col-md-6">
+                    <label for="K_IDS" class="form-label">Kundennummer:</label>
+                    <input id="K_IDS" name="Kundennummer" type="number" class="form-control">
+                </div>
+
+                <div class=col-md-6">
+                    <label for="Zeitpunkt" class="form-label">Zeitpunkt:</label>
+                    <input id="Zeitpunkt" name="Zeitpunkt" type="datetime-local" class="form-control">
+                </div>
+
+
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <button type="submit" name="addButton8"  class="btn btn-primary">
+                            Add
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="submit" name="deleteButton9" class="btn btn-danger">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-2">
+            <h2>Search:</h2>
+            <form method="get" class="row g-3">
+
+
+                <div class=col-md-6">
+                    <label for="_Mitarbeiter-IDs__" class="form-label">Mitarbeiter-ID:</label>
+                    <input id="_Mitarbeiter-IDs__" name="Mitarbeiter_ID" type ="number" class="form-control input-md" value='<?php echo $Mitarbeiter_ID; ?>'>
+                </div>
+
+                <div class=col-md-6">
+                    <label for="_Kundennummers_" class="form-label">Kundennummer:</label>
+                    <input id="_Kundennummers_" name="Kundennummer" type="number" class="form-control input-md" value='<?php echo $Kundennummer; ?>'>
+                </div>
+
+                <div class=col-md-6">
+                    <label for="_Zeitpunkt" class="form-label">Zeitpunkt:</label>
+                    <input id="_Zeitpunkt" name="Beginnzeit" type="datetime-local" class="form-control input-md"  value='<?php echo $Zeitpunkt; ?>'>
+                </div>
+
+                <style>
+                    .custom-button {
+                        width: 118.033px;
+                        height: 62px;
+                        font-weight: 400; /* Set your desired font size */
+                        padding: 0.375rem 0.75rem;
+                    }
+                </style>
+
+                <div class="mt-3">
+                    <button id='submit9' type='submit' class="btn btn-info custom-button">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-    <br>
-
-    <div>
-        <label for="_Kundennummers_">Kundennummer:</label>
-        <input id="_Kundennummers_" name="Kundennummer" type="number" value='<?php echo $Kundennummer; ?>'>
-    </div>
-    <br>
-
-
-    <div>
-        <button id='9' type='submit'>
-            Search
-        </button>
-    </div>
-</form>
+</div>
 <br>
 <hr>
 
-<h2>Betreung Search Result:</h2>
-
-<table>
-    <tr>
-        <th>Mitarbeiter-ID</th>
-        <th>Kundennummer</th>
-    </tr>
-
-    <?php foreach ($studio_array as $Betreut) : ?>
-        <tr>
-            <td><?php echo $Betreut['MITARBEITER_ID']; ?>  </td>
-            <td><?php echo $Betreut['KUNDENNUMMER']; ?>  </td>
-        </tr
-    <?php endforeach; ?>
-</table>
-<br>
-<hr>
 
 
 <h2>Add Mitgliedschaft: </h2>

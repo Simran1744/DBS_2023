@@ -1,4 +1,5 @@
 <?php
+
 require_once('DatabaseHelper.php');
 
 class Betreut
@@ -17,7 +18,13 @@ class Betreut
             $Kundennummer = $_POST['Kundennummer'];
         }
 
-        $success = $database->insertIntoBetreut($Mitarbeiter_ID, $Kundennummer);
+        $Zeitpunkt = '';
+        if (isset($_POST['Zeitpunkt'])) {
+            $Zeitpunkt = $_POST['Zeitpunkt'];
+        }
+
+
+        $success = $database->insertIntoBetreut($Mitarbeiter_ID, $Kundennummer, $Zeitpunkt);
 
         if ($success) {
             $message = "Betreung '{$Mitarbeiter_ID} {$Kundennummer} '  erfolgreich gebucht!'";
@@ -41,7 +48,12 @@ class Betreut
             $Kundennummer = $_POST['Kundennummer'];
         }
 
-        $error_code = $database->deleteBetreut_($Mitarbeiter_ID, $Kundennummer);
+        $Zeitpunkt = '';
+        if (isset($_POST['Zeitpunkt'])) {
+            $Zeitpunkt = $_POST['Zeitpunkt'];
+        }
+
+        $error_code = $database->deleteBetreut_($Mitarbeiter_ID, $Kundennummer, $Zeitpunkt);
 
 
         if ($error_code == 0){
@@ -52,24 +64,39 @@ class Betreut
         }
         echo $message;
     }
+
+    public function updateBetreut(){
+
+        $column = $_POST['column'];
+        $value = $_POST['value'];
+        $rowId = $_POST['rowId'];
+
+        $database = new DatabaseHelper();
+        $database->updateBetreut_($column, $value, $rowId);
+        echo "Update successful";
+        exit;
+
+    }
 }
 
 
 
 $betreut = new Betreut();
 
-if (isset($_POST['submitForm_6'])) {
+if (isset($_POST['addButton8'])) {
     $betreut->addBetreut();
 }
 
-if (isset($_POST['submitDelete_6'])) {
+if (isset($_POST['deleteButton9'])) {
     $betreut->deleteBetreut();
 }
+
+if (isset($_POST['action'])) {
+    $betreut->updateBetreut();
+}
+
+header('Location: index.php');
 
 
 ?>
 
-<br>
-<a href="index.php">
-    go back
-</a>
