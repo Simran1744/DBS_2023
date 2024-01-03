@@ -75,6 +75,21 @@ class Mitgliedschaft
         }
         echo $message;
     }
+
+    public function updateMG(){
+
+        $database = new DatabaseHelper();
+
+
+        $column = $_POST['column'];
+        $value = $_POST['value'];
+        $rowId = $_POST['rowId'];
+
+        $database->updateMG_($column, $value, $rowId);
+        echo "Update successful";
+        exit;
+
+    }
 }
 
 
@@ -83,18 +98,20 @@ class Mitgliedschaft
 
 $mg = new Mitgliedschaft();
 
-if (isset($_POST['submitForm_7'])) {
+if (isset($_POST['addButton9'])) {
     $mg->addMG();
 }
 
-if (isset($_POST['submitDelete_7'])) {
+if (isset($_POST['deleteButton10'])) {
     $mg->deleteMG();
 }
+
+if (isset($_POST['action'])) {
+    $mg->updateMG();
+}
+
+header('Location: index.php');
 
 
 ?>
 
-<br>
-<a href="index.php">
-    go back
-</a>

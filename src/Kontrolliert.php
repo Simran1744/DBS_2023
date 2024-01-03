@@ -23,7 +23,12 @@ class Kontrolliert
             $Mitgliedschaftsnummer = $_POST['Mitgliedschaftsnummer'];
         }
 
-        $success = $database->insertIntoKon($Mitarbeiter_ID, $Kundennummer, $Mitgliedschaftsnummer);
+        $Zeitpunkt = '';
+        if (isset($_POST['Zeitpunkt'])) {
+            $Zeitpunkt = $_POST['Zeitpunkt'];
+        }
+
+        $success = $database->insertIntoKon($Mitarbeiter_ID, $Kundennummer, $Mitgliedschaftsnummer, $Zeitpunkt);
 
         if ($success) {
             $message = "Kontrolle '{$Kundennummer} ' erstellt!'";
@@ -52,7 +57,12 @@ class Kontrolliert
             $Mitgliedschaftsnummer = $_POST['Mitgliedschaftsnummer'];
         }
 
-        $error_code = $database->deleteKon_($Mitarbeiter_ID, $Kundennummer, $Mitgliedschaftsnummer);
+        $Zeitpunkt = '';
+        if (isset($_POST['Zeitpunkt'])) {
+            $Zeitpunkt = $_POST['Zeitpunkt'];
+        }
+
+        $error_code = $database->deleteKon_($Mitarbeiter_ID, $Kundennummer, $Mitgliedschaftsnummer, $Zeitpunkt);
 
 
         if ($error_code == 0){
@@ -64,24 +74,42 @@ class Kontrolliert
         echo $message;
     }
 
+    public function updateKon(){
+
+        $database = new DatabaseHelper();
+
+
+        $column = $_POST['column'];
+        $value = $_POST['value'];
+        $rowId = $_POST['rowId'];
+
+        $database->updateKon_($column, $value, $rowId);
+        echo "Update successful";
+        exit;
+
+    }
+
 
 }
 
 
 $kon = new Kontrolliert();
 
-if (isset($_POST['submitForm_8'])) {
+if (isset($_POST['addButton11'])) {
     $kon->addKon();
 }
 
-if (isset($_POST['submitDelete_8'])) {
+if (isset($_POST['deleteButton12'])) {
     $kon->deleteKon();
 }
+
+if (isset($_POST['action'])) {
+    $kon->updateKon();
+}
+
+
+header('Location: index.php');
 
 
 ?>
 
-<br>
-<a href="index.php">
-    go back
-</a>

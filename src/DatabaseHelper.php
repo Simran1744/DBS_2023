@@ -225,15 +225,24 @@ class DatabaseHelper
 
         $str_dat = strval($f_erstellungsdatum);
 
+
+
         $sql = "SELECT * FROM MITGLIEDSCHAFT
             WHERE upper(KUNDENNUMMER) LIKE upper('%{$Kundennummer}%')
             AND upper(MITGLIEDSCHAFTSNUMMER) LIKE upper('%{$Mitgliedschaftsnummer}%')
             AND upper(MITGLIEDSCHAFTS_STUFE) LIKE upper('%{$Mitgliedschafts_Stufe}%')
             AND upper(MONATSKOSTEN) LIKE upper('%{$Monatskosten}%')
-            AND upper(GUELTIGKEIT) LIKE upper('{$Gueltigkeit}')
-            AND ERSTELLUNGSDATUM LIKE upper(TO_DATE(('{$str_dat}'), 'YYYY-MM-DD'))
+            
             
             ";
+
+        if($Gueltigkeit !== ''){
+            $sql .= " AND upper(GUELTIGKEIT) LIKE upper('{$Gueltigkeit}')";
+        }
+        if ($str_dat !== '1970-01-01') {
+            $sql .= " AND ERSTELLUNGSDATUM LIKE TO_DATE('{$str_dat}'), 'YYYY-MM-DD')";
+        }
+
 
         $statement = oci_parse($this->conn, $sql);
 
@@ -247,20 +256,53 @@ class DatabaseHelper
 
         return $res;
     }
-    public function selectAllKons($Mitarbeiter_ID, $Kundennummer, $Mitgliedschaftsnummer){
+
+    public function selectAllKons($Mitarbeiter_ID, $Kundennummer, $Mitgliedschaftsnummer, $Zeitpunkt){
+
+        $f_zeit = date('Y-m-d H:i:s', strtotime($Zeitpunkt));
+        $str_zeit = strval($f_zeit);
 
 
         $sql = "SELECT * FROM KONTROLLIERT
-            WHERE upper(MITARBEITER_ID) LIKE upper('{$Mitarbeiter_ID}')
-            AND upper(KUNDENNUMMER) LIKE upper('{$Kundennummer}')
-            AND upper(MITGLIEDSCHAFTSNUMMER) LIKE upper('{$Mitgliedschaftsnummer}')       
+            WHERE upper(MITARBEITER_ID) LIKE upper('%{$Mitarbeiter_ID}%')
+            AND upper(KUNDENNUMMER) LIKE upper('%{$Kundennummer}%')
+            AND upper(MITGLIEDSCHAFTSNUMMER) LIKE upper('%{$Mitgliedschaftsnummer}%')       
             ";
+
+        if ($str_zeit !== '1970-01-01 01:00:00') {
+            $sql .= " AND ZEITPUNKT = TO_TIMESTAMP('{$str_zeit}', 'YYYY-MM-DD HH24:MI:SS')";
+        }
+
 
         $statement = oci_parse($this->conn, $sql);
 
         // Executes the statements
         oci_execute($statement);
 
+        oci_fetch_all($statement, $res, null, null, OCI_FETCHSTATEMENT_BY_ROW);
+
+        //clean up;
+        oci_free_statement($statement);
+
+        return $res;
+    }
+
+    public function selectAllTraining($Kundennummer1, $Kundennummer2, $Zeitpunkt){
+
+        $f_zeit = date('Y-m-d H:i:s', strtotime($Zeitpunkt));
+        $str_zeit = strval($f_zeit);
+
+        $sql = "SELECT * FROM TRAINIERT_MIT
+            WHERE upper(KUNDENNUMMER1) LIKE upper('%{$Kundennummer1}%')
+            AND upper(KUNDENNUMMER2) LIKE upper('%{$Kundennummer2}%')";
+
+        if ($str_zeit !== '1970-01-01 01:00:00') {
+            $sql .= " AND ZEITPUNKT = TO_TIMESTAMP('{$str_zeit}', 'YYYY-MM-DD HH24:MI:SS')";
+        }
+        $statement = oci_parse($this->conn, $sql);
+
+        // Executes the statements
+        oci_execute($statement);
         oci_fetch_all($statement, $res, null, null, OCI_FETCHSTATEMENT_BY_ROW);
 
         //clean up;
@@ -643,7 +685,7 @@ class DatabaseHelper
         }
 
 
-        $sql = "UPDATE BETREUT   SET {$columns[$column]} = {$endValue} WHERE MITARBEITER_ID = :id";
+        $sql = "UPDATE BETREUT SET {$columns[$column]} = {$endValue} WHERE MITARBEITER_ID = :id";
 
         $stmt = oci_parse($this->conn, $sql);
         oci_bind_by_name($stmt, ':id', $rowId);
@@ -699,28 +741,81 @@ class DatabaseHelper
         return $errorcode;
     }
 
-    public function insertIntoKon($Mitarbeiter_ID, $Kundennummer, $Mitgliedschaftsnummer)
-    {
+    public function updateMG_($column, $value, $rowId){
+        $columns = ['KUNDENNUMMER' , 'MITGLIEDSCHAFTSNUMMER', 'MITGLIEDSCHAFTS_STUFE', 'MONATSKOSTEN',
+            'GUELTIGKEIT', 'ERSTELLUNGSDATUM'];
 
-        $sql = "INSERT INTO KONTROLLIERT (MITARBEITER_ID, KUNDENNUMMER, MITGLIEDSCHAFTSNUMMER) 
-        VALUES ('{$Mitarbeiter_ID}',
-                '{$Kundennummer}',
-                '{$Mitgliedschaftsnummer}')";
 
-        $statement = oci_parse($this->conn, $sql);
-        $success = oci_execute($statement) && oci_commit($this->conn);
-        oci_free_statement($statement);
-        return $success;
+        if (!isset($columns[$column])) {
+            echo "Invalid column index";
+            return;
+        }
+
+        $isDateColumn = $columns[$column] == 'ERSTELLUNGSDATUM';
+
+        if ($isDateColumn) {
+            $dateFormat = date('Y-m-d', strtotime($value));
+            $str_dat = strval($dateFormat);
+            $endValue = "TO_DATE('{$str_dat}', 'YYYY-MM-DD')";
+        } else {
+            $endValue = "'$value'";
+        }
+
+        echo $endValue;
+
+
+        $sql = "UPDATE MITGLIEDSCHAFT SET {$columns[$column]} = {$endValue} WHERE KUNDENNUMMER = :id";
+
+
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':id', $rowId);
+
+        if (oci_execute($stmt)) {
+            echo "Update 2 successful";
+        } else {
+            $e = oci_error($stmt);
+            echo "Update failed " . $e['message'];
+        }
+
+        oci_free_statement($stmt);
     }
 
-    public function deleteKon_($Mitarbeiter_ID, $Kundennummer, $Mitgliedschaftsnummer){
+    public function insertIntoKon($Mitarbeiter_ID, $Kundennummer, $Mitgliedschaftsnummer, $Zeitpunkt)
+    {
+        $f_beginnzeit = date('Y-m-d H:i:s', strtotime($Zeitpunkt));
 
+        $str_beg = strval($f_beginnzeit);
+
+
+        $sql = "INSERT INTO KONTROLLIERT (MITARBEITER_ID, KUNDENNUMMER, MITGLIEDSCHAFTSNUMMER, ZEITPUNKT) 
+        VALUES ('{$Mitarbeiter_ID}',
+                '{$Kundennummer}',
+                '{$Mitgliedschaftsnummer}',
+                TO_TIMESTAMP('{$str_beg}', 'YYYY-MM-DD HH24:MI:SS'))";
+
+        $statement = oci_parse($this->conn, $sql);
+        if (oci_execute($statement)) {
+            echo "Update successful";
+        } else {
+            $e = oci_error($statement);
+            echo "Update failed: " . $e['message'];
+        }
+        oci_free_statement($statement);
+    }
+
+    public function deleteKon_($Mitarbeiter_ID, $Kundennummer, $Mitgliedschaftsnummer, $Zeitpunkt){
         $errorcode = 0;
+
+        $f_beginnzeit = date('Y-m-d H:i:s', strtotime($Zeitpunkt));
+
+        $str_beg = strval($f_beginnzeit);
 
         $sql = "DELETE FROM KONTROLLIERT
         WHERE MITARBEITER_ID = '{$Mitarbeiter_ID}'
         AND KUNDENNUMMER  = '{$Kundennummer}'
-        AND MITGLIEDSCHAFTSNUMMER = '{$Mitgliedschaftsnummer}'";
+        AND MITGLIEDSCHAFTSNUMMER = '{$Mitgliedschaftsnummer}'
+        AND ZEITPUNKT = TO_TIMESTAMP('{$str_beg}', 'YYYY-MM-DD HH24:MI:SS') 
+        ";
 
         $statement = oci_parse($this->conn, $sql);
         if (!oci_execute($statement)) {
@@ -731,5 +826,114 @@ class DatabaseHelper
         oci_commit($this->conn);
         oci_free_statement($statement);
         return $errorcode;
+    }
+
+    public function updateKon_($column, $value, $rowId){
+        $columns = ['MITARBEITER_ID', 'KUNDENNUMMER', 'MITGLIEDSCHAFTSNUMMER', 'ZEITPUNKT'];
+
+        if (!isset($columns[$column])) {
+            echo "Invalid column index";
+            return;
+        }
+
+        $isDateColumn = $columns[$column] == 'ZEITPUNKT';
+
+        if ($isDateColumn) {
+            $dateFormat = date('Y-m-d H:i:s', strtotime($value));
+            $str_dat = strval($dateFormat);
+            $endValue = "TO_TIMESTAMP('{$str_dat}', 'YYYY-MM-DD HH24:MI:SS')";
+        } else {
+            $endValue = "'$value'";
+        }
+
+
+        $sql = "UPDATE KONTROLLIERT SET {$columns[$column]} = {$endValue} WHERE MITARBEITER_ID = :id";
+
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':id', $rowId);
+
+        if (oci_execute($stmt)) {
+            echo "Update successful";
+        } else {
+            $e = oci_error($stmt);
+            echo "Update failed: " . $e['message'];
+        }
+
+        oci_free_statement($stmt);
+    }
+
+    public function insertIntoTraining($Kundennummer1, $Kundennummer2, $Zeitpunkt)
+    {
+        $f_beginnzeit = date('Y-m-d H:i:s', strtotime($Zeitpunkt));
+
+        $str_beg = strval($f_beginnzeit);
+
+        $sql = "INSERT INTO Trainiert_mit (KUNDENNUMMER1, KUNDENNUMMER2, ZEITPUNKT) 
+        VALUES ('{$Kundennummer1}','{$Kundennummer2}', TO_TIMESTAMP('{$str_beg}', 'YYYY-MM-DD HH24:MI:SS'))";
+
+        $statement = oci_parse($this->conn, $sql);
+        if (oci_execute($statement)) {
+            echo "Update successful";
+        } else {
+            $e = oci_error($statement);
+            echo "Update failed: " . $e['message'];
+        }
+        oci_free_statement($statement);
+    }
+
+    public function deleteTraining_($Kundennummer1, $Kundennummer2, $Zeitpunkt){
+        $errorcode = 0;
+
+        $f_beginnzeit = date('Y-m-d H:i:s', strtotime($Zeitpunkt));
+        $str_beg = strval($f_beginnzeit);
+
+        $sql = "DELETE FROM Trainiert_mit
+        WHERE Kundennummer1 = '{$Kundennummer1}'
+        AND Kundennummer2 = '{$Kundennummer2}'
+        AND ZEITPUNKT = TO_TIMESTAMP('{$str_beg}', 'YYYY-MM-DD HH24:MI:SS')";
+
+        $statement = oci_parse($this->conn, $sql);
+        if (!oci_execute($statement)) {
+            $errorcode = 1;
+        }elseif(oci_num_rows($statement)==0){
+            $errorcode = 2;
+        }
+        oci_commit($this->conn);
+        oci_free_statement($statement);
+        return $errorcode;
+    }
+
+    public function updateTraining_($column, $value, $rowId){
+        $columns = ['KUNDENNUMMER1', 'KUNDENNUMMER2', 'ZEITPUNKT'];
+
+        if (!isset($columns[$column])) {
+            echo "Invalid column index";
+            return;
+        }
+
+        $isDateColumn = $columns[$column] == 'ZEITPUNKT';
+
+        if ($isDateColumn) {
+            $dateFormat = date('Y-m-d H:i:s', strtotime($value));
+            $str_dat = strval($dateFormat);
+            $endValue = "TO_TIMESTAMP('{$str_dat}', 'YYYY-MM-DD HH24:MI:SS')";
+        } else {
+            $endValue = "'$value'";
+        }
+
+
+        $sql = "UPDATE TRAINIERT_MIT SET {$columns[$column]} = {$endValue} WHERE KUNDENNUMMER1 = :id";
+
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':id', $rowId);
+
+        if (oci_execute($stmt)) {
+            echo "Update successful";
+        } else {
+            $e = oci_error($stmt);
+            echo "Update failed: " . $e['message'];
+        }
+
+        oci_free_statement($stmt);
     }
 }
