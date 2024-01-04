@@ -5,9 +5,9 @@ require_once('DatabaseHelper.php');
 
 $database = new DatabaseHelper();
 
-$customerID = '';
-if(isset($_POST['customerID'])) {
-    $customerID = $_POST['customerID'];
+$Kundennummer = '';
+if(isset($_POST['Kundennummer'])) {
+    $Kundennummer = $_POST['Kundennummer'];
 }
 
 
@@ -15,10 +15,11 @@ if(isset($_POST['customerID'])) {
     // Perform basic validation (you can add more validation as needed)
 
     // Call the stored procedure
-    $output = $database->getMembershipDetails($customerID);
+    $output = $database->GetMembershipDetails($Kundennummer);
 
     echo "Membership Details:<br>";
-    echo "Membership Number: {$output['Mitgliedschaftsnummer']}<br>";
-    echo "Membership Level: {$output['Mitgliedschafts_Stufe']}<br>";
-    echo "Monthly Cost: {$output['Monatskosten']}<br>";
-    echo "Validity: {$output['Gueltigkeit']}<br>";
+    echo "Membership Number: {$output['MITGLIEDSCHAFTSNUMMER']}<br>";
+    echo "Membership Level: {$output['MITGLIEDSCHAFTS_STUFE']}<br>";
+    echo "Cost: {$output['MONATSKOSTEN']}<br>";
+    echo "Validity: {$output['GUELTIGKEIT']}<br>";
+

@@ -504,7 +504,8 @@ class DatabaseHelper
         $sql = "DELETE FROM KUNDE WHERE KUNDENNUMMER = '{$Kundennummer}'";
 
         $statement = oci_parse($this->conn, $sql);
-        oci_bind_by_name($statement, ":Mitarbeiter_ID", $Studio_ID);
+        oci_bind_by_name($statement, ":Kundennummer", $Kundennummer);
+
         if (!oci_execute($statement)) {
             $errorcode = 1;
         }elseif(oci_num_rows($statement)==0){
@@ -892,6 +893,7 @@ class DatabaseHelper
         AND Kundennummer2 = '{$Kundennummer2}'
         AND ZEITPUNKT = TO_TIMESTAMP('{$str_beg}', 'YYYY-MM-DD HH24:MI:SS')";
 
+
         $statement = oci_parse($this->conn, $sql);
         if (!oci_execute($statement)) {
             $errorcode = 1;
@@ -936,34 +938,34 @@ class DatabaseHelper
 
         oci_free_statement($stmt);
     }
-    public function getMembershipDetails($customerID) {
+    public function GetMembershipDetails($Kundennummer) {
 
+        $validity = '';
 
-        $sql = "BEGIN GetMembershipDetails(:customerID, :membership_number, :membership_level, :monthly_cost, :validity); END;";
-        // Call the stored procedure
+        $sql = 'BEGIN GetMembershipDetails(:customerID, :membership_number, :membership_level, :monthly, :validity); END;';
         $stmt = oci_parse($this->conn, $sql);
 
-        // Bind parameters
-        oci_bind_by_name($stmt, ':customerID', $customerID);
-        oci_bind_by_name($stmt, ':membership_number', $membershipNumber);
-        oci_bind_by_name($stmt, ':membership_level', $membershipLevel);
-        oci_bind_by_name($stmt, ':monthly_cost', $monthlyCost);
-        oci_bind_by_name($stmt, ':validity', $validity);
+        oci_bind_by_name($stmt, ':customerID', $Kundennummer);
+        oci_bind_by_name($stmt, ':membership_number', $membershipNumber, -1, SQLT_INT);
+        oci_bind_by_name($stmt, ':membership_level', $membershipLevel, 50);
+        oci_bind_by_name($stmt, ':monthly', $monthly, -1, SQLT_INT);
+        oci_bind_by_name($stmt, ':validity',$validity,50);
 
-        // Execute the stored procedure
-        oci_execute($stmt);
-        oci_fetch_assoc($stmt);
+        if (!oci_execute($stmt)) {
+            $e = oci_error($stmt);
+            echo "Error executing stored procedure: " . $e['message'];
+        }
 
-        // Close the statement and connection
+        // Fetch the results
         oci_free_statement($stmt);
-        oci_close($this->conn);
 
-        // Return the output
         return [
-            'Mitgliedschaftsnummer' => $membershipNumber,
-            'Mitgliedschafts_Stufe' => $membershipLevel,
-            'Monatskosten' => $monthlyCost,
-            'Gueltigkeit' => $validity,
+            'MITGLIEDSCHAFTSNUMMER' => $membershipNumber,
+            'MITGLIEDSCHAFTS_STUFE' => $membershipLevel,
+            'MONATSKOSTEN' => $monthly,
+            'GUELTIGKEIT' => $validity,
         ];
+
+
     }
 }
