@@ -936,4 +936,34 @@ class DatabaseHelper
 
         oci_free_statement($stmt);
     }
+    public function getMembershipDetails($customerID) {
+
+
+        $sql = "BEGIN GetMembershipDetails(:customerID, :membership_number, :membership_level, :monthly_cost, :validity); END;";
+        // Call the stored procedure
+        $stmt = oci_parse($this->conn, $sql);
+
+        // Bind parameters
+        oci_bind_by_name($stmt, ':customerID', $customerID);
+        oci_bind_by_name($stmt, ':membership_number', $membershipNumber);
+        oci_bind_by_name($stmt, ':membership_level', $membershipLevel);
+        oci_bind_by_name($stmt, ':monthly_cost', $monthlyCost);
+        oci_bind_by_name($stmt, ':validity', $validity);
+
+        // Execute the stored procedure
+        oci_execute($stmt);
+        oci_fetch_assoc($stmt);
+
+        // Close the statement and connection
+        oci_free_statement($stmt);
+        oci_close($this->conn);
+
+        // Return the output
+        return [
+            'Mitgliedschaftsnummer' => $membershipNumber,
+            'Mitgliedschafts_Stufe' => $membershipLevel,
+            'Monatskosten' => $monthlyCost,
+            'Gueltigkeit' => $validity,
+        ];
+    }
 }

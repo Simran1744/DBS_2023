@@ -1604,6 +1604,13 @@ $studio_array = $database->selectAllTraining($Kundennummer1, $Kundennummer2, $Ze
 <br>
 <hr>
 
+<h2>Membership Details</h2>
+<form action="process.php" method="post">
+    <label for="customer_id">Customer ID:</label>
+    <input type="number" id="customer_id" name="customerID" required>
+    <button type="submit">Get Membership Details</button>
+</form>
+
 
 
 
