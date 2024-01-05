@@ -84,7 +84,9 @@ $studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Ort, $Pl
 
             editedCell = $(this);
             let currentValue = editedCell.text();
-            //if klausel für datum hinzufügen für type = "date"
+
+            editedCell.data('original-value', currentValue);
+
 
             let inputType;
             if (editedCell.hasClass('timestamp-cell')) {
@@ -108,12 +110,14 @@ $studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Ort, $Pl
             console.log($(this))
             let newValue = $(this).val();
             let column = $(this).closest('td').index();
-            let rowId = $(this).closest('tr').find('td:first').text();
+            let rowId = [];
+            let originalValue = editedCell.data('original-value');
+            $(this).closest('tr').find('td').each(function(){
+                rowId.push(($(this).text()))});
             let phpFile = editedCell.closest('.data-table').data('php-file');
             editedCell.text(newValue);
 
 
-            // Use AJAX to update the value in the database
             $.ajax({
                 url: phpFile,
                 method: 'POST',
@@ -121,6 +125,7 @@ $studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Ort, $Pl
                     action: 'update',
                     column: column,
                     value: newValue,
+                    originalValue: originalValue,
                     rowId: rowId
                 },
                 success: function (response) {
@@ -904,8 +909,8 @@ $studio_array = $database->selectAllCoacht($Mitarbeiter_ID, $Kundennummer, $Begi
                         <tr>
                             <td contenteditable="true"><?php echo $Coacht['MITARBEITER_ID']; ?>  </td>
                             <td contenteditable="true"><?php echo $Coacht['KUNDENNUMMER']; ?>  </td>
-                            <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['BEGINNZEIT'])->format('H:i:s'); ?>  </td>
-                            <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['ENDZEIT'])->format('H:i:s'); ?>  </td>
+                            <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['BEGINNZEIT'])->format('H:i:s y-m-d'); ?>  </td>
+                            <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['ENDZEIT'])->format('H:i:s y-m-d'); ?>  </td>
                             <td contenteditable="true" class="date-cell"><?php echo date('d-m-Y', strtotime($Coacht['TRAININGSDATUM'])); ?>  </td>
                         </tr>
                     <?php endforeach; ?>
@@ -1059,7 +1064,7 @@ $studio_array = $database->selectAllBetreut($Mitarbeiter_ID, $Kundennummer, $Zei
                         <tr>
                             <td contenteditable="true"><?php echo $Betreut['MITARBEITER_ID']; ?>  </td>
                             <td contenteditable="true"><?php echo $Betreut['KUNDENNUMMER']; ?>  </td>
-                            <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Betreut['ZEITPUNKT'])->format('H:i:s d-m-y'); ?>  </td>
+                            <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Betreut['ZEITPUNKT'])->format('H:i:s y-m-d'); ?>  </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -1381,7 +1386,7 @@ $studio_array = $database->selectAllKons($Mitarbeiter_ID, $Kundennummer, $Mitgli
                             <td contenteditable="true"><?php echo $Kons['MITARBEITER_ID']; ?>  </td>
                             <td contenteditable="true"><?php echo $Kons['KUNDENNUMMER']; ?>  </td>
                             <td contenteditable="true"><?php echo $Kons['MITGLIEDSCHAFTSNUMMER']; ?>  </td>
-                            <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Kons['ZEITPUNKT'])->format('H:i:s d-m-y'); ?>  </td>
+                            <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Kons['ZEITPUNKT'])->format('H:i:s y-m-d'); ?>  </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -1522,7 +1527,7 @@ $studio_array = $database->selectAllTraining($Kundennummer1, $Kundennummer2, $Ze
                         <tr>
                             <td contenteditable="true"><?php echo $Train['KUNDENNUMMER1']; ?>  </td>
                             <td contenteditable="true"><?php echo $Train['KUNDENNUMMER2']; ?>  </td>
-                            <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Train['ZEITPUNKT'])->format('H:i:s d-m-y'); ?>  </td>
+                            <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Train['ZEITPUNKT'])->format('H:i:s y-m-d'); ?>  </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>

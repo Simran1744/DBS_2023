@@ -82,8 +82,10 @@ class Kontrolliert
         $column = $_POST['column'];
         $value = $_POST['value'];
         $rowId = $_POST['rowId'];
+        $originalValue = $_POST['originalValue'];
 
-        $database->updateKon_($column, $value, $rowId);
+
+        $database->updateKon_($column, $value, $rowId,$originalValue);
         echo "Update successful";
         exit;
 
@@ -95,11 +97,11 @@ class Kontrolliert
 
 $kon = new Kontrolliert();
 
-if (isset($_POST['addButton11'])) {
+if (isset($_POST['addButton10'])) {
     $kon->addKon();
 }
 
-if (isset($_POST['deleteButton12'])) {
+if (isset($_POST['deleteButton11'])) {
     $kon->deleteKon();
 }
 

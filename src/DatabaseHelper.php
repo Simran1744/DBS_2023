@@ -349,6 +349,8 @@ class DatabaseHelper
 
     public function updateFitnessstudio($column, $value, $rowId)
     {
+        $fit_id = $rowId[0];
+
         $columns = ['STUDIO_ID', 'F_NAME', 'ORT', 'PLATZ', 'STRASSE'];
         $sql = "UPDATE Fitnessstudio SET {$columns[$column]} = :value WHERE STUDIO_ID = :id";
 
@@ -359,7 +361,7 @@ class DatabaseHelper
 
         $stmt = oci_parse($this->conn, $sql);
         oci_bind_by_name($stmt, ':value', $value);
-        oci_bind_by_name($stmt, ':id', $rowId);
+        oci_bind_by_name($stmt, ':id', $fit_id);
 
         if (oci_execute($stmt)) {
             echo "Update 2 successful";
@@ -402,6 +404,9 @@ class DatabaseHelper
 
     public function updateMitarbeiter_($column, $value, $rowId){
         $columns = ['Mitarbeiter_ID', 'Studio_ID', 'Vorname', 'Nachname'];
+
+        $mit_id = $rowId[0];
+
         $sql = "UPDATE MITARBEITER SET {$columns[$column]} = :value WHERE MITARBEITER_ID = :id";
 
         if (!isset($columns[$column])) {
@@ -411,7 +416,7 @@ class DatabaseHelper
 
         $stmt = oci_parse($this->conn, $sql);
         oci_bind_by_name($stmt, ':value', $value);
-        oci_bind_by_name($stmt, ':id', $rowId);
+        oci_bind_by_name($stmt, ':id', $mit_id);
 
         if (oci_execute($stmt)) {
             echo "Update 2 successful";
@@ -434,6 +439,9 @@ class DatabaseHelper
 
     public function updatePersonalTrainer_($column, $value, $rowId){
         $columns = ['Mitarbeiter_ID', 'Geschlecht', 'Sprachkenntnisse'];
+
+        $mit_id = $rowId[0];
+
         $sql = "UPDATE PERSONAL_TRAINER SET {$columns[$column]} = :value WHERE MITARBEITER_ID = :id";
 
         if (!isset($columns[$column])) {
@@ -443,7 +451,7 @@ class DatabaseHelper
 
         $stmt = oci_parse($this->conn, $sql);
         oci_bind_by_name($stmt, ':value', $value);
-        oci_bind_by_name($stmt, ':id', $rowId);
+        oci_bind_by_name($stmt, ':id', $mit_id);
 
         if (oci_execute($stmt)) {
             echo "Update 2 successful";
@@ -467,6 +475,9 @@ class DatabaseHelper
     public function updateRezeptionist_($column, $value, $rowId)
     {
         $columns = ['Mitarbeiter_ID', 'Arbeitszeiten', 'Sprachkenntnisse'];
+
+        $mit_id = $rowId[0];
+
         $sql = "UPDATE REZEPTIONIST SET {$columns[$column]} = :value WHERE MITARBEITER_ID = :id";
 
         if (!isset($columns[$column])) {
@@ -476,7 +487,7 @@ class DatabaseHelper
 
         $stmt = oci_parse($this->conn, $sql);
         oci_bind_by_name($stmt, ':value', $value);
-        oci_bind_by_name($stmt, ':id', $rowId);
+        oci_bind_by_name($stmt, ':id', $mit_id);
 
         if (oci_execute($stmt)) {
             echo "Update 2 successful";
@@ -518,6 +529,9 @@ class DatabaseHelper
 
     public function updateKunde_($column, $value, $rowId){
         $columns = ['Kundennummer', 'Studio_ID', 'Vorname', 'Nachname', 'Geschlecht'];
+
+        $kund_id = $rowId[0];
+
         $sql = "UPDATE KUNDE SET {$columns[$column]} = :value WHERE KUNDENNUMMER = :id";
 
         if (!isset($columns[$column])) {
@@ -527,7 +541,7 @@ class DatabaseHelper
 
         $stmt = oci_parse($this->conn, $sql);
         oci_bind_by_name($stmt, ':value', $value);
-        oci_bind_by_name($stmt, ':id', $rowId);
+        oci_bind_by_name($stmt, ':id', $kund_id);
 
         if (oci_execute($stmt)) {
             echo "Update 2 successful";
@@ -597,11 +611,20 @@ class DatabaseHelper
     public function updateCoacht_($column, $value, $rowId){
         $columns = ['MITARBEITER_ID', 'KUNDENNUMMER', 'BEGINNZEIT', 'ENDZEIT', 'TRAININGSDATUM'];
 
+        $mit_id = $rowId[0];
+        $kund_id = $rowId[1];
+        $beginnzeit = $rowId[2];
+        $endzeit= $rowId[3];
+        $datum = $rowId[4];
+
+        echo $mit_id;
+        echo $beginnzeit;
+        echo $endzeit;
+
         if (!isset($columns[$column])) {
             echo "Invalid column index";
             return;
         }
-
 
         $isDateColumn = in_array($columns[$column], ['TRAININGSDATUM', 'BEGINNZEIT', 'ENDZEIT']);
 
@@ -613,11 +636,32 @@ class DatabaseHelper
             $endValue = $value;
         }
 
+        echo $endValue;
 
-        $sql = "UPDATE COACHT SET {$columns[$column]} = {$endValue} WHERE MITARBEITER_ID = :id";
+        $sql = "UPDATE COACHT SET {$columns[$column]} = {$endValue} WHERE MITARBEITER_ID = '{$mit_id}'";
+
+        if('KUNDENNUMMER' !== $columns[$column]) {
+            $sql .= " AND KUNDENNUMMER = '{$kund_id}'";
+        }
+
+        if ('BEGINNZEIT' !== $columns[$column]) {
+            $f_beginnzeit = date('Y-m-d H:i:s', strtotime($beginnzeit));
+            echo "beginnzeit" . $f_beginnzeit .'\n';
+            $str_beg = strval($f_beginnzeit);
+            echo "endzeit" . $str_beg .'\n';
+            $sql .= " AND BEGINNZEIT = TO_TIMESTAMP('{$str_beg}', 'YYYY-MM-DD HH24:MI:SS')";
+        }
+
+        if ('ENDZEIT' !== $columns[$column]) {
+            $f_endzeit = date('Y-m-d H:i:s', strtotime($endzeit));
+            $str_end = strval($f_endzeit);
+            $sql .= " AND ENDZEIT = TO_TIMESTAMP('{$str_end}', 'YYYY-MM-DD HH24:MI:SS')";
+        }
+
+        echo $sql;
 
         $stmt = oci_parse($this->conn, $sql);
-        oci_bind_by_name($stmt, ':id', $rowId);
+
 
         if (oci_execute($stmt)) {
             echo "Update successful";
@@ -667,8 +711,17 @@ class DatabaseHelper
         return $errorcode;
     }
 
-    public function updateBetreut_($column, $value, $rowId){
+    public function updateBetreut_($column, $value, $rowId, $originalValue){
+
+
         $columns = ['MITARBEITER_ID', 'KUNDENNUMMER', 'ZEITPUNKT'];
+
+        $mit_id = $rowId[0];
+        $kund_id = $rowId[1];
+        $zeit = $rowId[2];
+
+        echo "value:" . $value;
+
 
         if (!isset($columns[$column])) {
             echo "Invalid column index";
@@ -679,17 +732,36 @@ class DatabaseHelper
 
         if ($isDateColumn) {
             $dateFormat = date('Y-m-d H:i:s', strtotime($value));
+            echo $dateFormat;
             $str_dat = strval($dateFormat);
             $endValue = "TO_TIMESTAMP('{$str_dat}', 'YYYY-MM-DD HH24:MI:SS')";
         } else {
             $endValue = $value;
         }
 
+        $sql = "UPDATE BETREUT SET {$columns[$column]} = {$endValue} WHERE MITARBEITER_ID = '{$mit_id}'";
 
-        $sql = "UPDATE BETREUT SET {$columns[$column]} = {$endValue} WHERE MITARBEITER_ID = :id";
+
+        if('KUNDENNUMMER' !== $columns[$column]) {
+            $sql .= " AND KUNDENNUMMER = '{$kund_id}'";
+        }
+
+
+        if ('ZEITPUNKT' !== $columns[$column]) {
+            $frmt = date('Y-m-d H:i:s', strtotime($zeit));
+            $str_dat = strval($frmt);
+            $sql .= " AND ZEITPUNKT = TO_TIMESTAMP('{$str_dat}', 'YYYY-MM-DD HH24:MI:SS')";
+        }
+        else{
+            $frmt = date('Y-m-d H:i:s', strtotime($originalValue));
+            $str_dat = strval($frmt);
+            $sql .= " AND ZEITPUNKT = TO_TIMESTAMP('{$str_dat}', 'YYYY-MM-DD HH24:MI:SS')";
+        }
+
+
+        echo $sql;
 
         $stmt = oci_parse($this->conn, $sql);
-        oci_bind_by_name($stmt, ':id', $rowId);
 
         if (oci_execute($stmt)) {
             echo "Update successful";
@@ -746,6 +818,8 @@ class DatabaseHelper
         $columns = ['KUNDENNUMMER' , 'MITGLIEDSCHAFTSNUMMER', 'MITGLIEDSCHAFTS_STUFE', 'MONATSKOSTEN',
             'GUELTIGKEIT', 'ERSTELLUNGSDATUM'];
 
+        $kund_id = $rowId[0];
+
 
         if (!isset($columns[$column])) {
             echo "Invalid column index";
@@ -769,7 +843,7 @@ class DatabaseHelper
 
 
         $stmt = oci_parse($this->conn, $sql);
-        oci_bind_by_name($stmt, ':id', $rowId);
+        oci_bind_by_name($stmt, ':id', $kund_id);
 
         if (oci_execute($stmt)) {
             echo "Update 2 successful";
@@ -829,8 +903,13 @@ class DatabaseHelper
         return $errorcode;
     }
 
-    public function updateKon_($column, $value, $rowId){
+    public function updateKon_($column, $value, $rowId, $originalValue){
         $columns = ['MITARBEITER_ID', 'KUNDENNUMMER', 'MITGLIEDSCHAFTSNUMMER', 'ZEITPUNKT'];
+
+        $mit_id = $rowId[0];
+        $kund_id = $rowId[1];
+        $mit_num = $rowId[2];
+        $zeit = $rowId[3];
 
         if (!isset($columns[$column])) {
             echo "Invalid column index";
@@ -848,10 +927,31 @@ class DatabaseHelper
         }
 
 
-        $sql = "UPDATE KONTROLLIERT SET {$columns[$column]} = {$endValue} WHERE MITARBEITER_ID = :id";
+        $sql = "UPDATE KONTROLLIERT SET {$columns[$column]} = {$endValue} WHERE MITARBEITER_ID = '{$mit_id}'";
+
+        if('KUNDENNUMMER' !== $columns[$column]) {
+            $sql .= " AND KUNDENNUMMER = '{$kund_id}'";
+        }
+
+        if('MITGLIEDSCHAFTSNUMMER' != $columns[$column]){
+            $sql .= " AND MITGLIEDSCHAFTSNUMMER = '{$mit_num}'";
+        }
+
+        if ('ZEITPUNKT' !== $columns[$column]) {
+            $frmt = date('Y-m-d H:i:s', strtotime($zeit));
+            $str_dat = strval($frmt);
+            $sql .= " AND ZEITPUNKT = TO_TIMESTAMP('{$str_dat}', 'YYYY-MM-DD HH24:MI:SS')";
+        }
+        else{
+            $frmt = date('Y-m-d H:i:s', strtotime($originalValue));
+            $str_dat = strval($frmt);
+            $sql .= " AND ZEITPUNKT = TO_TIMESTAMP('{$str_dat}', 'YYYY-MM-DD HH24:MI:SS')";
+        }
+
+
+
 
         $stmt = oci_parse($this->conn, $sql);
-        oci_bind_by_name($stmt, ':id', $rowId);
 
         if (oci_execute($stmt)) {
             echo "Update successful";
@@ -905,8 +1005,13 @@ class DatabaseHelper
         return $errorcode;
     }
 
-    public function updateTraining_($column, $value, $rowId){
+    public function updateTraining_($column, $value, $rowId, $originalValue){
         $columns = ['KUNDENNUMMER1', 'KUNDENNUMMER2', 'ZEITPUNKT'];
+
+        $kund_id1 = $rowId[0];
+        $kund_id2 = $rowId[1];
+        $zeit = $rowId[2];
+
 
         if (!isset($columns[$column])) {
             echo "Invalid column index";
@@ -924,10 +1029,25 @@ class DatabaseHelper
         }
 
 
-        $sql = "UPDATE TRAINIERT_MIT SET {$columns[$column]} = {$endValue} WHERE KUNDENNUMMER1 = :id";
+        $sql = "UPDATE TRAINIERT_MIT SET {$columns[$column]} = {$endValue} WHERE KUNDENNUMMER1 = '{$kund_id1}'";
+
+        if('KUNDENNUMMER2' !== $columns[$column]){
+            $sql .= " AND KUNDENNUMMER2 = '{$kund_id2}'";
+        }
+
+        if ('ZEITPUNKT' !== $columns[$column]) {
+            $frmt = date('Y-m-d H:i:s', strtotime($zeit));
+            $str_dat = strval($frmt);
+            $sql .= " AND ZEITPUNKT = TO_TIMESTAMP('{$str_dat}', 'YYYY-MM-DD HH24:MI:SS')";
+        }
+        else{
+            $frmt = date('Y-m-d H:i:s', strtotime($originalValue));
+            $str_dat = strval($frmt);
+            $sql .= " AND ZEITPUNKT = TO_TIMESTAMP('{$str_dat}', 'YYYY-MM-DD HH24:MI:SS')";
+        }
 
         $stmt = oci_parse($this->conn, $sql);
-        oci_bind_by_name($stmt, ':id', $rowId);
+
 
         if (oci_execute($stmt)) {
             echo "Update successful";

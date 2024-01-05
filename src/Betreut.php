@@ -70,9 +70,16 @@ class Betreut
         $column = $_POST['column'];
         $value = $_POST['value'];
         $rowId = $_POST['rowId'];
+        $originalValue = $_POST['originalValue'];
+
+
+        var_dump($rowId);
+
+        var_dump($originalValue);
+
 
         $database = new DatabaseHelper();
-        $database->updateBetreut_($column, $value, $rowId);
+        $database->updateBetreut_($column, $value, $rowId, $originalValue);
         echo "Update successful";
         exit;
 

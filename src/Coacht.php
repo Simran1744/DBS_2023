@@ -90,6 +90,11 @@ class Coacht
         $value = $_POST['value'];
         $rowId = $_POST['rowId'];
 
+        var_dump(
+            $rowId
+        );
+
+
         $database = new DatabaseHelper();
         $database->updateCoacht_($column, $value, $rowId);
         echo "Update successful";

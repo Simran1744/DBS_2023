@@ -72,8 +72,9 @@ class Trainiert_Mit
         $column = $_POST['column'];
         $value = $_POST['value'];
         $rowId = $_POST['rowId'];
+        $originalValue = $_POST['originalValue'];
 
-        $database->updateTraining_($column, $value, $rowId);
+        $database->updateTraining_($column, $value, $rowId,$originalValue);
         echo "Update successful";
         exit;
 
