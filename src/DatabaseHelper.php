@@ -91,9 +91,16 @@ class DatabaseHelper
 
         $sql = "SELECT * FROM PERSONAL_TRAINER
             WHERE MITARBEITER_ID LIKE '%{$Mitarbeiter_ID}%'
-              AND upper(GESCHLECHT) LIKE upper('%{$Geschlecht}%')
               AND upper(SPRACHKENNTNISSE) LIKE upper('%{$Sprachkenntnisse}%')";
+
+        if($Geschlecht != ''){
+            $sql .= "AND upper(GESCHLECHT) = upper('{$Geschlecht}')";
+        }
+
         $statement = oci_parse($this->conn, $sql);
+
+
+
 
         // Executes the statement
         oci_execute($statement);
@@ -130,8 +137,12 @@ class DatabaseHelper
             WHERE KUNDENNUMMER LIKE '%{$Kundennummer}%'
               AND upper(STUDIO_ID) LIKE upper('%{$Studio_ID}%')
               AND upper(VORNAME) LIKE upper('%{$Vorname}%')
-              AND upper(NACHNAME) LIKE upper('%{$Nachname}%')
-              AND upper(GESCHLECHT) LIKE upper('%{$Geschlecht}%')";
+              AND upper(NACHNAME) LIKE upper('%{$Nachname}%')";
+
+        if($Geschlecht != ''){
+            $sql .= "AND upper(GESCHLECHT) = upper('{$Geschlecht}')";
+        }
+
         $statement = oci_parse($this->conn, $sql);
 
         // Executes the statement

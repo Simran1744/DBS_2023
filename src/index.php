@@ -494,7 +494,10 @@ $studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht
 
                 <div class="col-md-10">
                     <label for="Geschlecht" class="form-label">Geschlecht:</label>
-                    <input id="Geschlecht" name="Geschlecht" type="text" maxlength="20" class="form-control">
+                    <select id="Geschlecht" name="Geschlecht" type="text" class="form-control">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
                 </div>
 
                 <div class="col-md-10">
@@ -522,8 +525,11 @@ $studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht
 
                 <div class=col-md-6">
                     <label for="P_G"  class="form-label">Geschlecht:</label>
-                    <input id="P_G" name="Geschlecht" type ="text" class="form-control input-md" value='<?php echo $Geschlecht; ?>'
-                           maxlength="20">
+                    <select  id="P_G" name="Geschlecht" type ="text" class="form-control input-md" value='<?php echo $Geschlecht; ?>'>
+                        <option value="">All</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
                 </div>
 
                 <div class=col-md-6">
@@ -622,7 +628,10 @@ $studio_array = $database->selectAllRezeptionist($Mitarbeiter_ID, $Arbeitszeiten
 
                 <div class="col-md-10">
                     <label for="Arbeitszeiten" class="form-label">Arbeitszeiten:</label>
-                    <input id="Arbeitszeiten" name="Arbeitszeiten" type="text" maxlength="20" class="form-control">
+                    <select id="Arbeitszeiten" name="Arbeitszeiten" type="text"  class="form-control">
+                        <option value="Vollzeit">Vollzeit</option>
+                        <option value="Teilzeit">Teilzeit</option>
+                    </select>
                 </div>
 
                 <div class="col-md-10">
@@ -649,8 +658,11 @@ $studio_array = $database->selectAllRezeptionist($Mitarbeiter_ID, $Arbeitszeiten
 
                 <div class=col-md-6">
                     <label for="R_A"  class="form-label">Arbeitszeiten:</label>
-                    <input id="R_A" name="Arbeitszeiten" type ="text" class="form-control input-md" value='<?php echo $Arbeitszeiten; ?>'
-                           maxlength="20">
+                    <select id="R_A" name="Arbeitszeiten" type ="text" class="form-control input-md" value='<?php echo $Arbeitszeiten; ?>'>
+                        <option value="">All</option>
+                        <option value="Vollzeit">Vollzeit</option>
+                        <option value="Teilzeit">Teilzeit</option>
+                    </select>
                 </div>
 
                 <div class=col-md-6">
