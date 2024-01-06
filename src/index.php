@@ -182,40 +182,40 @@ $studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Ort, $Pl
             <h2>Input: </h2>
             <form method="post" action="Fitnessstudio.php" class="row g-3">
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="new_ID" class="form-label">ID:</label>
                     <input id="new_ID" name="Studio_ID" type="number" min="1" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="new_F_Name" class="form-label">Name:</label>
                     <input id="new_F_Name" name="F_Name" type="text" maxlength="20" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="new_Ort" class="form-label">Ort:</label>
                     <input id="new_Ort" name="Ort" type="text" maxlength="20" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="new_Platz" class="form-label">Platz:</label>
                     <input id="new_Platz" name="Platz" type="number" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="new_Strasse" class="form-label">Strasse:</label>
                     <input id="new_Strasse" name="Strasse" type="text" maxlength="20" class="form-control">
                 </div>
 
 
                 <div class="row mt-3">
-                    <div class="col-md-4">
-                        <button type="submit" name="addButton1"  class="btn btn-primary">
+                    <div class="col-md-5">
+                        <button type="submit" name="addButton1"  class="btn btn-primary custom-button">
                             Add
                         </button>
                     </div>
-                    <div class="col-md-4">
-                        <button type="submit" name="deleteButton1" class="btn btn-danger">
+                    <div class="col-md-5">
+                        <button type="submit" name="deleteButton1" class="btn btn-danger custom-button ">
                             Delete
                         </button>
                     </div>
@@ -225,30 +225,30 @@ $studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Ort, $Pl
         <div class="col-md-2">
             <h2>Search:</h2>
             <form method="get" class="row g-3">
-                <div class=col-md-6">
+                <div class=col-md-10">
                     <label for="Studio_ID" class="form-label">ID:</label>
                     <input id="Studio_ID" name="Studio_ID" type="number" value='<?php echo $Studio_ID; ?>' min="1" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class=col-md-10">
                     <label for="F_Name" class="form-label">Name:</label>
                     <input id="F_Name" name="F_Name" type="text" value='<?php echo $F_Name; ?>'
                            maxlength="20" class="form-control">
-                </div class=col-md-6">
+                </div>
 
-                <div class=col-md-6">
+                <div class=col-md-10">
                     <label for="Ort" class="form-label">Ort:</label>
                     <input id="Ort" name="Ort" type="text" value='<?php echo $Ort; ?>'
                            maxlength="20" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class=col-md-10">
                     <label for="Platz" class="form-label">Platz:</label>
                     <input id="Platz" name="Platz" type="number" value='<?php echo $Platz; ?>'
                            maxlength="20" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class=col-md-10">
                     <label for="Strasse" class="form-label">Strasse:</label>
                     <input id="Strasse" name="Strasse" type="text" value='<?php echo $Strasse; ?>'
                            maxlength="20" class="form-control">
@@ -340,38 +340,38 @@ $studio_array = $database->selectAllMitarbeiter($Mitarbeiter_ID, $Studio_ID, $Vo
             <h2>Input: </h2>
             <form method="post" action="Mitarbeiter.php" class="row g-3">
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="new_ID" class="form-label">Mitarbeiter-ID:</label>
                     <input id="new_ID" name="Mitarbeiter_ID" type="number" class="form-control">
                 </div>
                 <br>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="new_F_ID" class="form-label">Studio-ID:</label>
                     <input id="new_F_ID" name="Studio_ID" type="number" min="1" class="form-control">
                 </div>
                 <br>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="new_Vorname" class="form-label">Vorname:</label>
                     <input id="new_Vorname" name="Vorname" type="text" maxlength="20" class="form-control">
                 </div>
                 <br>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="new_Nachname" class="form-label">Nachname:</label>
                     <input id="new_Nachname" name="Nachname" type="text" maxlength="20" class="form-control">
                 </div>
                 <br>
 
                 <div class="row mt-3">
-                    <div class="col-md-4">
-                        <button type="submit" name="addButton2"  class="btn btn-primary">
+                    <div class="col-md-5">
+                        <button type="submit" name="addButton2"  class="btn btn-primary custom-button">
                             Add
                         </button>
                     </div>
-                    <div class="col-md-4">
-                        <button type="submit" name="deleteButton2" class="btn btn-danger">
+                    <div class="col-md-5">
+                        <button type="submit" name="deleteButton2" class="btn btn-danger custom-button">
                             Delete
                         </button>
                     </div>
@@ -486,27 +486,28 @@ $studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht
             <h2>Input: </h2>
             <form method="post" action="PersonalTrainer.php" class="row g-3">
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="P_ID" class="form-label">Mitarbeiter-ID:</label>
                     <input id="P_ID" name="Mitarbeiter_ID" type="number" class="form-control">
                 </div>
 
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="Geschlecht" class="form-label">Geschlecht:</label>
                     <input id="Geschlecht" name="Geschlecht" type="text" maxlength="20" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="Sprachkenntnisse" class="form-label">Sprachkenntnissse:</label>
                     <input id="Sprachkenntnisse" name="Sprachkenntnisse" type="text" maxlength="20" class="form-control">
                 </div>
 
-                <div class="mt-3">
+                <div class="mt-3 col-md-10">
                     <button type="submit" name="addButton3"  class="btn btn-primary custom-button">
                         Add
                     </button>
                 </div>
+
             </form>
         </div>
 
@@ -613,23 +614,23 @@ $studio_array = $database->selectAllRezeptionist($Mitarbeiter_ID, $Arbeitszeiten
             <h2>Input: </h2>
             <form method="post" action="Rezeptionist.php" class="row g-3">
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="P_ID" class="form-label">Mitarbeiter-ID:</label>
                     <input id="P_ID" name="Mitarbeiter_ID" type="number" class="form-control">
                 </div>
 
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="Arbeitszeiten" class="form-label">Arbeitszeiten:</label>
                     <input id="Arbeitszeiten" name="Arbeitszeiten" type="text" maxlength="20" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="Sprachkenntnisse_" class="form-label">Sprachkenntnissse:</label>
                     <input id="Sprachkenntnisse_" name="Sprachkenntnisse" type="text" maxlength="20" class="form-control">
                 </div>
 
-                <div class="mt-3">
+                <div class="mt-3 col-md-10">
                         <button type="submit" name="addButton4"  class="btn btn-primary custom-button">
                             Add
                         </button>
@@ -755,41 +756,43 @@ $studio_array = $database->selectAllKunde($Kundennummer, $Studio_ID, $Vorname, $
             <h2>Input: </h2>
             <form method="post" action="Kunde.php" class="row g-3">
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="K_N"  class="form-label">ID:</label>
                     <input id="K_N" name="Kundennummer" type="number"  class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="F_ID"  class="form-label">Studio-ID:</label>
                     <input id="F_ID" name="Studio_ID" type="number" min="1"  class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="Vorname"  class="form-label">Vorname:</label>
                     <input id="Vorname" name="Vorname" type="text" maxlength="20"  class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="Nachname"  class="form-label">Nachname:</label>
                     <input id="Nachname" name="Nachname" type="text" maxlength="20"  class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="Geschlecht"  class="form-label">Geschlecht:</label>
-                    <input id="Geschlecht" name="Geschlecht" type ="text"
-                           maxlength="20"  class="form-control">
+                    <select id="Geschlecht" name="Geschlecht" type ="text" class="form-control input-md">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
                 </div>
 
 
                 <div class="row mt-3">
                     <div class="col-md-5">
-                        <button type="submit" name="addButton5"  class="btn btn-primary">
+                        <button type="submit" name="addButton5"  class="btn btn-primary custom-button">
                             Add
                         </button>
                     </div>
                     <div class="col-md-5">
-                        <button type="submit" name="deleteButton3" class="btn btn-danger">
+                        <button type="submit" name="deleteButton3" class="btn btn-danger custom-button">
                             Delete
                         </button>
                     </div>
@@ -825,8 +828,11 @@ $studio_array = $database->selectAllKunde($Kundennummer, $Studio_ID, $Vorname, $
 
                 <div class=col-md-6">
                     <label for="_Geschlecht" class="form-label">Geschlecht:</label>
-                    <input id="_Geschlecht" name="Geschlecht" type="text" class="form-control input-md" value='<?php echo $Geschlecht; ?>'
-                           maxlength="20">
+                    <select id="_Geschlecht" name="Geschlecht" type="text" class="form-control input-md" value='<?php echo $Geschlecht; ?>'>
+                        <option value="">All</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
                 </div>
 
                 <style>
@@ -846,6 +852,16 @@ $studio_array = $database->selectAllKunde($Kundennummer, $Studio_ID, $Vorname, $
             </form>
         </div>
     </div>
+</div>
+<br>
+<hr>
+<div class="container ml-2">
+    <h2>Membership Details</h2>
+        <form action="process.php" method="post">
+            <label for="customerID" class="form-label">Customer ID:</label>
+            <input id="customerID" type="number"  name="Kundennummer">
+            <button type="submit" class="btn btn-info custom-button">Get Details</button>
+        </form>
 </div>
 <br>
 <hr>
@@ -923,40 +939,40 @@ $studio_array = $database->selectAllCoacht($Mitarbeiter_ID, $Kundennummer, $Begi
             <h2>Input: </h2>
             <form method="post" action="Coacht.php" class="row g-3">
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="M_IDS" class="form-label">Mitarbeiter-ID:</label>
                     <input id="M_IDS" name="Mitarbeiter_ID" type="number" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="K_IDS" class="form-label">Kundennummer:</label>
                     <input id="K_IDS" name="Kundennummer" type="number" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="Beginnzeit" class="form-label">Beginnzeit:</label>
                     <input id="Beginnzeit" name="Beginnzeit" type="datetime-local" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="Endzeit" class="form-label">Endzeit:</label>
                     <input id="Endzeit" name="Endzeit" type="datetime-local" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="Trainingsdatum" class="form-label">Trainingsdatum:</label>
                     <input id="Trainingsdatum" name="Trainingsdatum" type="date" class="form-control">
                 </div>
 
 
                 <div class="row mt-3">
-                    <div class="col-md-6">
-                        <button type="submit" name="addButton7"  class="btn btn-primary">
+                    <div class="col-md-5">
+                        <button type="submit" name="addButton7"  class="btn btn-primary custom-button">
                             Add
                         </button>
                     </div>
-                    <div class="col-md-6">
-                        <button type="submit" name="deleteButton8" class="btn btn-danger">
+                    <div class="col-md-5">
+                        <button type="submit" name="deleteButton8" class="btn btn-danger custom-button">
                             Delete
                         </button>
                     </div>
@@ -1076,30 +1092,30 @@ $studio_array = $database->selectAllBetreut($Mitarbeiter_ID, $Kundennummer, $Zei
             <h2>Input: </h2>
             <form method="post" action="Betreut.php" class="row g-3">
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="M_IDS" class="form-label">Mitarbeiter-ID:</label>
                     <input id="M_IDS" name="Mitarbeiter_ID" type="number" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="K_IDS" class="form-label">Kundennummer:</label>
                     <input id="K_IDS" name="Kundennummer" type="number" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="Zeitpunkt" class="form-label">Zeitpunkt:</label>
                     <input id="Zeitpunkt" name="Zeitpunkt" type="datetime-local" class="form-control">
                 </div>
 
 
                 <div class="row mt-3">
-                    <div class="col-md-6">
-                        <button type="submit" name="addButton8"  class="btn btn-primary">
+                    <div class="col-md-5">
+                        <button type="submit" name="addButton8"  class="btn btn-primary custom-button">
                             Add
                         </button>
                     </div>
-                    <div class="col-md-6">
-                        <button type="submit" name="deleteButton9" class="btn btn-danger">
+                    <div class="col-md-5">
+                        <button type="submit" name="deleteButton9" class="btn btn-danger custom-button">
                             Delete
                         </button>
                     </div>
@@ -1231,44 +1247,51 @@ $studio_array = $database->selectAllMGs($Kundennummer, $Mitgliedschaftsnummer, $
             <h2>Input: </h2>
             <form method="post" action="Mitgliedschaft.php" class="row g-3">
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="KS_" class="form-label">Kundennummer:</label>
                     <input id="KS_" name="Kundennummer" type="number" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="MGS" class="form-label">Mitgliedschaftsnummer:</label>
                     <input id="MGS" name="Mitgliedschaftsnummer" type="number" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="Stufe" class="form-label">Mitgliedschafts-Stufe:</label>
-                    <input id="Stufe" name="Mitgliedschafts_Stufe" type="text" class="form-control">
+                    <select id="Stufe" name="Mitgliedschafts_Stufe" type="text" class="form-control">
+                        <option value="Bronze">Bronze</option>
+                        <option value="Silber">Silber</option>
+                        <option value="Gold">Gold</option>
+                    </select>
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="MO" class="form-label">Monatskosten:</label>
                     <input id="MO" name="Monatskosten" type="number" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="GU" class="form-label">Gültigkeit:</label>
-                    <input id="GU" name="Gueltigkeit" type="text" class="form-control">
+                    <select id="GU" name="Gueltigkeit" type="text" class="form-control input-md">
+                        <option value="gueltig">Gueltig</option>
+                        <option value="ungueltig">Ungueltig</option>
+                    </select>
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="ERST" class="form-label">Erstellungsdatum:</label>
-                    <input id="ERST" name="Erstellungsdatum" type="date" class="form-control">
+                    <input id="ERST" name="Erstellungsdatum" type="date" class="form-control input-md">
                 </div>
 
                 <div class="row mt-3">
-                    <div class="col-md-6">
-                        <button type="submit" name="addButton9"  class="btn btn-primary">
+                    <div class="col-md-5">
+                        <button type="submit" name="addButton9"  class="btn btn-primary custom-button">
                             Add
                         </button>
                     </div>
-                    <div class="col-md-6">
-                        <button type="submit" name="deleteButton10" class="btn btn-danger">
+                    <div class="col-md-5">
+                        <button type="submit" name="deleteButton10" class="btn btn-danger custom-button">
                             Delete
                         </button>
                     </div>
@@ -1292,7 +1315,12 @@ $studio_array = $database->selectAllMGs($Kundennummer, $Mitgliedschaftsnummer, $
 
                 <div class=col-md-6">
                     <label for="MTGS" class="form-label">Mitgliedschafts-Stufe:</label>
-                    <input id="MTGS" name="Mitgliedschafts_Stufe" type="text" class="form-control input-md"  value='<?php echo $Mitgliedschafts_Stufe; ?>'>
+                    <select id="MTGS" name="Mitgliedschafts_Stufe" type="text" class="form-control input-md"  value='<?php echo $Mitgliedschafts_Stufe; ?>'>
+                        <option value="">All</option>
+                        <option value="Bronze">Bronze</option>
+                        <option value="Silber">Silber</option>
+                        <option value="Gold">Gold</option>
+                    </select>
                 </div>
 
                 <div class=col-md-6">
@@ -1302,7 +1330,11 @@ $studio_array = $database->selectAllMGs($Kundennummer, $Mitgliedschaftsnummer, $
 
                 <div class=col-md-6">
                     <label for="GUS" class="form-label">Gültigkeit:</label>
-                    <input id="GUS" name="Gueltigkeit" type="text" class="form-control input-md"  value='<?php echo $Gueltigkeit; ?>'>
+                    <select id="GUS" name="Gueltigkeit" type="text" class="form-control input-md"  value='<?php echo $Gueltigkeit; ?>'>
+                        <option value="">All</option>
+                        <option value="gueltig">Gueltig</option>
+                        <option value="ungueltig">Ungueltig</option>
+                    </select>
                 </div>
 
                 <div class=col-md-6">
@@ -1398,34 +1430,34 @@ $studio_array = $database->selectAllKons($Mitarbeiter_ID, $Kundennummer, $Mitgli
             <h2>Input: </h2>
             <form method="post" action="Kontrolliert.php" class="row g-3">
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="M_" class="form-label">Mitarbeiter-ID:</label>
                     <input id="M_" name="Mitarbeiter_ID" type="number" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="K_" class="form-label">Kundennummer:</label>
                     <input id="K_" name="Kundennummer" type="number" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="N_" class="form-label">Mitgliedschaftsnummer:</label>
                     <input id="N_" name="Mitgliedschaftsnummer" type="number" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="Z_" class="form-label">Zeitpunkt:</label>
                     <input id="Z_" name="Zeitpunkt" type="datetime-local" class="form-control">
                 </div>
 
                 <div class="row mt-3">
-                    <div class="col-md-6">
-                        <button type="submit" name="addButton10"  class="btn btn-primary">
+                    <div class="col-md-5">
+                        <button type="submit" name="addButton10"  class="btn btn-primary custom-button">
                             Add
                         </button>
                     </div>
-                    <div class="col-md-6">
-                        <button type="submit" name="deleteButton11" class="btn btn-danger">
+                    <div class="col-md-5">
+                        <button type="submit" name="deleteButton11" class="btn btn-danger custom-button">
                             Delete
                         </button>
                     </div>
@@ -1539,29 +1571,29 @@ $studio_array = $database->selectAllTraining($Kundennummer1, $Kundennummer2, $Ze
             <h2>Input: </h2>
             <form method="post" action="Trainiert_Mit.php" class="row g-3">
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="M_1" class="form-label">Kundennummer1:</label>
                     <input id="M_1" name="Kundennummer1" type="number" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="K_2" class="form-label">Kundennummer2:</label>
                     <input id="K_2" name="Kundennummer2" type="number" class="form-control">
                 </div>
 
-                <div class=col-md-6">
+                <div class="col-md-10">
                     <label for="Z_1" class="form-label">Zeitpunkt:</label>
                     <input id="Z_1" name="Zeitpunkt" type="datetime-local" class="form-control">
                 </div>
 
                 <div class="row mt-3">
-                    <div class="col-md-6">
-                        <button type="submit" name="addButton11"  class="btn btn-primary">
+                    <div class="col-md-5">
+                        <button type="submit" name="addButton11"  class="btn btn-primary custom-button">
                             Add
                         </button>
                     </div>
-                    <div class="col-md-6">
-                        <button type="submit" name="deleteButton12" class="btn btn-danger">
+                    <div class="col-md-5">
+                        <button type="submit" name="deleteButton12" class="btn btn-danger custom-button">
                             Delete
                         </button>
                     </div>
@@ -1609,12 +1641,7 @@ $studio_array = $database->selectAllTraining($Kundennummer1, $Kundennummer2, $Ze
 <br>
 <hr>
 
-<h2>Membership Details</h2>
-<form action="process.php" method="post">
-    <label for="customerID">Customer ID:</label>
-    <input id="customerID" type="number"  name="Kundennummer">
-    <button type="submit">Get Membership Details</button>
-</form>
+
 
 
 
