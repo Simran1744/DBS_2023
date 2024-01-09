@@ -309,8 +309,8 @@ $studio_array = $database->selectAllMitarbeiter($Mitarbeiter_ID, $Studio_ID, $Vo
                 <table class="table table-bordered table-hover data-table" data-php-file="Mitarbeiter.php" id="data-table-2">
                     <thead  class="thead-dark">
                     <tr>
-                        <th scope="col">Mitarbeiter_ID</th>
-                        <th scope="col">Studio_ID</th>
+                        <th scope="col">Mitarbeiter-ID</th>
+                        <th scope="col">Studio-ID</th>
                         <th scope="col">Vorname</th>
                         <th scope="col">Nachname</th>
                     </tr>
@@ -438,14 +438,14 @@ if (isset($_GET['Geschlecht'])) {
     $Geschlecht = $_GET['Geschlecht'];
 }
 
-$Sprachkenntnisse= '';
-if (isset($_GET['Sprachkenntnisse'])) {
-    $Sprachkenntnisse = $_GET['Sprachkenntnisse'];
+$Spezialisierung= '';
+if (isset($_GET['Spezialisierung'])) {
+    $Spezialisierung = $_GET['Spezialisierung'];
 }
 
 
 //Fetch data from database
-$studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht, $Sprachkenntnisse);
+$studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht, $Spezialisierung);
 ?>
 
 
@@ -457,9 +457,9 @@ $studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht
                 <table class="table table-bordered table-hover data-table" data-php-file="PersonalTrainer.php" id="data-table-3">
                     <thead  class="thead-dark">
                     <tr>
-                        <th scope="col">Mitarbeiter_ID</th>
+                        <th scope="col">Mitarbeiter-ID</th>
                         <th scope="col">Geschlecht</th>
-                        <th scope="col">Sprachkenntnisse</th>
+                        <th scope="col">Spezialisierung</th>
                     </tr>
                     </thead>
                     <style>
@@ -474,7 +474,7 @@ $studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht
                         <tr>
                             <td contenteditable="true"><?php echo $PersonalTrainer['MITARBEITER_ID']; ?> </td>
                             <td contenteditable="true"><?php echo $PersonalTrainer['GESCHLECHT']; ?>  </td>
-                            <td contenteditable="true"><?php echo $PersonalTrainer['SPRACHKENNTNISSE']; ?>  </td>
+                            <td contenteditable="true"><?php echo $PersonalTrainer['SPEZIALISIERUNG']; ?>  </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -501,8 +501,8 @@ $studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht
                 </div>
 
                 <div class="col-md-10">
-                    <label for="Sprachkenntnisse" class="form-label">Sprachkenntnissse:</label>
-                    <input id="Sprachkenntnisse" name="Sprachkenntnisse" type="text" maxlength="20" class="form-control">
+                    <label for="Spezialisierung" class="form-label">Spezialisierung:</label>
+                    <input id="Spezialisierung" name="Spezialisierung" type="text" maxlength="20" class="form-control">
                 </div>
 
                 <div class="mt-3 col-md-10">
@@ -533,8 +533,8 @@ $studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht
                 </div>
 
                 <div class=col-md-6">
-                    <label for="P_S"  class="form-label">Sprachkenntnisse:</label>
-                    <input id="P_S" name="Sprachkenntnisse" type="text" class="form-control input-md" value='<?php echo $Sprachkenntnisse; ?>'
+                    <label for="P_S"  class="form-label">Spezialisierung:</label>
+                    <input id="P_S" name="Spezialisierung" type="text" class="form-control input-md" value='<?php echo $Spezialisierung; ?>'
                            maxlength="20">
                 </div>
 
@@ -571,14 +571,14 @@ if (isset($_GET['Arbeitszeiten'])) {
     $Arbeitszeiten = $_GET['Arbeitszeiten'];
 }
 
-$Sprachkenntnisse= '';
-if (isset($_GET['Sprachkenntnisse'])) {
-    $Sprachkenntnisse = $_GET['Sprachkenntnisse'];
+$SprichtEnglisch= '';
+if (isset($_GET['SprichtEnglisch'])) {
+    $SprichtEnglisch = $_GET['SprichtEnglisch'];
 }
 
 
 //Fetch data from database
-$studio_array = $database->selectAllRezeptionist($Mitarbeiter_ID, $Arbeitszeiten, $Sprachkenntnisse);
+$studio_array = $database->selectAllRezeptionist($Mitarbeiter_ID, $Arbeitszeiten, $SprichtEnglisch);
 ?>
 
 
@@ -591,9 +591,9 @@ $studio_array = $database->selectAllRezeptionist($Mitarbeiter_ID, $Arbeitszeiten
                 <table class="table table-bordered table-hover data-table" data-php-file="Rezeptionist.php" id="data-table-4">
                     <thead  class="thead-dark">
                     <tr>
-                        <th scope="col">Mitarbeiter_ID</th>
+                        <th scope="col">Mitarbeiter-ID</th>
                         <th scope="col">Arbeitszeiten</th>
-                        <th scope="col">Sprachkenntnisse</th>
+                        <th scope="col">Spricht Englisch</th>
                     </tr>
                     </thead>
                     <style>
@@ -608,7 +608,7 @@ $studio_array = $database->selectAllRezeptionist($Mitarbeiter_ID, $Arbeitszeiten
                         <tr>
                             <td contenteditable="true"><?php echo $Rezeptionist['MITARBEITER_ID']; ?> </td>
                             <td contenteditable="true"><?php echo $Rezeptionist['ARBEITSZEITEN']; ?>  </td>
-                            <td contenteditable="true"><?php echo $Rezeptionist['SPRACHKENNTNISSE']; ?>  </td>
+                            <td contenteditable="true"><?php echo $Rezeptionist['SPRICHTENGLISCH']; ?>  </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -635,8 +635,11 @@ $studio_array = $database->selectAllRezeptionist($Mitarbeiter_ID, $Arbeitszeiten
                 </div>
 
                 <div class="col-md-10">
-                    <label for="Sprachkenntnisse_" class="form-label">Sprachkenntnissse:</label>
-                    <input id="Sprachkenntnisse_" name="Sprachkenntnisse" type="text" maxlength="20" class="form-control">
+                    <label for="SprichtEnglisch" class="form-label">Spricht Englisch:</label>
+                    <select id="SprichtEnglisch" name="SprichtEnglisch" type="text" class="form-control">
+                        <option value="J">Ja</option>
+                        <option value="N">Nein</option>
+                    </select>
                 </div>
 
                 <div class="mt-3 col-md-10">
@@ -666,9 +669,12 @@ $studio_array = $database->selectAllRezeptionist($Mitarbeiter_ID, $Arbeitszeiten
                 </div>
 
                 <div class=col-md-6">
-                    <label for="R_S"  class="form-label">Sprachkenntnisse:</label>
-                    <input id="R_S" name="Sprachkenntnisse" type="text" class="form-control input-md" value='<?php echo $Sprachkenntnisse; ?>'
-                           maxlength="20">
+                    <label for="R_S"  class="form-label">Spricht Englisch:</label>
+                    <select id="R_S" name="SprichtEnglisch" type="text" class="form-control input-md" value='<?php echo $SprichtEnglisch; ?>'>
+                        <option value="">All</option>
+                        <option value="J">Ja</option>
+                        <option value="N">Nein</option>
+                    </select>
                 </div>
 
 

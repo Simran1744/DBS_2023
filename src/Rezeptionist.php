@@ -19,11 +19,11 @@ class Rezeptionist
             $Arbeitszeiten = $_POST['Arbeitszeiten'];
         }
 
-        $Sprachkenntnisse = '';
-        if (isset($_POST['Sprachkenntnisse'])) {
-            $Sprachkenntnisse = $_POST['Sprachkenntnisse'];
+        $SprichtEnglisch = '';
+        if (isset($_POST['SprichtEnglisch'])) {
+            $SprichtEnglisch = $_POST['SprichtEnglisch'];
         }
-        $success = $database->insertIntoRezeptionist($Mitarbeiter_ID, $Arbeitszeiten, $Sprachkenntnisse);
+        $success = $database->insertIntoRezeptionist($Mitarbeiter_ID, $Arbeitszeiten, $SprichtEnglisch);
 
         if ($success) {
             $message = "Rezeptionist '{$Mitarbeiter_ID}' successfully added!'";

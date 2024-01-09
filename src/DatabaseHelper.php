@@ -87,11 +87,11 @@ class DatabaseHelper
         return $res;
     }
 
-    public function selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht, $Sprachkenntnisse){
+    public function selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht, $Spezialisierung){
 
         $sql = "SELECT * FROM PERSONAL_TRAINER
             WHERE MITARBEITER_ID LIKE '%{$Mitarbeiter_ID}%'
-              AND upper(SPRACHKENNTNISSE) LIKE upper('%{$Sprachkenntnisse}%')";
+              AND upper(SPEZIALISIERUNG) LIKE upper('%{$Spezialisierung}%')";
 
         if($Geschlecht != ''){
             $sql .= "AND upper(GESCHLECHT) = upper('{$Geschlecht}')";
@@ -113,12 +113,12 @@ class DatabaseHelper
         return $res;
     }
 
-    public function selectAllRezeptionist($Mitarbeiter_ID, $Arbeitszeiten, $Sprachkenntnisse){
+    public function selectAllRezeptionist($Mitarbeiter_ID, $Arbeitszeiten, $SprichtEnglisch){
 
         $sql = "SELECT * FROM REZEPTIONIST
             WHERE MITARBEITER_ID LIKE '%{$Mitarbeiter_ID}%'
               AND upper(ARBEITSZEITEN) LIKE upper('%{$Arbeitszeiten}%')
-              AND upper(SPRACHKENNTNISSE) LIKE upper('%{$Sprachkenntnisse}%')";
+              AND upper(SPRICHTENGLISCH) LIKE upper('%{$SprichtEnglisch}%')";
         $statement = oci_parse($this->conn, $sql);
 
         // Executes the statement
@@ -439,8 +439,8 @@ class DatabaseHelper
         oci_free_statement($stmt);
     }
 
-    public function insertIntoPersonalTrainer($Mitarbeiter_ID,$Geschlecht, $Sprachkenntnisse){
-        $sql = "INSERT INTO PERSONAL_TRAINER (Mitarbeiter_ID, GESCHLECHT, SPRACHKENNTNISSE) VALUES ('{$Mitarbeiter_ID}','{$Geschlecht}','{$Sprachkenntnisse}')";
+    public function insertIntoPersonalTrainer($Mitarbeiter_ID,$Geschlecht, $Spezialisierung){
+        $sql = "INSERT INTO PERSONAL_TRAINER (Mitarbeiter_ID, GESCHLECHT, SPEZIALISIERUNG) VALUES ('{$Mitarbeiter_ID}','{$Geschlecht}','{$Spezialisierung}')";
 
         $statement = oci_parse($this->conn, $sql);
         $success = oci_execute($statement) && oci_commit($this->conn);
@@ -449,7 +449,7 @@ class DatabaseHelper
     }
 
     public function updatePersonalTrainer_($column, $value, $rowId){
-        $columns = ['Mitarbeiter_ID', 'Geschlecht', 'Sprachkenntnisse'];
+        $columns = ['Mitarbeiter_ID', 'Geschlecht', 'Spezialisierung'];
 
         $mit_id = $rowId[0];
 
@@ -474,8 +474,8 @@ class DatabaseHelper
         oci_free_statement($stmt);
     }
 
-    public function insertIntoRezeptionist($Mitarbeiter_ID,$Arbeitszeiten, $Sprachkenntnisse){
-        $sql = "INSERT INTO REZEPTIONIST (MITARBEITER_ID,ARBEITSZEITEN,SPRACHKENNTNISSE) VALUES ('{$Mitarbeiter_ID}','{$Arbeitszeiten}','{$Sprachkenntnisse}')";
+    public function insertIntoRezeptionist($Mitarbeiter_ID,$Arbeitszeiten, $SprichtEnglisch){
+        $sql = "INSERT INTO REZEPTIONIST (MITARBEITER_ID,ARBEITSZEITEN,SPRICHTENGLISCH) VALUES ('{$Mitarbeiter_ID}','{$Arbeitszeiten}','{$SprichtEnglisch}')";
 
         $statement = oci_parse($this->conn, $sql);
         $success = oci_execute($statement) && oci_commit($this->conn);
@@ -485,7 +485,7 @@ class DatabaseHelper
 
     public function updateRezeptionist_($column, $value, $rowId)
     {
-        $columns = ['Mitarbeiter_ID', 'Arbeitszeiten', 'Sprachkenntnisse'];
+        $columns = ['Mitarbeiter_ID', 'Arbeitszeiten', 'SprichtEnglisch'];
 
         $mit_id = $rowId[0];
 

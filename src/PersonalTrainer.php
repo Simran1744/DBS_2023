@@ -19,13 +19,13 @@ class PersonalTrainer
             $Geschlecht = $_POST['Geschlecht'];
         }
 
-        $Sprachkenntnisse= '';
-        if(isset($_POST['Sprachkenntnisse'])){
-            $Sprachkenntnisse = $_POST['Sprachkenntnisse'];
+        $Spezialisierung= '';
+        if(isset($_POST['Spezialisierung'])){
+            $Spezialisierung = $_POST['Spezialisierung'];
         }
 
 
-        $success = $database->insertIntoPersonalTrainer($Mitarbeiter_ID,$Geschlecht,$Sprachkenntnisse);
+        $success = $database->insertIntoPersonalTrainer($Mitarbeiter_ID,$Geschlecht,$Spezialisierung);
 
         if ($success){
             $message = "Personal Trainer '{$Mitarbeiter_ID}' successfully added!'";
