@@ -29,10 +29,10 @@ public class InsertClass {
                 mitIns.insertIntoMitarbeiterFromCSV("/Users/simra/Desktop/DBS_2023/MOCK_DATA.csv", fitIns.getAllFitnessstudioIds());
 
                 ArrayList<Integer> usedIds = new ArrayList<>();
-                usedIds = persIns.insertIntoTrainerFromCSV("/Users/simra/Desktop/DBS_2023/Trainer_DATA.csv",
+                usedIds = persIns.insertIntoTrainerFromCSV("/Users/simra/Desktop/DBS_2023/Tr2.csv",
                         mitIns.getAllMitarbeiterIds(), rezIns.getAllRezeptionistIds());
 
-                usedIds = rezIns.insertIntoRezeptionistCSV("/Users/simra/Desktop/DBS_2023/Rezeptionist_DATA.csv", usedIds);
+                usedIds = rezIns.insertIntoRezeptionistCSV("/Users/simra/Desktop/DBS_2023/Rez4.csv", usedIds);
 
                 kundIns.insertKundeCSV("/Users/simra/Desktop/DBS_2023/Kunde_DATA.csv", fitIns.getAllFitnessstudioIds());
 

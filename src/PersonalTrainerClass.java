@@ -41,7 +41,7 @@ public class PersonalTrainerClass {
 
                 while ((nextLine = reader.readNext()) != null) {
                     String gender = nextLine[0];
-                    String lang = nextLine[1];
+                    String spez = nextLine[1];
 
                     Random r = new Random();
 
@@ -50,7 +50,7 @@ public class PersonalTrainerClass {
 
                     stmt.setInt(1, mit_ID);
                     stmt.setString(2, gender);
-                    stmt.setString(3, lang);
+                    stmt.setString(3, spez);
                     stmt.addBatch();
 
                     newIDs.remove(randomIndex);
