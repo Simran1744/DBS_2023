@@ -8,54 +8,45 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class MitarbeiterClass {
-
-
+public class PostleitzahlClass {
     private Connection connection;
 
-    public MitarbeiterClass(Connection connection) {
+    public PostleitzahlClass(Connection connection) {
         this.connection = connection;
     }
 
 
-    public ArrayList<Integer> insertIntoMitarbeiterFromCSV(String csvFilePath, ArrayList<Integer> fitIDs) {
-        ArrayList<Integer> mitarbeiterIds = getAllMitarbeiterIds();
+    public ArrayList<Integer> insertPlzFromCSV(String csvFilePath) {
+        ArrayList<Integer> plzs = getAllPlzIds();
         try {
-            String mitInsert = "INSERT INTO Mitarbeiter VALUES (?,?,?,?)";
-            PreparedStatement mitstmt = connection.prepareStatement(mitInsert);
+
+            String sqlQuery = "INSERT INTO POSTLEITZAHL VALUES (?,?)";
+            PreparedStatement stmt = connection.prepareStatement(sqlQuery);
             connection.setAutoCommit(false);
 
             try (CSVReader reader = new CSVReader(new FileReader(csvFilePath))) {
                 String[] nextLine;
 
-                reader.readNext();
+                //reader.readNext();
 
                 int i;
-                if(mitarbeiterIds.isEmpty()){
-                    i = 1;
+                if(plzs.isEmpty()){
+                    i = 1000;
                 }else{
-                    i = Collections.max(mitarbeiterIds) + 1;
+                    i = Collections.max(plzs) + 1;
                 }
 
                 while ((nextLine = reader.readNext()) != null) {
 
-                    String vorname = nextLine[1];
-                    String nachname = nextLine[2];
+                    String ort = nextLine[0];
 
-                    Random r = new Random();
-
-                    int studio_id = fitIDs.get(r.nextInt(fitIDs.size()));
-
-                    mitstmt.setInt(1, i++);
-                    mitstmt.setInt(2, studio_id);
-                    mitstmt.setString(3, vorname);
-                    mitstmt.setString(4, nachname);
-                    mitstmt.addBatch();
-
+                    stmt.setInt(1, i++);
+                    stmt.setString(2, ort);
+                    stmt.addBatch();
                 }
 
-                int[] result = mitstmt.executeBatch();
-                System.out.println("The number of rows inserted into Mitarbeiter: " + result.length);
+                int[] result = stmt.executeBatch();
+                System.out.println("The number of rows inserted into Postleitzahl: " + result.length);
 
                 connection.commit();
             }
@@ -69,20 +60,22 @@ public class MitarbeiterClass {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return mitarbeiterIds;
+
+        return plzs;
     }
 
-    public ArrayList<Integer> getAllMitarbeiterIds() {
+
+    public ArrayList<Integer> getAllPlzIds() {
         ArrayList<Integer> mitIDs = new ArrayList<>();
 
         try {
             connection.setAutoCommit(false);
-            String sqlQuery = "SELECT MITARBEITER_ID FROM MITARBEITER";
+            String sqlQuery = "SELECT PLZ FROM POSTLEITZAHL";
             try (PreparedStatement stmt = connection.prepareStatement(sqlQuery);
                  ResultSet rs = stmt.executeQuery()) {
 
                 while (rs.next()) {
-                    int mitID = rs.getInt("Mitarbeiter_ID");
+                    int mitID = rs.getInt("Plz");
                     mitIDs.add(mitID);
                 }
             }
@@ -92,4 +85,7 @@ public class MitarbeiterClass {
 
         return mitIDs;
     }
+
+
+
 }

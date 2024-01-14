@@ -16,11 +16,14 @@ public class FitnessstudioClass {
         this.connection = connection;
     }
 
-    public ArrayList<Integer> insertIntoFitnessstudio(String csvFilePath) {
+    public ArrayList<Integer> insertIntoFitnessstudio(String csvFilePath, ArrayList<Integer> plzs) {
         ArrayList<Integer> fit_IDs = getAllFitnessstudioIds();
 
+        ArrayList<Integer> new_plz = new ArrayList<>();
+        new_plz = plzs;
+
         try {
-            String sqlQuery = "INSERT INTO Fitnessstudio VALUES (?,?,?,?,?)";
+            String sqlQuery = "INSERT INTO Fitnessstudio VALUES (?,?,?,?)";
             PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
             connection.setAutoCommit(false);
 
@@ -36,21 +39,22 @@ public class FitnessstudioClass {
                     i = Collections.max(fit_IDs) + 1;
                 }
 
+
+
                 while ((nextLine = reader.readNext()) != null) {
 
+
                     String f_Name = nextLine[0];
-                    String ort = "Wien";
-                    int platz = Integer.parseInt(nextLine[1]);
                     String strasse = nextLine[2];
 
+                    Random r = new Random();
+                    int platz = new_plz.get(r.nextInt(new_plz.size()));
 
                     pstmt.setInt(1, i++);
                     pstmt.setString(2, f_Name);
-                    pstmt.setString(3, ort);
+                    pstmt.setString(3, strasse);
                     pstmt.setInt(4, platz);
-                    pstmt.setString(5, strasse);
                     pstmt.addBatch();
-
 
                 }
 

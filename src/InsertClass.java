@@ -16,6 +16,7 @@ public class InsertClass {
 
             try {
 
+                PostleitzahlClass plzIns = new PostleitzahlClass(connection);
                 MitarbeiterClass mitIns = new MitarbeiterClass(connection);
                 FitnessstudioClass fitIns = new FitnessstudioClass(connection);
                 PersonalTrainerClass persIns = new PersonalTrainerClass(connection);
@@ -23,8 +24,9 @@ public class InsertClass {
                 KundeClass kundIns = new KundeClass(connection);
 
 
+                plzIns.insertPlzFromCSV("/Users/simra/Desktop/DBS_2023/PlzCSV.csv");
 
-                fitIns.insertIntoFitnessstudio("/Users/simra/Desktop/DBS_2023/Fitness_DATA.csv");
+                fitIns.insertIntoFitnessstudio("/Users/simra/Desktop/DBS_2023/Fitness_DATA.csv", plzIns.getAllPlzIds());
 
                 mitIns.insertIntoMitarbeiterFromCSV("/Users/simra/Desktop/DBS_2023/MOCK_DATA.csv", fitIns.getAllFitnessstudioIds());
 
