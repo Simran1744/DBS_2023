@@ -24,7 +24,7 @@ public class InsertClass {
                 KundeClass kundIns = new KundeClass(connection);
                 BetreutClass betreutIns = new BetreutClass(connection);
 
-                /
+
                 plzIns.insertPlzFromCSV("/Users/simra/Desktop/DBS_2023/PlzCSV.csv");
 
                 fitIns.insertIntoFitnessstudio("/Users/simra/Desktop/DBS_2023/Fitness_DATA.csv", plzIns.getAllPlzIds());
@@ -38,7 +38,7 @@ public class InsertClass {
                 usedIds = rezIns.insertIntoRezeptionistCSV("/Users/simra/Desktop/DBS_2023/Rez4.csv", usedIds);
 
                 kundIns.insertKundeCSV("/Users/simra/Desktop/DBS_2023/Kunde_DATA.csv", fitIns.getAllFitnessstudioIds());
-                *
+
 
                 betreutIns.insertBetreut(rezIns.getAllRezeptionistIds(), mitIns.getAllMitarbeiterIds());
 
