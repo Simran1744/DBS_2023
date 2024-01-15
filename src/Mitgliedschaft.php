@@ -19,14 +19,9 @@ class Mitgliedschaft
             $Mitgliedschaftsnummer = $_POST['Mitgliedschaftsnummer'];
         }
 
-        $Mitgliedschafts_Stufe = '';
-        if (isset($_POST['Mitgliedschafts_Stufe'])) {
-            $Mitgliedschafts_Stufe = $_POST['Mitgliedschafts_Stufe'];
-        }
-
-        $Monatskosten = '';
-        if (isset($_POST['Monatskosten'])) {
-            $Monatskosten = $_POST['Monatskosten'];
+        $Stufe = '';
+        if (isset($_POST['Stufe'])) {
+            $Stufe = $_POST['Stufe'];
         }
 
         $Gueltigkeit= '';
@@ -40,8 +35,7 @@ class Mitgliedschaft
         }
 
 
-        $success = $database->insertIntoMG($Kundennummer, $Mitgliedschaftsnummer, $Mitgliedschafts_Stufe, $Monatskosten,
-        $Gueltigkeit, $Erstellungsdatum);
+        $success = $database->insertIntoMG($Kundennummer, $Mitgliedschaftsnummer, $Stufe, $Gueltigkeit, $Erstellungsdatum);
 
         if ($success) {
             $message = "Mitgliedschaft '{$Kundennummer} ' erstellt!'";

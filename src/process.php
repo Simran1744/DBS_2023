@@ -19,7 +19,5 @@ if(isset($_POST['Kundennummer'])) {
 
     echo "Membership Details:<br>";
     echo "Membership Number: {$output['MITGLIEDSCHAFTSNUMMER']}<br>";
-    echo "Membership Level: {$output['MITGLIEDSCHAFTS_STUFE']}<br>";
-    echo "Cost: {$output['MONATSKOSTEN']}<br>";
     echo "Validity: {$output['GUELTIGKEIT']}<br>";
 

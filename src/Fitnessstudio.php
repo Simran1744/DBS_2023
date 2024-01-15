@@ -17,14 +17,9 @@ class Fitnessstudio
            $F_Name = $_POST['F_Name'];
        }
 
-       $Ort = '';
-       if(isset($_POST['Ort'])){
-           $Ort = $_POST['Ort'];
-       }
-
-       $Platz = '';
-       if(isset($_POST['Platz'])){
-           $Platz = $_POST['Platz'];
+       $Plz = '';
+       if(isset($_POST['Plz'])){
+           $Plz = $_POST['Plz'];
        }
 
        $Strasse = '';
@@ -32,7 +27,7 @@ class Fitnessstudio
            $Strasse = $_POST['Strasse'];
        }
 
-       $success = $database->insertIntoFitnessstudio($Studio_ID, $F_Name, $Ort, $Platz, $Strasse);
+       $success = $database->insertIntoFitnessstudio($Studio_ID, $F_Name, $Plz, $Strasse);
 
        if ($success){
            $message =  "Fitnessstudio '{$Studio_ID} {$F_Name}' successfully added!'";
@@ -80,6 +75,7 @@ class Fitnessstudio
    }
 
 
+
 }
 
 $fit = new Fitnessstudio();
@@ -94,6 +90,7 @@ if (isset($_POST['deleteButton1'])) {
 if (isset($_POST['action'])) {
     $fit->updateFitnessstudio_();
 }
+
 
 header("Location: index.php");
 

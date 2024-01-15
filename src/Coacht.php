@@ -28,13 +28,8 @@ class Coacht
             $Endzeit = $_POST['Endzeit'];
         }
 
-        $Trainingsdatum = '';
-        if (isset($_POST['Trainingsdatum'])) {
-            $Trainingsdatum = $_POST['Trainingsdatum'];
-        }
 
-
-        $success = $database->insertIntoCoacht($Mitarbeiter_ID, $Kundennummer, $Beginnzeit, $Endzeit, $Trainingsdatum);
+        $success = $database->insertIntoCoacht($Mitarbeiter_ID, $Kundennummer, $Beginnzeit, $Endzeit);
 
         if ($success) {
             $message = "Trainingseinheit '{$Mitarbeiter_ID} {$Kundennummer} '  erfolgreich gebucht!'";

@@ -42,16 +42,15 @@ class DatabaseHelper
 
     // This function creates and executes a SQL select statement and returns an array as the result
     // 2-dimensional array: the result array contains nested arrays (each contains the data of a single row)
-    public function selectAllFitnessstudio($Studio_ID, $F_Name, $Ort, $Platz, $Strasse)
+    public function selectAllFitnessstudio($Studio_ID, $F_Name, $Plz, $Strasse)
     {
         // Define the sql statement string
         // Notice that the parameters $person_id, $surname, $name in the 'WHERE' clause
         $sql = "SELECT * FROM Fitnessstudio
             WHERE Studio_ID LIKE '%{$Studio_ID}%'
               AND upper(f_name) LIKE upper('%{$F_Name}%')
-              AND upper(ort) LIKE upper('%{$Ort}%')
-              AND upper(platz) LIKE upper('%{$Platz}%')
-              AND upper(strasse) LIKE upper('%{$Strasse}%')";
+              AND upper(strasse) LIKE upper('%{$Strasse}%')
+              AND upper(plz) LIKE upper('%{$Plz}%')";
 
 
         $statement = oci_parse($this->conn, $sql);
@@ -66,6 +65,28 @@ class DatabaseHelper
 
         return $res;
     }
+
+    public function selectAllPlz($Plz, $Ort)
+    {
+
+        $sql = "SELECT * FROM POSTLEITZAHL
+            WHERE Plz LIKE '%{$Plz}%'
+              AND upper(ort) LIKE upper('%{$Ort}%')";
+
+
+        $statement = oci_parse($this->conn, $sql);
+
+        // Executes the statement
+        oci_execute($statement);
+
+        oci_fetch_all($statement, $res, null, null, OCI_FETCHSTATEMENT_BY_ROW);
+
+        //clean up;
+        oci_free_statement($statement);
+
+        return $res;
+    }
+
 
     public function selectAllMitarbeiter($Mitarbeiter_ID, $Studio_ID, $Vorname, $Nachname){
 
@@ -156,22 +177,18 @@ class DatabaseHelper
         return $res;
     }
 
-    public function selectAllCoacht($Mitarbeiter_ID, $Kundennummer, $Beginnzeit, $Endzeit, $Trainingsdatum){
+    public function selectAllCoacht($Mitarbeiter_ID, $Kundennummer, $Beginnzeit, $Endzeit){
         $f_beginnzeit = date('Y-m-d H:i:s', strtotime($Beginnzeit));
         $f_endzeit = date('Y-m-d H:i:s', strtotime($Endzeit));
-        $f_trainingsdatum = date('Y-m-d', strtotime($Trainingsdatum));
 
 
 
         $str_beg = strval($f_beginnzeit);
         $str_end = strval($f_endzeit);
-        $str_dat = strval($f_trainingsdatum);
 
         $sql = "SELECT * FROM COACHT
             WHERE MITARBEITER_ID LIKE  '%{$Mitarbeiter_ID}%'
             AND KUNDENNUMMER LIKE '%{$Kundennummer}%'";
-
-        echo $Trainingsdatum;
 
 
         if ($str_beg !== '1970-01-01 01:00:00') {
@@ -181,12 +198,6 @@ class DatabaseHelper
         if ($str_end !== '1970-01-01 01:00:00') {
             $sql .= " AND ENDZEIT = TO_TIMESTAMP('{$str_end}', 'YYYY-MM-DD HH24:MI:SS')";
         }
-
-
-        if ($str_dat !== '1970-01-01') {
-            $sql .= " AND TRAININGSDATUM = TO_DATE('{$str_dat}', 'YYYY-MM-DD')";
-        }
-
 
         $statement = oci_parse($this->conn, $sql);
 
@@ -230,7 +241,27 @@ class DatabaseHelper
     return $res;
     }
 
-    public function selectAllMGs($Kundennummer, $Mitgliedschaftsnummer, $Mitgliedschafts_Stufe, $Monatskosten, $Gueltigkeit, $Erstellungsdatum){
+    public function selectAllMGSt($Stufe, $Monatskosten){
+
+        $sql = "SELECT * FROM MITGLIEDSCHAFTS_STUFE
+            WHERE upper(STUFE) LIKE upper('%{$Stufe}%')
+            AND upper(MONATSKOSTEN) LIKE upper('%{$Monatskosten}%')
+            ";
+
+        $statement = oci_parse($this->conn, $sql);
+
+        // Executes the statements
+        oci_execute($statement);
+
+        oci_fetch_all($statement, $res, null, null, OCI_FETCHSTATEMENT_BY_ROW);
+
+        //clean up;
+        oci_free_statement($statement);
+
+        return $res;
+    }
+
+    public function selectAllMGs($Kundennummer, $Mitgliedschaftsnummer, $Stufe, $Gueltigkeit, $Erstellungsdatum){
 
         $f_erstellungsdatum = date('Y-m-d', strtotime($Erstellungsdatum));
 
@@ -241,8 +272,7 @@ class DatabaseHelper
         $sql = "SELECT * FROM MITGLIEDSCHAFT
             WHERE upper(KUNDENNUMMER) LIKE upper('%{$Kundennummer}%')
             AND upper(MITGLIEDSCHAFTSNUMMER) LIKE upper('%{$Mitgliedschaftsnummer}%')
-            AND upper(MITGLIEDSCHAFTS_STUFE) LIKE upper('%{$Mitgliedschafts_Stufe}%')
-            AND upper(MONATSKOSTEN) LIKE upper('%{$Monatskosten}%')
+            AND upper(STUFE) LIKE upper('%{$Stufe}%')
             
             
             ";
@@ -323,13 +353,23 @@ class DatabaseHelper
     }
 
 
-
-
-
-    // This function creates and executes a SQL insert statement and returns true or false
-    public function insertIntoFitnessstudio($Studio_ID, $F_Name, $Ort, $Platz, $Strasse)
+    public function insertIntoPlz($Plz, $Ort)
     {
-        $sql = "INSERT INTO Fitnessstudio (Studio_ID, F_Name, Ort, Platz, Strasse) VALUES ('{$Studio_ID}','{$F_Name}','{$Ort}','{$Platz}','{$Strasse}')";
+        $sql = "INSERT INTO POSTLEITZAHL (Plz, Ort) VALUES ('{$Plz}','{$Ort}')";
+
+
+        var_dump($Plz . $Ort);
+
+        $statement = oci_parse($this->conn, $sql);
+        $success = oci_execute($statement) && oci_commit($this->conn);
+        oci_free_statement($statement);
+        return $success;
+    }
+
+
+    public function insertIntoFitnessstudio($Studio_ID, $F_Name, $Plz, $Strasse)
+    {
+        $sql = "INSERT INTO Fitnessstudio (Studio_ID, F_Name, Plz, Strasse) VALUES ('{$Studio_ID}','{$F_Name}','{$Plz}','{$Strasse}')";
 
         $statement = oci_parse($this->conn, $sql);
         $success = oci_execute($statement) && oci_commit($this->conn);
@@ -362,7 +402,7 @@ class DatabaseHelper
     {
         $fit_id = $rowId[0];
 
-        $columns = ['STUDIO_ID', 'F_NAME', 'ORT', 'PLATZ', 'STRASSE'];
+        $columns = ['STUDIO_ID', 'F_NAME', 'PLZ', 'STRASSE'];
         $sql = "UPDATE Fitnessstudio SET {$columns[$column]} = :value WHERE STUDIO_ID = :id";
 
         if (!isset($columns[$column])) {
@@ -564,24 +604,21 @@ class DatabaseHelper
         oci_free_statement($stmt);
     }
 
-    public function insertIntoCoacht($Mitarbeiter_ID, $Kundennummer, $Beginnzeit, $Endzeit, $Trainingsdatum)
+    public function insertIntoCoacht($Mitarbeiter_ID, $Kundennummer, $Beginnzeit, $Endzeit)
     {
         $f_beginnzeit = date('Y-m-d H:i:s', strtotime($Beginnzeit));
         $f_endzeit = date('Y-m-d H:i:s', strtotime($Endzeit));
-        $f_trainingsdatum = date('Y-m-d', strtotime($Trainingsdatum));
+
 
         $str_beg = strval($f_beginnzeit);
         $str_end = strval($f_endzeit);
-        $str_dat = strval($f_trainingsdatum);
 
-        $sql = "INSERT INTO COACHT (MITARBEITER_ID, KUNDENNUMMER, BEGINNZEIT, ENDZEIT, TRAININGSDATUM) 
+
+        $sql = "INSERT INTO COACHT (MITARBEITER_ID, KUNDENNUMMER, BEGINNZEIT, ENDZEIT) 
         VALUES ('{$Mitarbeiter_ID}',
                '{$Kundennummer}',
         TO_TIMESTAMP('{$str_beg}', 'YYYY-MM-DD HH24:MI:SS'),
-        TO_TIMESTAMP('{$str_end}', 'YYYY-MM-DD HH24:MI:SS'),
-        TO_DATE('{$str_dat}', 'YYYY-MM-DD'))";
-
-
+        TO_TIMESTAMP('{$str_end}', 'YYYY-MM-DD HH24:MI:SS'))";
 
         $statement = oci_parse($this->conn, $sql);
         $success = oci_execute($statement) && oci_commit($this->conn);
@@ -620,13 +657,12 @@ class DatabaseHelper
 
 
     public function updateCoacht_($column, $value, $rowId){
-        $columns = ['MITARBEITER_ID', 'KUNDENNUMMER', 'BEGINNZEIT', 'ENDZEIT', 'TRAININGSDATUM'];
+        $columns = ['MITARBEITER_ID', 'KUNDENNUMMER', 'BEGINNZEIT', 'ENDZEIT'];
 
         $mit_id = $rowId[0];
         $kund_id = $rowId[1];
         $beginnzeit = $rowId[2];
         $endzeit= $rowId[3];
-        $datum = $rowId[4];
 
         echo $mit_id;
         echo $beginnzeit;
@@ -637,7 +673,7 @@ class DatabaseHelper
             return;
         }
 
-        $isDateColumn = in_array($columns[$column], ['TRAININGSDATUM', 'BEGINNZEIT', 'ENDZEIT']);
+        $isDateColumn = in_array($columns[$column], ['BEGINNZEIT', 'ENDZEIT']);
 
         if ($isDateColumn) {
             $dateFormat = ($columns[$column] === 'TRAININGSDATUM') ? date('Y-m-d', strtotime($value)) : date('Y-m-d H:i:s', strtotime($value));
@@ -784,8 +820,22 @@ class DatabaseHelper
         oci_free_statement($stmt);
     }
 
+    public function insertIntoMGS($Mitgliedschafts_Stufe, $Monatskosten)
+    {
 
-    public function insertIntoMG($Kundennummer, $Mitgliedschaftsnummer, $Mitgliedschafts_Stufe, $Monatskosten,
+
+        $sql = "INSERT INTO MITGLIEDSCHAFTS_STUFE (STUFE, MONATSKOSTEN) 
+        VALUES ('{$Mitgliedschafts_Stufe}',
+                '{$Monatskosten}')";
+
+        $statement = oci_parse($this->conn, $sql);
+        $success = oci_execute($statement) && oci_commit($this->conn);
+        oci_free_statement($statement);
+        return $success;
+    }
+
+
+    public function insertIntoMG($Kundennummer, $Mitgliedschaftsnummer, $Stufe,
     $Gueltigkeit, $Erstellungsdatum)
     {
 
@@ -793,11 +843,10 @@ class DatabaseHelper
 
         $str_dat = strval($f_erstellungsdatum);
 
-        $sql = "INSERT INTO MITGLIEDSCHAFT (KUNDENNUMMER, MITGLIEDSCHAFTSNUMMER, MITGLIEDSCHAFTS_STUFE, MONATSKOSTEN, GUELTIGKEIT, ERSTELLUNGSDATUM) 
+        $sql = "INSERT INTO MITGLIEDSCHAFT (KUNDENNUMMER, MITGLIEDSCHAFTSNUMMER, STUFE, GUELTIGKEIT, ERSTELLUNGSDATUM) 
         VALUES ('{$Kundennummer}',
                 '{$Mitgliedschaftsnummer}',
-                '{$Mitgliedschafts_Stufe}',
-                '{$Monatskosten}',
+                '{$Stufe}',
                 '{$Gueltigkeit}',
         TO_DATE('{$str_dat}', 'YYYY-MM-DD'))";
 
@@ -826,7 +875,7 @@ class DatabaseHelper
     }
 
     public function updateMG_($column, $value, $rowId){
-        $columns = ['KUNDENNUMMER' , 'MITGLIEDSCHAFTSNUMMER', 'MITGLIEDSCHAFTS_STUFE', 'MONATSKOSTEN',
+        $columns = ['KUNDENNUMMER' , 'MITGLIEDSCHAFTSNUMMER', 'STUFE',
             'GUELTIGKEIT', 'ERSTELLUNGSDATUM'];
 
         $kund_id = $rowId[0];
@@ -1073,13 +1122,11 @@ class DatabaseHelper
 
         $validity = '';
 
-        $sql = 'BEGIN GetMembershipDetails(:customerID, :membership_number, :membership_level, :monthly, :validity); END;';
+        $sql = 'BEGIN GetMembershipDetails(:customerID, :membership_number, :validity); END;';
         $stmt = oci_parse($this->conn, $sql);
 
         oci_bind_by_name($stmt, ':customerID', $Kundennummer);
         oci_bind_by_name($stmt, ':membership_number', $membershipNumber, -1, SQLT_INT);
-        oci_bind_by_name($stmt, ':membership_level', $membershipLevel, 50);
-        oci_bind_by_name($stmt, ':monthly', $monthly, -1, SQLT_INT);
         oci_bind_by_name($stmt, ':validity',$validity,50);
 
         if (!oci_execute($stmt)) {
@@ -1092,8 +1139,6 @@ class DatabaseHelper
 
         return [
             'MITGLIEDSCHAFTSNUMMER' => $membershipNumber,
-            'MITGLIEDSCHAFTS_STUFE' => $membershipLevel,
-            'MONATSKOSTEN' => $monthly,
             'GUELTIGKEIT' => $validity,
         ];
 

@@ -1,45 +1,5 @@
 
-<?php
 
-// Include DatabaseHelper.php file
-require_once('DatabaseHelper.php');
-
-// Instantiate DatabaseHelper class
-$database = new DatabaseHelper();
-
-// Get parameter 'person_id', 'surname' and 'name' from GET Request
-// Btw. you can see the parameters in the URL if they are set
-
-$Studio_ID = '';
-if (isset($_GET['Studio_ID'])) {
-    $Studio_ID  = $_GET['Studio_ID'];
-}
-
-$F_Name = '';
-if (isset($_GET['F_Name'])) {
-    $F_Name = $_GET['F_Name'];
-}
-
-$Ort = '';
-if (isset($_GET['Ort'])) {
-    $Ort = $_GET['Ort'];
-}
-
-$Platz = '';
-if (isset($_GET['Platz'])) {
-    $Platz = $_GET['Platz'];
-}
-
-
-$Strasse = '';
-if (isset($_GET['Strasse'])) {
-    $Strasse = $_GET['Strasse'];
-}
-
-
-//Fetch data from database
-$studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Ort, $Platz, $Strasse);
-?>
 
 <!doctype html>
 <html lang="en">
@@ -140,19 +100,170 @@ $studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Ort, $Pl
 </script>
 
 
+<?php
+
+// Include DatabaseHelper.php file
+require_once('DatabaseHelper.php');
+
+$database = new DatabaseHelper();
+
+$Plz = '';
+if (isset($_GET['Plz'])) {
+    $Plz = $_GET['Plz'];
+}
+
+$Ort = '';
+if (isset($_GET['Ort'])) {
+    $Ort = $_GET['Ort'];
+}
+
+
+//Fetch data from database
+$studio_array = $database->selectAllPlz($Plz, $Ort);
+?>
 
 <div class="container ml-2" >
     <div class="row">
         <div class="col-md-7">
-            <h2>Fitnessstudio Table:</h2>
+            <h2>Postleitzahlen:</h2>
+            <div class="table-container table-responsive">
+                <table class="table table-bordered table-hover data-table" data-php-file="Plz.php" id="data-table-15">
+                    <thead  class="thead-dark">
+                    <tr>
+                        <th scope="col">Plz</th>
+                        <th scope="col">Ort</th>
+                    </tr>
+                    </thead>
+                    <style>
+                        .table-container{
+                            background-color: mintcream;
+                            max-height: 500px;
+                            overflow-y: auto;
+                        }
+                    </style>
+                    <tbody>
+                    <?php foreach ($studio_array as $Plz) : ?>
+                        <tr>
+                            <td contenteditable="true"><?php echo $Plz['PLZ']; ?> </td>
+                            <td contenteditable="true"><?php echo $Plz['ORT']; ?>  </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <h2>Input: </h2>
+            <form method="post" action="Plz.php" class="row g-3">
+
+                <div class="col-md-10">
+                    <label for="new_Platzs" class="form-label">Plz:</label>
+                    <input id="new_Platzs" name="Plz" type="number" class="form-control">
+                </div>
+
+                <div class="col-md-10">
+                    <label for="Ort" class="form-label">Ort:</label>
+                    <input id="Ort" name="Ort" type="text" maxlength="20" class="form-control">
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-5">
+                        <button type="submit" name="addButton15"  class="btn btn-primary custom-button">
+                            Add
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-2">
+            <h2>Search:</h2>
+            <form method="get" class="row g-3">
+
+                <div class=col-md-10">
+                    <label for="Plz" class="form-label">Plz:</label>
+                    <input id="Plz" name="Plz" type="number" value='<?php echo $Plz; ?>'
+                           maxlength="20" class="form-control">
+                </div>
+
+                <div class=col-md-10">
+                    <label for="Ort_" class="form-label">Ort:</label>
+                    <input id="Ort_" name="Ort" type="text" value='<?php echo $Ort; ?>'
+                           maxlength="20" class="form-control">
+                </div>
+
+                <style>
+                    .custom-button {
+                        width: 118.033px;
+                        height: 62px;
+                        font-weight: 400; /* Set your desired font size */
+                        padding: 0.375rem 0.75rem;
+                    }
+                </style>
+                <div class="mt-3">
+                    <button id='submit' type='submit' class="btn btn-info custom-button">
+                        Search
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+<hr>
+
+<?php
+
+// Include DatabaseHelper.php file
+require_once('DatabaseHelper.php');
+
+// Instantiate DatabaseHelper class
+$database = new DatabaseHelper();
+
+// Get parameter 'person_id', 'surname' and 'name' from GET Request
+// Btw. you can see the parameters in the URL if they are set
+
+$Studio_ID = '';
+if (isset($_GET['Studio_ID'])) {
+    $Studio_ID  = $_GET['Studio_ID'];
+}
+
+$F_Name = '';
+if (isset($_GET['F_Name'])) {
+    $F_Name = $_GET['F_Name'];
+}
+
+$Strasse = '';
+if (isset($_GET['Strasse'])) {
+    $Strasse = $_GET['Strasse'];
+}
+
+
+$Plz = '';
+if (isset($_GET['Plz'])) {
+    $Plz = $_GET['Plz'];
+}
+
+
+
+//Fetch data from database
+$studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Plz, $Strasse);
+?>
+
+
+
+<div class="container ml-2" >
+    <div class="row">
+        <div class="col-md-7">
+            <h2>Fitnessstudios:</h2>
             <div class="table-container table-responsive">
                 <table class="table table-bordered table-hover data-table" data-php-file="Fitnessstudio.php" id="data-table-1">
                     <thead  class="thead-dark">
                         <tr>
                             <th scope="col">ID</th>
                             <th scope="col">Name</th>
-                            <th scope="col">Ort</th>
-                            <th scope="col">Platz</th>
+                            <th scope="col">Plz</th>
                             <th scope="col">Strasse</th>
                         </tr>
                     </thead>
@@ -168,8 +279,7 @@ $studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Ort, $Pl
                             <tr>
                                 <td contenteditable="true"><?php echo $Fitnessstudio['STUDIO_ID']; ?> </td>
                                 <td contenteditable="true"><?php echo $Fitnessstudio['F_NAME']; ?>  </td>
-                                <td contenteditable="true"><?php echo $Fitnessstudio['ORT']; ?>  </td>
-                                <td contenteditable="true"><?php echo $Fitnessstudio['PLATZ']; ?>  </td>
+                                <td contenteditable="true"><?php echo $Fitnessstudio['PLZ']; ?>  </td>
                                 <td contenteditable="true"><?php echo $Fitnessstudio['STRASSE']; ?>  </td>
                             </tr>
                         <?php endforeach; ?>
@@ -193,20 +303,14 @@ $studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Ort, $Pl
                 </div>
 
                 <div class="col-md-10">
-                    <label for="new_Ort" class="form-label">Ort:</label>
-                    <input id="new_Ort" name="Ort" type="text" maxlength="20" class="form-control">
-                </div>
-
-                <div class="col-md-10">
-                    <label for="new_Platz" class="form-label">Platz:</label>
-                    <input id="new_Platz" name="Platz" type="number" class="form-control">
+                    <label for="new_Platz" class="form-label">Plz:</label>
+                    <input id="new_Platz" name="Plz" type="number" class="form-control">
                 </div>
 
                 <div class="col-md-10">
                     <label for="new_Strasse" class="form-label">Strasse:</label>
                     <input id="new_Strasse" name="Strasse" type="text" maxlength="20" class="form-control">
                 </div>
-
 
                 <div class="row mt-3">
                     <div class="col-md-5">
@@ -237,14 +341,8 @@ $studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Ort, $Pl
                 </div>
 
                 <div class=col-md-10">
-                    <label for="Ort" class="form-label">Ort:</label>
-                    <input id="Ort" name="Ort" type="text" value='<?php echo $Ort; ?>'
-                           maxlength="20" class="form-control">
-                </div>
-
-                <div class=col-md-10">
-                    <label for="Platz" class="form-label">Platz:</label>
-                    <input id="Platz" name="Platz" type="number" value='<?php echo $Platz; ?>'
+                    <label for="Plz" class="form-label">Plz:</label>
+                    <input id="Plz" name="Plz" type="number" value='<?php echo $Plz; ?>'
                            maxlength="20" class="form-control">
                 </div>
 
@@ -907,19 +1005,16 @@ if (isset($_GET['Endzeit'])) {
     $Endzeit = $_GET['Endzeit'];
 }
 
-$Trainingsdatum = '';
-if (isset($_GET['Trainingsdatum'])) {
-    $Trainingsdatum = $_GET['Trainingsdatum'];
-}
+
 
 //Fetch data from database
-$studio_array = $database->selectAllCoacht($Mitarbeiter_ID, $Kundennummer, $Beginnzeit, $Endzeit, $Trainingsdatum);
+$studio_array = $database->selectAllCoacht($Mitarbeiter_ID, $Kundennummer, $Beginnzeit, $Endzeit);
 ?>
 
 <div class="container ml-2" >
     <div class="row">
         <div class="col-md-7">
-            <h2>Coacht Table:</h2>
+            <h2>Coaching Termine:</h2>
             <div class="table-container table-responsive" >
                 <table class="table table-bordered table-hover data-table" data-php-file="Coacht.php" id="data-table-6">
                     <thead  class="thead-dark">
@@ -928,7 +1023,6 @@ $studio_array = $database->selectAllCoacht($Mitarbeiter_ID, $Kundennummer, $Begi
                         <th scope="col">Kundennummer</th>
                         <th scope="col">Beginnzeit</th>
                         <th scope="col">Endzeit</th>
-                        <th scope="col">Trainingsdatum</th>
                     </tr>
                     </thead>
                     <style>
@@ -945,7 +1039,6 @@ $studio_array = $database->selectAllCoacht($Mitarbeiter_ID, $Kundennummer, $Begi
                             <td contenteditable="true"><?php echo $Coacht['KUNDENNUMMER']; ?>  </td>
                             <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['BEGINNZEIT'])->format('H:i:s y-m-d'); ?>  </td>
                             <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['ENDZEIT'])->format('H:i:s y-m-d'); ?>  </td>
-                            <td contenteditable="true" class="date-cell"><?php echo date('d-m-Y', strtotime($Coacht['TRAININGSDATUM'])); ?>  </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -975,11 +1068,6 @@ $studio_array = $database->selectAllCoacht($Mitarbeiter_ID, $Kundennummer, $Begi
                 <div class="col-md-10">
                     <label for="Endzeit" class="form-label">Endzeit:</label>
                     <input id="Endzeit" name="Endzeit" type="datetime-local" class="form-control">
-                </div>
-
-                <div class="col-md-10">
-                    <label for="Trainingsdatum" class="form-label">Trainingsdatum:</label>
-                    <input id="Trainingsdatum" name="Trainingsdatum" type="date" class="form-control">
                 </div>
 
 
@@ -1021,11 +1109,6 @@ $studio_array = $database->selectAllCoacht($Mitarbeiter_ID, $Kundennummer, $Begi
                 <div class=col-md-6">
                     <label for="_Endzeit" class="form-label">Endzeit:</label>
                     <input id="_Endzeit" name="Endzeit" type="datetime-local" class="form-control input-md" value='<?php echo $Endzeit; ?>'>
-                </div>
-
-                <div class=col-md-6">
-                    <label for="TD" class="form-label">Trainingsdatum:</label>
-                    <input id="TD" name="Trainingsdatum" type="date" class="form-control input-md" value='<?php echo $Trainingsdatum; ?>'>
                 </div>
 
                 <style>
@@ -1182,6 +1265,125 @@ $studio_array = $database->selectAllBetreut($Mitarbeiter_ID, $Kundennummer, $Zei
 <br>
 <hr>
 
+<?php
+
+
+$Stufe = '';
+if (isset($_GET['Stufe'])) {
+    $Stufe = $_GET['Stufe'];
+}
+
+$Monatskosten = '';
+if (isset($_GET['Monatskosten'])) {
+    $Monatskosten = $_GET['Monatskosten'];
+}
+
+
+
+//Fetch data from database
+$studio_array = $database->selectAllMGSt($Stufe, $Monatskosten);
+?>
+
+<div class="container ml-2" >
+    <div class="row">
+        <div class="col-md-7">
+            <h2>Mitgliedschafts Stufe Table:</h2>
+            <div class="table-container table-responsive" >
+                <table class="table table-bordered table-hover data-table" data-php-file="MG_Stufe.php" id="data-table-8">
+                    <thead  class="thead-dark">
+                    <tr>
+                        <th scope="col">Mitgliedschafts_Stufe</th>
+                        <th scope="col">Monatskosten</th>
+                    </tr>
+                    </thead>
+                    <style>
+                        .table-container{
+                            background-color: mintcream;
+                            max-height: 500px;
+                            overflow-y: auto;
+                        }
+                    </style>
+                    <tbody>
+                    <?php foreach ($studio_array as $MG) : ?>
+                        <tr>
+                            <td contenteditable="true"><?php echo $MG['STUFE']; ?>  </td>
+                            <td contenteditable="true"><?php echo $MG['MONATSKOSTEN']; ?>  </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <h2>Input: </h2>
+            <form method="post" action="MG_Stufe.php" class="row g-3">
+
+                <div class="col-md-10">
+                    <label for="Stufe" class="form-label">Mitgliedschafts-Stufe:</label>
+                    <select id="Stufe" name="Stufe" type="text" class="form-control">
+                        <option value="Bronze">Bronze</option>
+                        <option value="Silber">Silber</option>
+                        <option value="Gold">Gold</option>
+                    </select>
+                </div>
+
+                <div class="col-md-10">
+                    <label for="MO" class="form-label">Monatskosten:</label>
+                    <input id="MO" name="Monatskosten" type="number" class="form-control">
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-5">
+                        <button type="submit" name="addButton16"  class="btn btn-primary custom-button">
+                            Add
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-2">
+            <h2>Search:</h2>
+            <form method="get" class="row g-3">
+
+                <div class=col-md-6">
+                    <label for="MTGS" class="form-label">Mitgliedschafts-Stufe:</label>
+                    <select id="MTGS" name="Stufe" type="text" class="form-control input-md"  value='<?php echo $Stufe; ?>'>
+                        <option value="">All</option>
+                        <option value="Bronze">Bronze</option>
+                        <option value="Silber">Silber</option>
+                        <option value="Gold">Gold</option>
+                    </select>
+                </div>
+
+                <div class=col-md-6">
+                    <label for="MONAT" class="form-label">Monatskosten:</label>
+                    <input id="MONAT" name="Monatskosten" type="number" class="form-control input-md"  value='<?php echo $Monatskosten; ?>'>
+                </div>
+
+                <style>
+                    .custom-button {
+                        width: 118.033px;
+                        height: 62px;
+                        font-weight: 400; /* Set your desired font size */
+                        padding: 0.375rem 0.75rem;
+                    }
+                </style>
+                <div class="mt-3">
+                    <button id='submit10' type='submit' class="btn btn-info custom-button">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+<hr>
+
+
+
 
 <?php
 
@@ -1195,14 +1397,9 @@ if (isset($_GET['Mitgliedschaftsnummer'])) {
     $Mitgliedschaftsnummer = $_GET['Mitgliedschaftsnummer'];
 }
 
-$Mitgliedschafts_Stufe = '';
-if (isset($_GET['Mitgliedschafts_Stufe'])) {
-    $Mitgliedschafts_Stufe = $_GET['Mitgliedschafts_Stufe'];
-}
-
-$Monatskosten = '';
-if (isset($_GET['Monatskosten'])) {
-    $Monatskosten = $_GET['Monatskosten'];
+$Stufe = '';
+if (isset($_GET['Stufe'])) {
+    $Stufe = $_GET['Stufe'];
 }
 
 $Gueltigkeit = '';
@@ -1216,24 +1413,22 @@ if (isset($_GET['Erstellungsdatum'])) {
 }
 
 
-
 //Fetch data from database
-$studio_array = $database->selectAllMGs($Kundennummer, $Mitgliedschaftsnummer, $Mitgliedschafts_Stufe, $Monatskosten, $Gueltigkeit, $Erstellungsdatum);
+$studio_array = $database->selectAllMGs($Kundennummer, $Mitgliedschaftsnummer, $Stufe, $Gueltigkeit, $Erstellungsdatum);
 ?>
 
 
 <div class="container ml-2" >
     <div class="row">
         <div class="col-md-7">
-            <h2>Mitgliedschaft Table:</h2>
+            <h2>Mitgliedschaften:</h2>
             <div class="table-container table-responsive" >
                 <table class="table table-bordered table-hover data-table" data-php-file="Mitgliedschaft.php" id="data-table-8">
                     <thead  class="thead-dark">
                     <tr>
                         <th scope="col">Kundenummer</th>
                         <th scope="col">Mitgliedschaftsnummer</th>
-                        <th scope="col">Mitgliedschafts_Stufe</th>
-                        <th scope="col">Monatskosten</th>
+                        <th scope="col">Mitgliedschafts-Stufe</th>
                         <th scope="col">Gueltigkeit</th>
                         <th scope="col">Erstellungsdatum</th>
                     </tr>
@@ -1250,8 +1445,7 @@ $studio_array = $database->selectAllMGs($Kundennummer, $Mitgliedschaftsnummer, $
                         <tr>
                             <td contenteditable="true"><?php echo $MG['KUNDENNUMMER']; ?>  </td>
                             <td contenteditable="true"><?php echo $MG['MITGLIEDSCHAFTSNUMMER']; ?>  </td>
-                            <td contenteditable="true"><?php echo $MG['MITGLIEDSCHAFTS_STUFE']; ?>  </td>
-                            <td contenteditable="true"><?php echo $MG['MONATSKOSTEN']; ?>  </td>
+                            <td contenteditable="true"><?php echo $MG['STUFE']; ?>  </td>
                             <td contenteditable="true"><?php echo $MG['GUELTIGKEIT']; ?>  </td>
                             <td contenteditable="true" class="date-cell"><?php echo date('d-m-Y', strtotime($MG['ERSTELLUNGSDATUM'])); ?>  </td>
                         </tr>
@@ -1277,17 +1471,13 @@ $studio_array = $database->selectAllMGs($Kundennummer, $Mitgliedschaftsnummer, $
 
                 <div class="col-md-10">
                     <label for="Stufe" class="form-label">Mitgliedschafts-Stufe:</label>
-                    <select id="Stufe" name="Mitgliedschafts_Stufe" type="text" class="form-control">
+                    <select id="Stufe" name="Stufe" type="text" class="form-control">
                         <option value="Bronze">Bronze</option>
                         <option value="Silber">Silber</option>
                         <option value="Gold">Gold</option>
                     </select>
                 </div>
 
-                <div class="col-md-10">
-                    <label for="MO" class="form-label">Monatskosten:</label>
-                    <input id="MO" name="Monatskosten" type="number" class="form-control">
-                </div>
 
                 <div class="col-md-10">
                     <label for="GU" class="form-label">Gültigkeit:</label>
@@ -1333,7 +1523,7 @@ $studio_array = $database->selectAllMGs($Kundennummer, $Mitgliedschaftsnummer, $
 
                 <div class=col-md-6">
                     <label for="MTGS" class="form-label">Mitgliedschafts-Stufe:</label>
-                    <select id="MTGS" name="Mitgliedschafts_Stufe" type="text" class="form-control input-md"  value='<?php echo $Mitgliedschafts_Stufe; ?>'>
+                    <select id="MTGS" name="Stufe" type="text" class="form-control input-md"  value='<?php echo $Stufe; ?>'>
                         <option value="">All</option>
                         <option value="Bronze">Bronze</option>
                         <option value="Silber">Silber</option>
@@ -1341,10 +1531,6 @@ $studio_array = $database->selectAllMGs($Kundennummer, $Mitgliedschaftsnummer, $
                     </select>
                 </div>
 
-                <div class=col-md-6">
-                    <label for="MONAT" class="form-label">Monatskosten:</label>
-                    <input id="MONAT" name="Monatskosten" type="number" class="form-control input-md"  value='<?php echo $Monatskosten; ?>'>
-                </div>
 
                 <div class=col-md-6">
                     <label for="GUS" class="form-label">Gültigkeit:</label>
