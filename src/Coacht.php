@@ -113,7 +113,7 @@ if (isset($_POST['action'])) {
     $coacht->updateCoacht();
 }
 
-header('Location: index.php');
+header('Location: index.php#data-table-6');
 
 
 ?>

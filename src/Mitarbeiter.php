@@ -95,6 +95,6 @@ if (isset($_POST['action'])) {
     $mit->updateMitarbeiter();
 }
 
-header("Location: index.php");
+header('Location: index.php#data-table-2');
 
 ?>

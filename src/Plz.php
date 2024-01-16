@@ -38,6 +38,6 @@ if(isset($_POST['addButton15'])){
     $plz->addPlz();
 }
 
-header("Location: index.php");
+header('Location: index.php#data-table-15');
 
 ?>

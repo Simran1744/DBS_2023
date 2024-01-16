@@ -68,6 +68,6 @@ if (isset($_POST['action'])) {
     $pers->updatePersonalTrainer();
 }
 
-header("Location: index.php");
+header('Location: index.php#data-table-3');
 
 ?>

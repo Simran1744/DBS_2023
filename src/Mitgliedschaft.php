@@ -104,8 +104,10 @@ if (isset($_POST['action'])) {
     $mg->updateMG();
 }
 
-header('Location: index.php');
+header('Location: index.php#data-table-8');
 
 
 ?>
+
+
 

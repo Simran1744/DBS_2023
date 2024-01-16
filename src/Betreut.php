@@ -102,7 +102,7 @@ if (isset($_POST['action'])) {
     $betreut->updateBetreut();
 }
 
-header('Location: index.php');
+header('Location: index.php#data-table-7');
 
 
 ?>

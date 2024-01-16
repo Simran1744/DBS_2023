@@ -110,13 +110,24 @@ class DatabaseHelper
 
     public function selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht, $Spezialisierung){
 
+
+        $sql = "SELECT MITARBEITER.MITARBEITER_ID, MITARBEITER.STUDIO_ID, PERSONAL_TRAINER.GESCHLECHT, PERSONAL_TRAINER.SPEZIALISIERUNG
+        FROM PERSONAL_TRAINER
+        JOIN MITARBEITER ON PERSONAL_TRAINER.MITARBEITER_ID = MITARBEITER.MITARBEITER_ID
+        WHERE upper(PERSONAL_TRAINER.MITARBEITER_ID) LIKE upper('%{$Mitarbeiter_ID}%')
+          AND upper(PERSONAL_TRAINER.SPEZIALISIERUNG) LIKE upper('%{$Spezialisierung}%')";
+
+        if($Geschlecht != ''){
+            $sql .= " AND upper(PERSONAL_TRAINER.GESCHLECHT) = upper('{$Geschlecht}')";
+        }
+        /*
         $sql = "SELECT * FROM PERSONAL_TRAINER
             WHERE MITARBEITER_ID LIKE '%{$Mitarbeiter_ID}%'
               AND upper(SPEZIALISIERUNG) LIKE upper('%{$Spezialisierung}%')";
 
         if($Geschlecht != ''){
             $sql .= "AND upper(GESCHLECHT) = upper('{$Geschlecht}')";
-        }
+        }*/
 
         $statement = oci_parse($this->conn, $sql);
 

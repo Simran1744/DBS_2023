@@ -60,6 +60,6 @@ if (isset($_POST['action'])) {
     $rez->updateRezeptionist();
 }
 
-header("Location: index.php");
+header("Location: index.php#data-table-4");
 
 ?>

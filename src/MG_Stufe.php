@@ -39,6 +39,6 @@ if (isset($_POST['addButton16'])) {
     $mg->addMGs();
 }
 
-header('Location: index.php');
+header('Location: index.php#data-table-16');
 
 ?>

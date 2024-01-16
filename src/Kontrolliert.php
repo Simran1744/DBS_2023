@@ -110,7 +110,7 @@ if (isset($_POST['action'])) {
 }
 
 
-header('Location: index.php');
+header('Location: index.php#data-table-9');
 
 
 ?>

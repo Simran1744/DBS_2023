@@ -40,7 +40,7 @@
     $(document).ready(function () {
         let editedCell = null;
 
-        $('.data-table').on('dblclick', 'td[contenteditable="true"]', function () {
+        $('.data-table').on('dblclick', 'td[contenteditable="false"]', function () {
 
             editedCell = $(this);
             let currentValue = editedCell.text();
@@ -100,118 +100,6 @@
 </script>
 
 
-<?php
-
-// Include DatabaseHelper.php file
-require_once('DatabaseHelper.php');
-
-$database = new DatabaseHelper();
-
-$Plz = '';
-if (isset($_GET['Plz'])) {
-    $Plz = $_GET['Plz'];
-}
-
-$Ort = '';
-if (isset($_GET['Ort'])) {
-    $Ort = $_GET['Ort'];
-}
-
-
-//Fetch data from database
-$studio_array = $database->selectAllPlz($Plz, $Ort);
-?>
-
-<div class="container ml-2" >
-    <div class="row">
-        <div class="col-md-7">
-            <h2>Postleitzahlen:</h2>
-            <div class="table-container table-responsive">
-                <table class="table table-bordered table-hover data-table" data-php-file="Plz.php" id="data-table-15">
-                    <thead  class="thead-dark">
-                    <tr>
-                        <th scope="col">Plz</th>
-                        <th scope="col">Ort</th>
-                    </tr>
-                    </thead>
-                    <style>
-                        .table-container{
-                            background-color: mintcream;
-                            max-height: 500px;
-                            overflow-y: auto;
-                        }
-                    </style>
-                    <tbody>
-                    <?php foreach ($studio_array as $Plz) : ?>
-                        <tr>
-                            <td contenteditable="true"><?php echo $Plz['PLZ']; ?> </td>
-                            <td contenteditable="true"><?php echo $Plz['ORT']; ?>  </td>
-                        </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <h2>Input: </h2>
-            <form method="post" action="Plz.php" class="row g-3">
-
-                <div class="col-md-10">
-                    <label for="new_Platzs" class="form-label">Plz:</label>
-                    <input id="new_Platzs" name="Plz" type="number" class="form-control">
-                </div>
-
-                <div class="col-md-10">
-                    <label for="Ort" class="form-label">Ort:</label>
-                    <input id="Ort" name="Ort" type="text" maxlength="20" class="form-control">
-                </div>
-
-                <div class="row mt-3">
-                    <div class="col-md-5">
-                        <button type="submit" name="addButton15"  class="btn btn-primary custom-button">
-                            Add
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-2">
-            <h2>Search:</h2>
-            <form method="get" class="row g-3">
-
-                <div class=col-md-10">
-                    <label for="Plz" class="form-label">Plz:</label>
-                    <input id="Plz" name="Plz" type="number" value='<?php echo $Plz; ?>'
-                           maxlength="20" class="form-control">
-                </div>
-
-                <div class=col-md-10">
-                    <label for="Ort_" class="form-label">Ort:</label>
-                    <input id="Ort_" name="Ort" type="text" value='<?php echo $Ort; ?>'
-                           maxlength="20" class="form-control">
-                </div>
-
-                <style>
-                    .custom-button {
-                        width: 118.033px;
-                        height: 62px;
-                        font-weight: 400; /* Set your desired font size */
-                        padding: 0.375rem 0.75rem;
-                    }
-                </style>
-                <div class="mt-3">
-                    <button id='submit' type='submit' class="btn btn-info custom-button">
-                        Search
-                    </button>
-
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<br>
-<hr>
 
 <?php
 
@@ -277,10 +165,10 @@ $studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Plz, $St
                     <tbody>
                         <?php foreach ($studio_array as $Fitnessstudio) : ?>
                             <tr>
-                                <td contenteditable="true"><?php echo $Fitnessstudio['STUDIO_ID']; ?> </td>
-                                <td contenteditable="true"><?php echo $Fitnessstudio['F_NAME']; ?>  </td>
-                                <td contenteditable="true"><?php echo $Fitnessstudio['PLZ']; ?>  </td>
-                                <td contenteditable="true"><?php echo $Fitnessstudio['STRASSE']; ?>  </td>
+                                <td contenteditable="false"><?php echo $Fitnessstudio['STUDIO_ID']; ?> </td>
+                                <td contenteditable="false"><?php echo $Fitnessstudio['F_NAME']; ?>  </td>
+                                <td contenteditable="false"><?php echo $Fitnessstudio['PLZ']; ?>  </td>
+                                <td contenteditable="false"><?php echo $Fitnessstudio['STRASSE']; ?>  </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -360,7 +248,7 @@ $studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Plz, $St
                     }
                 </style>
                 <div class="mt-3">
-                    <button id='submit' type='submit' class="btn btn-info custom-button">
+                    <button id='submit6' type='submit' class="btn btn-info custom-button">
                         Search
                     </button>
 
@@ -369,9 +257,123 @@ $studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Plz, $St
         </div>
     </div>
 </div>
-
 <br>
 <hr>
+
+
+<?php
+
+// Include DatabaseHelper.php file
+require_once('DatabaseHelper.php');
+
+$database = new DatabaseHelper();
+
+$Plz = '';
+if (isset($_GET['Plz'])) {
+    $Plz = $_GET['Plz'];
+}
+
+$Ort = '';
+if (isset($_GET['Ort'])) {
+    $Ort = $_GET['Ort'];
+}
+
+
+//Fetch data from database
+$studio_array = $database->selectAllPlz($Plz, $Ort);
+?>
+
+<div class="container ml-2" >
+    <div class="row">
+        <div class="col-md-7">
+            <h2>Postleitzahlen:</h2>
+            <div class="table-container table-responsive">
+                <table class="table table-bordered table-hover data-table" data-php-file="Plz.php" id="data-table-15">
+                    <thead  class="thead-dark">
+                    <tr>
+                        <th scope="col">Plz</th>
+                        <th scope="col">Ort</th>
+                    </tr>
+                    </thead>
+                    <style>
+                        .table-container{
+                            background-color: mintcream;
+                            max-height: 500px;
+                            overflow-y: auto;
+                        }
+                    </style>
+                    <tbody>
+                    <?php foreach ($studio_array as $Plz) : ?>
+                        <tr>
+                            <td contenteditable="false"><?php echo $Plz['PLZ']; ?> </td>
+                            <td contenteditable="false"><?php echo $Plz['ORT']; ?>  </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <h2>Input: </h2>
+            <form method="post" action="Plz.php" class="row g-3">
+
+                <div class="col-md-10">
+                    <label for="new_Platzs" class="form-label">Plz:</label>
+                    <input id="new_Platzs" name="Plz" type="number" class="form-control">
+                </div>
+
+                <div class="col-md-10">
+                    <label for="Ort" class="form-label">Ort:</label>
+                    <input id="Ort" name="Ort" type="text" maxlength="20" class="form-control">
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-5">
+                        <button type="submit" name="addButton15"  class="btn btn-primary custom-button">
+                            Add
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-2">
+            <h2>Search:</h2>
+            <form method="get" class="row g-3">
+
+                <div class=col-md-10">
+                    <label for="Plz" class="form-label">Plz:</label>
+                    <input id="Plz" name="Plz" type="number" value='<?php echo $Plz; ?>'
+                           maxlength="20" class="form-control">
+                </div>
+
+                <div class=col-md-10">
+                    <label for="Ort_" class="form-label">Ort:</label>
+                    <input id="Ort_" name="Ort" type="text" value='<?php echo $Ort; ?>'
+                           maxlength="20" class="form-control">
+                </div>
+
+                <style>
+                    .custom-button {
+                        width: 118.033px;
+                        height: 62px;
+                        font-weight: 400; /* Set your desired font size */
+                        padding: 0.375rem 0.75rem;
+                    }
+                </style>
+                <div class="mt-3">
+                    <button id='submit2' type='submit' class="btn btn-info custom-button">
+                        Search
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+<hr>
+
 <?php
 $Mitarbeiter_ID = '';
 if (isset($_GET['Mitarbeiter_ID'])) {
@@ -402,7 +404,7 @@ $studio_array = $database->selectAllMitarbeiter($Mitarbeiter_ID, $Studio_ID, $Vo
 <div class="container ml-2" >
     <div class="row">
         <div class="col-md-7">
-            <h2>Mitarbeiter Table:</h2>
+            <h2>Mitarbeiter:</h2>
             <div class="table-container table-responsive" >
                 <table class="table table-bordered table-hover data-table" data-php-file="Mitarbeiter.php" id="data-table-2">
                     <thead  class="thead-dark">
@@ -423,10 +425,10 @@ $studio_array = $database->selectAllMitarbeiter($Mitarbeiter_ID, $Studio_ID, $Vo
                     <tbody>
                     <?php foreach ($studio_array as $Mitarbeiter) : ?>
                         <tr>
-                            <td contenteditable="true"><?php echo $Mitarbeiter['MITARBEITER_ID']; ?> </td>
-                            <td contenteditable="true"><?php echo $Mitarbeiter['STUDIO_ID']; ?>  </td>
-                            <td contenteditable="true"><?php echo $Mitarbeiter['VORNAME']; ?>  </td>
-                            <td contenteditable="true"><?php echo $Mitarbeiter['NACHNAME']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Mitarbeiter['MITARBEITER_ID']; ?> </td>
+                            <td contenteditable="false"><?php echo $Mitarbeiter['STUDIO_ID']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Mitarbeiter['VORNAME']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Mitarbeiter['NACHNAME']; ?>  </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -512,7 +514,7 @@ $studio_array = $database->selectAllMitarbeiter($Mitarbeiter_ID, $Studio_ID, $Vo
                     }
                 </style>
                 <div class="mt-3">
-                    <button id='submit2' type='submit' class="btn btn-info custom-button">
+                    <button id='submit14' type='submit' class="btn btn-info custom-button">
                         Search
                     </button>
                 </div>
@@ -550,12 +552,13 @@ $studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht
 <div class="container ml-2" >
     <div class="row">
         <div class="col-md-7">
-            <h2>Personal Trainer Table:</h2>
+            <h2>Personal Trainer:</h2>
             <div class="table-container table-responsive" >
                 <table class="table table-bordered table-hover data-table" data-php-file="PersonalTrainer.php" id="data-table-3">
                     <thead  class="thead-dark">
                     <tr>
                         <th scope="col">Mitarbeiter-ID</th>
+                        <th scope="col">Studio-ID</th>
                         <th scope="col">Geschlecht</th>
                         <th scope="col">Spezialisierung</th>
                     </tr>
@@ -570,9 +573,10 @@ $studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht
                     <tbody>
                     <?php foreach ($studio_array as $PersonalTrainer) : ?>
                         <tr>
-                            <td contenteditable="true"><?php echo $PersonalTrainer['MITARBEITER_ID']; ?> </td>
-                            <td contenteditable="true"><?php echo $PersonalTrainer['GESCHLECHT']; ?>  </td>
-                            <td contenteditable="true"><?php echo $PersonalTrainer['SPEZIALISIERUNG']; ?>  </td>
+                            <td contenteditable="false"><?php echo $PersonalTrainer['MITARBEITER_ID']; ?> </td>
+                            <td contenteditable="false"><?php echo $PersonalTrainer['STUDIO_ID']; ?> </td>
+                            <td contenteditable="false"><?php echo $PersonalTrainer['GESCHLECHT']; ?>  </td>
+                            <td contenteditable="false"><?php echo $PersonalTrainer['SPEZIALISIERUNG']; ?>  </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -684,7 +688,7 @@ $studio_array = $database->selectAllRezeptionist($Mitarbeiter_ID, $Arbeitszeiten
 <div class="container ml-2" >
     <div class="row">
         <div class="col-md-7">
-            <h2>Rezeptionist Table:</h2>
+            <h2>Rezeptionisten:</h2>
             <div class="table-container table-responsive" >
                 <table class="table table-bordered table-hover data-table" data-php-file="Rezeptionist.php" id="data-table-4">
                     <thead  class="thead-dark">
@@ -704,9 +708,9 @@ $studio_array = $database->selectAllRezeptionist($Mitarbeiter_ID, $Arbeitszeiten
                     <tbody>
                     <?php foreach ($studio_array as $Rezeptionist) : ?>
                         <tr>
-                            <td contenteditable="true"><?php echo $Rezeptionist['MITARBEITER_ID']; ?> </td>
-                            <td contenteditable="true"><?php echo $Rezeptionist['ARBEITSZEITEN']; ?>  </td>
-                            <td contenteditable="true"><?php echo $Rezeptionist['SPRICHTENGLISCH']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Rezeptionist['MITARBEITER_ID']; ?> </td>
+                            <td contenteditable="false"><?php echo $Rezeptionist['ARBEITSZEITEN']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Rezeptionist['SPRICHTENGLISCH']; ?>  </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -834,7 +838,7 @@ $studio_array = $database->selectAllKunde($Kundennummer, $Studio_ID, $Vorname, $
 <div class="container ml-2" >
     <div class="row">
         <div class="col-md-7">
-            <h2>Kunde Table:</h2>
+            <h2>Kunden:</h2>
             <div class="table-container table-responsive" >
                 <table class="table table-bordered table-hover data-table" data-php-file="Kunde.php" id="data-table-5">
                     <thead  class="thead-dark">
@@ -856,11 +860,11 @@ $studio_array = $database->selectAllKunde($Kundennummer, $Studio_ID, $Vorname, $
                     <tbody>
                     <?php foreach ($studio_array as $Kunde) : ?>
                         <tr>
-                            <td contenteditable="true"><?php echo $Kunde['KUNDENNUMMER']; ?> </td>
-                            <td contenteditable="true"><?php echo $Kunde['STUDIO_ID']; ?>  </td>
-                            <td contenteditable="true"><?php echo $Kunde['VORNAME']; ?>  </td>
-                            <td contenteditable="true"><?php echo $Kunde['NACHNAME']; ?>  </td>
-                            <td contenteditable="true"><?php echo $Kunde['GESCHLECHT']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Kunde['KUNDENNUMMER']; ?> </td>
+                            <td contenteditable="false"><?php echo $Kunde['STUDIO_ID']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Kunde['VORNAME']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Kunde['NACHNAME']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Kunde['GESCHLECHT']; ?>  </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -971,16 +975,201 @@ $studio_array = $database->selectAllKunde($Kundennummer, $Studio_ID, $Vorname, $
 </div>
 <br>
 <hr>
-<div class="container ml-2">
-    <h2>Membership Details</h2>
-        <form action="process.php" method="post">
-            <label for="customerID" class="form-label">Customer ID:</label>
-            <input id="customerID" type="number"  name="Kundennummer">
-            <button type="submit" class="btn btn-info custom-button">Get Details</button>
-        </form>
+
+
+<?php
+
+$Kundennummer = '';
+if (isset($_GET['Kundennummer'])) {
+    $Kundennummer = $_GET['Kundennummer'];
+}
+
+$Mitgliedschaftsnummer = '';
+if (isset($_GET['Mitgliedschaftsnummer'])) {
+    $Mitgliedschaftsnummer = $_GET['Mitgliedschaftsnummer'];
+}
+
+$Stufe = '';
+if (isset($_GET['Stufe'])) {
+    $Stufe = $_GET['Stufe'];
+}
+
+$Gueltigkeit = '';
+if (isset($_GET['Gueltigkeit'])) {
+    $Gueltigkeit= $_GET['Gueltigkeit'];
+}
+
+$Erstellungsdatum = '';
+if (isset($_GET['Erstellungsdatum'])) {
+    $Erstellungsdatum = $_GET['Erstellungsdatum'];
+}
+
+
+//Fetch data from database
+$studio_array = $database->selectAllMGs($Kundennummer, $Mitgliedschaftsnummer, $Stufe, $Gueltigkeit, $Erstellungsdatum);
+?>
+
+
+<div class="container ml-2" >
+    <div class="row">
+        <div class="col-md-7">
+            <h2>Mitgliedschaften:</h2>
+            <div class="table-container table-responsive" >
+                <table class="table table-bordered table-hover data-table" data-php-file="Mitgliedschaft.php" id="data-table-8">
+                    <thead  class="thead-dark">
+                    <tr>
+                        <th scope="col">Kundenummer</th>
+                        <th scope="col">Mitgliedschaftsnummer</th>
+                        <th scope="col">Mitgliedschafts-Stufe</th>
+                        <th scope="col">Gueltigkeit</th>
+                        <th scope="col">Erstellungsdatum</th>
+                    </tr>
+                    </thead>
+                    <style>
+                        .table-container{
+                            background-color: mintcream;
+                            max-height: 500px;
+                            overflow-y: auto;
+                        }
+                    </style>
+                    <tbody>
+                    <?php foreach ($studio_array as $MG) : ?>
+                        <tr>
+                            <td contenteditable="false"><?php echo $MG['KUNDENNUMMER']; ?>  </td>
+                            <td contenteditable="false"><?php echo $MG['MITGLIEDSCHAFTSNUMMER']; ?>  </td>
+                            <td contenteditable="false"><?php echo $MG['STUFE']; ?>  </td>
+                            <td contenteditable="false"><?php echo $MG['GUELTIGKEIT']; ?>  </td>
+                            <td contenteditable="false" class="date-cell"><?php echo date('d-m-Y', strtotime($MG['ERSTELLUNGSDATUM'])); ?>  </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <h2>Input: </h2>
+            <form method="post" action="Mitgliedschaft.php" class="row g-3">
+
+                <div class="col-md-10">
+                    <label for="KS_" class="form-label">Kundennummer:</label>
+                    <input id="KS_" name="Kundennummer" type="number" class="form-control">
+                </div>
+
+                <div class="col-md-10">
+                    <label for="MGS" class="form-label">Mitgliedschaftsnummer:</label>
+                    <input id="MGS" name="Mitgliedschaftsnummer" type="number" class="form-control">
+                </div>
+
+                <div class="col-md-10">
+                    <label for="Stufe" class="form-label">Mitgliedschafts-Stufe:</label>
+                    <select id="Stufe" name="Stufe" type="text" class="form-control">
+                        <option value="Bronze">Bronze</option>
+                        <option value="Silber">Silber</option>
+                        <option value="Gold">Gold</option>
+                    </select>
+                </div>
+
+
+                <div class="col-md-10">
+                    <label for="GU" class="form-label">Gültigkeit:</label>
+                    <select id="GU" name="Gueltigkeit" type="text" class="form-control input-md">
+                        <option value="gueltig">Gueltig</option>
+                        <option value="ungueltig">Ungueltig</option>
+                    </select>
+                </div>
+
+                <div class="col-md-10">
+                    <label for="ERST" class="form-label">Erstellungsdatum:</label>
+                    <input id="ERST" name="Erstellungsdatum" type="date" class="form-control input-md">
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-5">
+                        <button type="submit" name="addButton9"  class="btn btn-primary custom-button">
+                            Add
+                        </button>
+                    </div>
+                    <div class="col-md-5">
+                        <button type="submit" name="deleteButton10" class="btn btn-danger custom-button">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-2">
+            <h2>Search:</h2>
+            <form method="get" class="row g-3">
+
+                <div class=col-md-6">
+                    <label for="K_S" class="form-label">Kundennummer:</label>
+                    <input id="K_S" name="Kundennummer" type ="number" class="form-control input-md" value='<?php echo $Kundennummer; ?>'>
+                </div>
+
+                <div class=col-md-6">
+                    <label for="MGS_" class="form-label">Mitgliedschaftsnummer:</label>
+                    <input id="MGS_" name="Mitglidschaftsnummer" type="number" class="form-control input-md" value='<?php echo $Mitgliedschaftsnummer; ?>'>
+                </div>
+
+                <div class=col-md-6">
+                    <label for="MTGS" class="form-label">Mitgliedschafts-Stufe:</label>
+                    <select id="MTGS" name="Stufe" type="text" class="form-control input-md"  value='<?php echo $Stufe; ?>'>
+                        <option value="">All</option>
+                        <option value="Bronze">Bronze</option>
+                        <option value="Silber">Silber</option>
+                        <option value="Gold">Gold</option>
+                    </select>
+                </div>
+
+
+                <div class=col-md-6">
+                    <label for="GUS" class="form-label">Gültigkeit:</label>
+                    <select id="GUS" name="Gueltigkeit" type="text" class="form-control input-md"  value='<?php echo $Gueltigkeit; ?>'>
+                        <option value="">All</option>
+                        <option value="gueltig">Gueltig</option>
+                        <option value="ungueltig">Ungueltig</option>
+                    </select>
+                </div>
+
+                <div class=col-md-6">
+                    <label for="ED" class="form-label">Erstellungsdatum:</label>
+                    <input id="ED" name="Erstellungsdatum" type="date" class="form-control input-md"  value='<?php echo $Erstellungsdatum; ?>'>
+                </div>
+
+                <style>
+                    .custom-button {
+                        width: 118.033px;
+                        height: 62px;
+                        font-weight: 400; /* Set your desired font size */
+                        padding: 0.375rem 0.75rem;
+                    }
+                </style>
+
+                <div class="mt-3">
+                    <button id='submit10' type='submit' class="btn btn-info custom-button">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 <br>
 <hr>
+
+<div class="container ml-2">
+    <h2>Membership Details</h2>
+    <form action="process.php" method="post">
+        <label for="customerID" class="form-label">Customer ID:</label>
+        <input id="customerID" type="number"  name="Kundennummer">
+        <button type="submit" class="btn btn-info custom-button">Get Details</button>
+    </form>
+</div>
+<br>
+<hr>
+
 
 <?php
 
@@ -1035,10 +1224,10 @@ $studio_array = $database->selectAllCoacht($Mitarbeiter_ID, $Kundennummer, $Begi
                     <tbody>
                     <?php foreach ($studio_array as $Coacht) : ?>
                         <tr>
-                            <td contenteditable="true"><?php echo $Coacht['MITARBEITER_ID']; ?>  </td>
-                            <td contenteditable="true"><?php echo $Coacht['KUNDENNUMMER']; ?>  </td>
-                            <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['BEGINNZEIT'])->format('H:i:s y-m-d'); ?>  </td>
-                            <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['ENDZEIT'])->format('H:i:s y-m-d'); ?>  </td>
+                            <td contenteditable="false"><?php echo $Coacht['MITARBEITER_ID']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Coacht['KUNDENNUMMER']; ?>  </td>
+                            <td contenteditable="false" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['BEGINNZEIT'])->format('H:i:s y-m-d'); ?>  </td>
+                            <td contenteditable="false" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['ENDZEIT'])->format('H:i:s y-m-d'); ?>  </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -1159,7 +1348,7 @@ $studio_array = $database->selectAllBetreut($Mitarbeiter_ID, $Kundennummer, $Zei
 <div class="container ml-2" >
     <div class="row">
         <div class="col-md-7">
-            <h2>Betreut Table:</h2>
+            <h2>Betreuungen:</h2>
             <div class="table-container table-responsive" >
                 <table class="table table-bordered table-hover data-table" data-php-file="Betreut.php" id="data-table-7">
                     <thead  class="thead-dark">
@@ -1179,9 +1368,9 @@ $studio_array = $database->selectAllBetreut($Mitarbeiter_ID, $Kundennummer, $Zei
                     <tbody>
                     <?php foreach ($studio_array as $Betreut) : ?>
                         <tr>
-                            <td contenteditable="true"><?php echo $Betreut['MITARBEITER_ID']; ?>  </td>
-                            <td contenteditable="true"><?php echo $Betreut['KUNDENNUMMER']; ?>  </td>
-                            <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Betreut['ZEITPUNKT'])->format('H:i:s y-m-d'); ?>  </td>
+                            <td contenteditable="false"><?php echo $Betreut['MITARBEITER_ID']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Betreut['KUNDENNUMMER']; ?>  </td>
+                            <td contenteditable="false" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Betreut['ZEITPUNKT'])->format('H:i:s y-m-d'); ?>  </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -1287,9 +1476,9 @@ $studio_array = $database->selectAllMGSt($Stufe, $Monatskosten);
 <div class="container ml-2" >
     <div class="row">
         <div class="col-md-7">
-            <h2>Mitgliedschafts Stufe Table:</h2>
+            <h2>Mitgliedschafts Stufen:</h2>
             <div class="table-container table-responsive" >
-                <table class="table table-bordered table-hover data-table" data-php-file="MG_Stufe.php" id="data-table-8">
+                <table class="table table-bordered table-hover data-table" data-php-file="MG_Stufe.php" id="data-table-16">
                     <thead  class="thead-dark">
                     <tr>
                         <th scope="col">Mitgliedschafts_Stufe</th>
@@ -1306,8 +1495,8 @@ $studio_array = $database->selectAllMGSt($Stufe, $Monatskosten);
                     <tbody>
                     <?php foreach ($studio_array as $MG) : ?>
                         <tr>
-                            <td contenteditable="true"><?php echo $MG['STUFE']; ?>  </td>
-                            <td contenteditable="true"><?php echo $MG['MONATSKOSTEN']; ?>  </td>
+                            <td contenteditable="false"><?php echo $MG['STUFE']; ?>  </td>
+                            <td contenteditable="false"><?php echo $MG['MONATSKOSTEN']; ?>  </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -1371,7 +1560,7 @@ $studio_array = $database->selectAllMGSt($Stufe, $Monatskosten);
                     }
                 </style>
                 <div class="mt-3">
-                    <button id='submit10' type='submit' class="btn btn-info custom-button">
+                    <button id='submit11' type='submit' class="btn btn-info custom-button">
                         Search
                     </button>
                 </div>
@@ -1385,187 +1574,7 @@ $studio_array = $database->selectAllMGSt($Stufe, $Monatskosten);
 
 
 
-<?php
 
-$Kundennummer = '';
-if (isset($_GET['Kundennummer'])) {
-    $Kundennummer = $_GET['Kundennummer'];
-}
-
-$Mitgliedschaftsnummer = '';
-if (isset($_GET['Mitgliedschaftsnummer'])) {
-    $Mitgliedschaftsnummer = $_GET['Mitgliedschaftsnummer'];
-}
-
-$Stufe = '';
-if (isset($_GET['Stufe'])) {
-    $Stufe = $_GET['Stufe'];
-}
-
-$Gueltigkeit = '';
-if (isset($_GET['Gueltigkeit'])) {
-    $Gueltigkeit= $_GET['Gueltigkeit'];
-}
-
-$Erstellungsdatum = '';
-if (isset($_GET['Erstellungsdatum'])) {
-    $Erstellungsdatum = $_GET['Erstellungsdatum'];
-}
-
-
-//Fetch data from database
-$studio_array = $database->selectAllMGs($Kundennummer, $Mitgliedschaftsnummer, $Stufe, $Gueltigkeit, $Erstellungsdatum);
-?>
-
-
-<div class="container ml-2" >
-    <div class="row">
-        <div class="col-md-7">
-            <h2>Mitgliedschaften:</h2>
-            <div class="table-container table-responsive" >
-                <table class="table table-bordered table-hover data-table" data-php-file="Mitgliedschaft.php" id="data-table-8">
-                    <thead  class="thead-dark">
-                    <tr>
-                        <th scope="col">Kundenummer</th>
-                        <th scope="col">Mitgliedschaftsnummer</th>
-                        <th scope="col">Mitgliedschafts-Stufe</th>
-                        <th scope="col">Gueltigkeit</th>
-                        <th scope="col">Erstellungsdatum</th>
-                    </tr>
-                    </thead>
-                    <style>
-                        .table-container{
-                            background-color: mintcream;
-                            max-height: 500px;
-                            overflow-y: auto;
-                        }
-                    </style>
-                    <tbody>
-                    <?php foreach ($studio_array as $MG) : ?>
-                        <tr>
-                            <td contenteditable="true"><?php echo $MG['KUNDENNUMMER']; ?>  </td>
-                            <td contenteditable="true"><?php echo $MG['MITGLIEDSCHAFTSNUMMER']; ?>  </td>
-                            <td contenteditable="true"><?php echo $MG['STUFE']; ?>  </td>
-                            <td contenteditable="true"><?php echo $MG['GUELTIGKEIT']; ?>  </td>
-                            <td contenteditable="true" class="date-cell"><?php echo date('d-m-Y', strtotime($MG['ERSTELLUNGSDATUM'])); ?>  </td>
-                        </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <h2>Input: </h2>
-            <form method="post" action="Mitgliedschaft.php" class="row g-3">
-
-                <div class="col-md-10">
-                    <label for="KS_" class="form-label">Kundennummer:</label>
-                    <input id="KS_" name="Kundennummer" type="number" class="form-control">
-                </div>
-
-                <div class="col-md-10">
-                    <label for="MGS" class="form-label">Mitgliedschaftsnummer:</label>
-                    <input id="MGS" name="Mitgliedschaftsnummer" type="number" class="form-control">
-                </div>
-
-                <div class="col-md-10">
-                    <label for="Stufe" class="form-label">Mitgliedschafts-Stufe:</label>
-                    <select id="Stufe" name="Stufe" type="text" class="form-control">
-                        <option value="Bronze">Bronze</option>
-                        <option value="Silber">Silber</option>
-                        <option value="Gold">Gold</option>
-                    </select>
-                </div>
-
-
-                <div class="col-md-10">
-                    <label for="GU" class="form-label">Gültigkeit:</label>
-                    <select id="GU" name="Gueltigkeit" type="text" class="form-control input-md">
-                        <option value="gueltig">Gueltig</option>
-                        <option value="ungueltig">Ungueltig</option>
-                    </select>
-                </div>
-
-                <div class="col-md-10">
-                    <label for="ERST" class="form-label">Erstellungsdatum:</label>
-                    <input id="ERST" name="Erstellungsdatum" type="date" class="form-control input-md">
-                </div>
-
-                <div class="row mt-3">
-                    <div class="col-md-5">
-                        <button type="submit" name="addButton9"  class="btn btn-primary custom-button">
-                            Add
-                        </button>
-                    </div>
-                    <div class="col-md-5">
-                        <button type="submit" name="deleteButton10" class="btn btn-danger custom-button">
-                            Delete
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <div class="col-md-2">
-            <h2>Search:</h2>
-            <form method="get" class="row g-3">
-
-                <div class=col-md-6">
-                    <label for="K_S" class="form-label">Kundennummer:</label>
-                    <input id="K_S" name="Kundennummer" type ="number" class="form-control input-md" value='<?php echo $Kundennummer; ?>'>
-                </div>
-
-                <div class=col-md-6">
-                    <label for="MGS_" class="form-label">Mitgliedschaftsnummer:</label>
-                    <input id="MGS_" name="Mitglidschaftsnummer" type="number" class="form-control input-md" value='<?php echo $Mitgliedschaftsnummer; ?>'>
-                </div>
-
-                <div class=col-md-6">
-                    <label for="MTGS" class="form-label">Mitgliedschafts-Stufe:</label>
-                    <select id="MTGS" name="Stufe" type="text" class="form-control input-md"  value='<?php echo $Stufe; ?>'>
-                        <option value="">All</option>
-                        <option value="Bronze">Bronze</option>
-                        <option value="Silber">Silber</option>
-                        <option value="Gold">Gold</option>
-                    </select>
-                </div>
-
-
-                <div class=col-md-6">
-                    <label for="GUS" class="form-label">Gültigkeit:</label>
-                    <select id="GUS" name="Gueltigkeit" type="text" class="form-control input-md"  value='<?php echo $Gueltigkeit; ?>'>
-                        <option value="">All</option>
-                        <option value="gueltig">Gueltig</option>
-                        <option value="ungueltig">Ungueltig</option>
-                    </select>
-                </div>
-
-                <div class=col-md-6">
-                    <label for="ED" class="form-label">Erstellungsdatum:</label>
-                    <input id="ED" name="Erstellungsdatum" type="date" class="form-control input-md"  value='<?php echo $Erstellungsdatum; ?>'>
-                </div>
-
-                <style>
-                    .custom-button {
-                        width: 118.033px;
-                        height: 62px;
-                        font-weight: 400; /* Set your desired font size */
-                        padding: 0.375rem 0.75rem;
-                    }
-                </style>
-
-                <div class="mt-3">
-                    <button id='submit10' type='submit' class="btn btn-info custom-button">
-                        Search
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<br>
-<hr>
 
 <?php
 
@@ -1598,12 +1607,12 @@ $studio_array = $database->selectAllKons($Mitarbeiter_ID, $Kundennummer, $Mitgli
 <div class="container ml-2" >
     <div class="row">
         <div class="col-md-7">
-            <h2>Kontrolliert Table:</h2>
+            <h2>Kontrollen:</h2>
             <div class="table-container table-responsive" >
                 <table class="table table-bordered table-hover data-table" data-php-file="Kontrolliert.php" id="data-table-9">
                     <thead  class="thead-dark">
                     <tr>
-                        <th scope="col">Mitarbeiter_ID</th>
+                        <th scope="col">Mitarbeiter-ID</th>
                         <th scope="col">Kundennummer</th>
                         <th scope="col">Mitgliedschaftsnummer</th>
                         <th scope="col">Zeitpunkt</th>
@@ -1619,10 +1628,10 @@ $studio_array = $database->selectAllKons($Mitarbeiter_ID, $Kundennummer, $Mitgli
                     <tbody>
                     <?php foreach ($studio_array as $Kons) : ?>
                         <tr>
-                            <td contenteditable="true"><?php echo $Kons['MITARBEITER_ID']; ?>  </td>
-                            <td contenteditable="true"><?php echo $Kons['KUNDENNUMMER']; ?>  </td>
-                            <td contenteditable="true"><?php echo $Kons['MITGLIEDSCHAFTSNUMMER']; ?>  </td>
-                            <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Kons['ZEITPUNKT'])->format('H:i:s y-m-d'); ?>  </td>
+                            <td contenteditable="false"><?php echo $Kons['MITARBEITER_ID']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Kons['KUNDENNUMMER']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Kons['MITGLIEDSCHAFTSNUMMER']; ?>  </td>
+                            <td contenteditable="false" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Kons['ZEITPUNKT'])->format('H:i:s y-m-d'); ?>  </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -1704,7 +1713,7 @@ $studio_array = $database->selectAllKons($Mitarbeiter_ID, $Kundennummer, $Mitgli
                 </style>
 
                 <div class="mt-3">
-                    <button id='submit11' type='submit' class="btn btn-info custom-button">
+                    <button id='submit12' type='submit' class="btn btn-info custom-button">
                         Search
                     </button>
                 </div>
@@ -1741,13 +1750,13 @@ $studio_array = $database->selectAllTraining($Kundennummer1, $Kundennummer2, $Ze
 <div class="container ml-2" >
     <div class="row">
         <div class="col-md-7">
-            <h2>Training Table:</h2>
+            <h2>Trainings:</h2>
             <div class="table-container table-responsive" >
                 <table class="table table-bordered table-hover data-table" data-php-file="Trainiert_Mit.php" id="data-table-10">
                     <thead  class="thead-dark">
                     <tr>
-                        <th scope="col">Kundennummer1</th>
-                        <th scope="col">Kundennummer2</th>
+                        <th scope="col">Kunde 1</th>
+                        <th scope="col">Kunde 2</th>
                         <th scope="col">Zeitpunkt</th>
                     </tr>
                     </thead>
@@ -1761,9 +1770,9 @@ $studio_array = $database->selectAllTraining($Kundennummer1, $Kundennummer2, $Ze
                     <tbody>
                     <?php foreach ($studio_array as $Train) : ?>
                         <tr>
-                            <td contenteditable="true"><?php echo $Train['KUNDENNUMMER1']; ?>  </td>
-                            <td contenteditable="true"><?php echo $Train['KUNDENNUMMER2']; ?>  </td>
-                            <td contenteditable="true" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Train['ZEITPUNKT'])->format('H:i:s y-m-d'); ?>  </td>
+                            <td contenteditable="false"><?php echo $Train['KUNDENNUMMER1']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Train['KUNDENNUMMER2']; ?>  </td>
+                            <td contenteditable="false" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Train['ZEITPUNKT'])->format('H:i:s y-m-d'); ?>  </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -1834,7 +1843,7 @@ $studio_array = $database->selectAllTraining($Kundennummer1, $Kundennummer2, $Ze
                 </style>
 
                 <div class="mt-3">
-                    <button id='submit12' type='submit' class="btn btn-info custom-button">
+                    <button id='submit13' type='submit' class="btn btn-info custom-button">
                         Search
                     </button>
                 </div>
