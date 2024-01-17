@@ -120,6 +120,7 @@ class DatabaseHelper
         if($Geschlecht != ''){
             $sql .= " AND upper(PERSONAL_TRAINER.GESCHLECHT) = upper('{$Geschlecht}')";
         }
+
         /*
         $sql = "SELECT * FROM PERSONAL_TRAINER
             WHERE MITARBEITER_ID LIKE '%{$Mitarbeiter_ID}%'
@@ -890,6 +891,8 @@ class DatabaseHelper
             'GUELTIGKEIT', 'ERSTELLUNGSDATUM'];
 
         $kund_id = $rowId[0];
+        $mg_id = $rowId[1];
+
 
 
         if (!isset($columns[$column])) {
@@ -907,10 +910,12 @@ class DatabaseHelper
             $endValue = "'$value'";
         }
 
-        echo $endValue;
-
 
         $sql = "UPDATE MITGLIEDSCHAFT SET {$columns[$column]} = {$endValue} WHERE KUNDENNUMMER = :id";
+
+        if('MITGLIEDSCHAFTSNUMMER' !== $columns[$column]) {
+            $sql .= " AND MITGLIEDSCHAFTSNUMMER = '{$mg_id}'";
+        }
 
 
         $stmt = oci_parse($this->conn, $sql);

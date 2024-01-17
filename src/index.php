@@ -100,319 +100,53 @@
 </script>
 
 
-
 <?php
 
-// Include DatabaseHelper.php file
 require_once('DatabaseHelper.php');
 
 // Instantiate DatabaseHelper class
 $database = new DatabaseHelper();
 
-// Get parameter 'person_id', 'surname' and 'name' from GET Request
-// Btw. you can see the parameters in the URL if they are set
 
-$Studio_ID = '';
-if (isset($_GET['Studio_ID'])) {
-    $Studio_ID  = $_GET['Studio_ID'];
-}
-
-$F_Name = '';
-if (isset($_GET['F_Name'])) {
-    $F_Name = $_GET['F_Name'];
-}
-
-$Strasse = '';
-if (isset($_GET['Strasse'])) {
-    $Strasse = $_GET['Strasse'];
-}
-
-
-$Plz = '';
-if (isset($_GET['Plz'])) {
-    $Plz = $_GET['Plz'];
-}
-
-
-
-//Fetch data from database
-$studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Plz, $Strasse);
-?>
-
-
-
-<div class="container ml-2" >
-    <div class="row">
-        <div class="col-md-7">
-            <h2>Fitnessstudios:</h2>
-            <div class="table-container table-responsive">
-                <table class="table table-bordered table-hover data-table" data-php-file="Fitnessstudio.php" id="data-table-1">
-                    <thead  class="thead-dark">
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Plz</th>
-                            <th scope="col">Strasse</th>
-                        </tr>
-                    </thead>
-                    <style>
-                        .table-container{
-                            background-color: mintcream;
-                            max-height: 500px;
-                            overflow-y: auto;
-                        }
-                    </style>
-                    <tbody>
-                        <?php foreach ($studio_array as $Fitnessstudio) : ?>
-                            <tr>
-                                <td contenteditable="false"><?php echo $Fitnessstudio['STUDIO_ID']; ?> </td>
-                                <td contenteditable="false"><?php echo $Fitnessstudio['F_NAME']; ?>  </td>
-                                <td contenteditable="false"><?php echo $Fitnessstudio['PLZ']; ?>  </td>
-                                <td contenteditable="false"><?php echo $Fitnessstudio['STRASSE']; ?>  </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <h2>Input: </h2>
-            <form method="post" action="Fitnessstudio.php" class="row g-3">
-
-                <div class="col-md-10">
-                    <label for="new_ID" class="form-label">ID:</label>
-                    <input id="new_ID" name="Studio_ID" type="number" min="1" class="form-control">
-                </div>
-
-                <div class="col-md-10">
-                    <label for="new_F_Name" class="form-label">Name:</label>
-                    <input id="new_F_Name" name="F_Name" type="text" maxlength="20" class="form-control">
-                </div>
-
-                <div class="col-md-10">
-                    <label for="new_Platz" class="form-label">Plz:</label>
-                    <input id="new_Platz" name="Plz" type="number" class="form-control">
-                </div>
-
-                <div class="col-md-10">
-                    <label for="new_Strasse" class="form-label">Strasse:</label>
-                    <input id="new_Strasse" name="Strasse" type="text" maxlength="20" class="form-control">
-                </div>
-
-                <div class="row mt-3">
-                    <div class="col-md-5">
-                        <button type="submit" name="addButton1"  class="btn btn-primary custom-button">
-                            Add
-                        </button>
-                    </div>
-                    <div class="col-md-5">
-                        <button type="submit" name="deleteButton1" class="btn btn-danger custom-button ">
-                            Delete
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-2">
-            <h2>Search:</h2>
-            <form method="get" class="row g-3">
-                <div class=col-md-10">
-                    <label for="Studio_ID" class="form-label">ID:</label>
-                    <input id="Studio_ID" name="Studio_ID" type="number" value='<?php echo $Studio_ID; ?>' min="1" class="form-control">
-                </div>
-
-                <div class=col-md-10">
-                    <label for="F_Name" class="form-label">Name:</label>
-                    <input id="F_Name" name="F_Name" type="text" value='<?php echo $F_Name; ?>'
-                           maxlength="20" class="form-control">
-                </div>
-
-                <div class=col-md-10">
-                    <label for="Plz" class="form-label">Plz:</label>
-                    <input id="Plz" name="Plz" type="number" value='<?php echo $Plz; ?>'
-                           maxlength="20" class="form-control">
-                </div>
-
-                <div class=col-md-10">
-                    <label for="Strasse" class="form-label">Strasse:</label>
-                    <input id="Strasse" name="Strasse" type="text" value='<?php echo $Strasse; ?>'
-                           maxlength="20" class="form-control">
-                </div>
-                <style>
-                    .custom-button {
-                        width: 118.033px;
-                        height: 62px;
-                        font-weight: 400; /* Set your desired font size */
-                        padding: 0.375rem 0.75rem;
-                    }
-                </style>
-                <div class="mt-3">
-                    <button id='submit6' type='submit' class="btn btn-info custom-button">
-                        Search
-                    </button>
-
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<br>
-<hr>
-
-
-<?php
-
-// Include DatabaseHelper.php file
-require_once('DatabaseHelper.php');
-
-$database = new DatabaseHelper();
-
-$Plz = '';
-if (isset($_GET['Plz'])) {
-    $Plz = $_GET['Plz'];
-}
-
-$Ort = '';
-if (isset($_GET['Ort'])) {
-    $Ort = $_GET['Ort'];
-}
-
-
-//Fetch data from database
-$studio_array = $database->selectAllPlz($Plz, $Ort);
-?>
-
-<div class="container ml-2" >
-    <div class="row">
-        <div class="col-md-7">
-            <h2>Postleitzahlen:</h2>
-            <div class="table-container table-responsive">
-                <table class="table table-bordered table-hover data-table" data-php-file="Plz.php" id="data-table-15">
-                    <thead  class="thead-dark">
-                    <tr>
-                        <th scope="col">Plz</th>
-                        <th scope="col">Ort</th>
-                    </tr>
-                    </thead>
-                    <style>
-                        .table-container{
-                            background-color: mintcream;
-                            max-height: 500px;
-                            overflow-y: auto;
-                        }
-                    </style>
-                    <tbody>
-                    <?php foreach ($studio_array as $Plz) : ?>
-                        <tr>
-                            <td contenteditable="false"><?php echo $Plz['PLZ']; ?> </td>
-                            <td contenteditable="false"><?php echo $Plz['ORT']; ?>  </td>
-                        </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <h2>Input: </h2>
-            <form method="post" action="Plz.php" class="row g-3">
-
-                <div class="col-md-10">
-                    <label for="new_Platzs" class="form-label">Plz:</label>
-                    <input id="new_Platzs" name="Plz" type="number" class="form-control">
-                </div>
-
-                <div class="col-md-10">
-                    <label for="Ort" class="form-label">Ort:</label>
-                    <input id="Ort" name="Ort" type="text" maxlength="20" class="form-control">
-                </div>
-
-                <div class="row mt-3">
-                    <div class="col-md-5">
-                        <button type="submit" name="addButton15"  class="btn btn-primary custom-button">
-                            Add
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-2">
-            <h2>Search:</h2>
-            <form method="get" class="row g-3">
-
-                <div class=col-md-10">
-                    <label for="Plz" class="form-label">Plz:</label>
-                    <input id="Plz" name="Plz" type="number" value='<?php echo $Plz; ?>'
-                           maxlength="20" class="form-control">
-                </div>
-
-                <div class=col-md-10">
-                    <label for="Ort_" class="form-label">Ort:</label>
-                    <input id="Ort_" name="Ort" type="text" value='<?php echo $Ort; ?>'
-                           maxlength="20" class="form-control">
-                </div>
-
-                <style>
-                    .custom-button {
-                        width: 118.033px;
-                        height: 62px;
-                        font-weight: 400; /* Set your desired font size */
-                        padding: 0.375rem 0.75rem;
-                    }
-                </style>
-                <div class="mt-3">
-                    <button id='submit2' type='submit' class="btn btn-info custom-button">
-                        Search
-                    </button>
-
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<br>
-<hr>
-
-<?php
 $Mitarbeiter_ID = '';
 if (isset($_GET['Mitarbeiter_ID'])) {
-    $Mitarbeiter_ID  = $_GET['Mitarbeiter_ID'];
+    $Mitarbeiter_ID = $_GET['Mitarbeiter_ID'];
 }
 
-$Studio_ID= '';
-if (isset($_GET['Studio_ID'])) {
-    $Studio_ID = $_GET['Studio_ID'];
+$Kundennummer = '';
+if (isset($_GET['Kundennummer'])) {
+    $Kundennummer = $_GET['Kundennummer'];
 }
 
-$Vorname = '';
-if (isset($_GET['Vorname'])) {
-    $Vorname = $_GET['Vorname'];
+
+$Beginnzeit = '';
+if (isset($_GET['Beginnzeit'])) {
+    $Beginnzeit  = $_GET['Beginnzeit'];
 }
 
-$Nachname = '';
-if (isset($_GET['Nachname'])) {
-    $Nachname = $_GET['Nachname'];
+$Endzeit = '';
+if (isset($_GET['Endzeit'])) {
+    $Endzeit = $_GET['Endzeit'];
 }
+
 
 
 //Fetch data from database
-$studio_array = $database->selectAllMitarbeiter($Mitarbeiter_ID, $Studio_ID, $Vorname, $Nachname);
+$studio_array = $database->selectAllCoacht($Mitarbeiter_ID, $Kundennummer, $Beginnzeit, $Endzeit);
 ?>
-
 
 <div class="container ml-2" >
     <div class="row">
         <div class="col-md-7">
-            <h2>Mitarbeiter:</h2>
+            <h2>Coaching Termine:</h2>
             <div class="table-container table-responsive" >
-                <table class="table table-bordered table-hover data-table" data-php-file="Mitarbeiter.php" id="data-table-2">
+                <table class="table table-bordered table-hover data-table" data-php-file="Coacht.php" id="data-table-6">
                     <thead  class="thead-dark">
                     <tr>
                         <th scope="col">Mitarbeiter-ID</th>
-                        <th scope="col">Studio-ID</th>
-                        <th scope="col">Vorname</th>
-                        <th scope="col">Nachname</th>
+                        <th scope="col">Kundennummer</th>
+                        <th scope="col">Beginnzeit</th>
+                        <th scope="col">Endzeit</th>
                     </tr>
                     </thead>
                     <style>
@@ -423,12 +157,12 @@ $studio_array = $database->selectAllMitarbeiter($Mitarbeiter_ID, $Studio_ID, $Vo
                         }
                     </style>
                     <tbody>
-                    <?php foreach ($studio_array as $Mitarbeiter) : ?>
+                    <?php foreach ($studio_array as $Coacht) : ?>
                         <tr>
-                            <td contenteditable="false"><?php echo $Mitarbeiter['MITARBEITER_ID']; ?> </td>
-                            <td contenteditable="false"><?php echo $Mitarbeiter['STUDIO_ID']; ?>  </td>
-                            <td contenteditable="false"><?php echo $Mitarbeiter['VORNAME']; ?>  </td>
-                            <td contenteditable="false"><?php echo $Mitarbeiter['NACHNAME']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Coacht['MITARBEITER_ID']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Coacht['KUNDENNUMMER']; ?>  </td>
+                            <td contenteditable="false" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['BEGINNZEIT'])->format('H:i:s y-m-d'); ?>  </td>
+                            <td contenteditable="false" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['ENDZEIT'])->format('H:i:s y-m-d'); ?>  </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -438,40 +172,37 @@ $studio_array = $database->selectAllMitarbeiter($Mitarbeiter_ID, $Studio_ID, $Vo
 
         <div class="col-md-3">
             <h2>Input: </h2>
-            <form method="post" action="Mitarbeiter.php" class="row g-3">
+            <form method="post" action="Coacht.php" class="row g-3">
 
                 <div class="col-md-10">
-                    <label for="new_ID" class="form-label">Mitarbeiter-ID:</label>
-                    <input id="new_ID" name="Mitarbeiter_ID" type="number" class="form-control">
+                    <label for="M_IDS" class="form-label">Mitarbeiter-ID:</label>
+                    <input id="M_IDS" name="Mitarbeiter_ID" type="number" class="form-control">
                 </div>
-                <br>
 
                 <div class="col-md-10">
-                    <label for="new_F_ID" class="form-label">Studio-ID:</label>
-                    <input id="new_F_ID" name="Studio_ID" type="number" min="1" class="form-control">
+                    <label for="K_IDS" class="form-label">Kundennummer:</label>
+                    <input id="K_IDS" name="Kundennummer" type="number" class="form-control">
                 </div>
-                <br>
 
                 <div class="col-md-10">
-                    <label for="new_Vorname" class="form-label">Vorname:</label>
-                    <input id="new_Vorname" name="Vorname" type="text" maxlength="20" class="form-control">
+                    <label for="Beginnzeit" class="form-label">Beginnzeit:</label>
+                    <input id="Beginnzeit" name="Beginnzeit" type="datetime-local" class="form-control">
                 </div>
-                <br>
 
                 <div class="col-md-10">
-                    <label for="new_Nachname" class="form-label">Nachname:</label>
-                    <input id="new_Nachname" name="Nachname" type="text" maxlength="20" class="form-control">
+                    <label for="Endzeit" class="form-label">Endzeit:</label>
+                    <input id="Endzeit" name="Endzeit" type="datetime-local" class="form-control">
                 </div>
-                <br>
+
 
                 <div class="row mt-3">
                     <div class="col-md-5">
-                        <button type="submit" name="addButton2"  class="btn btn-primary custom-button">
+                        <button type="submit" name="addButton7"  class="btn btn-primary custom-button">
                             Add
                         </button>
                     </div>
                     <div class="col-md-5">
-                        <button type="submit" name="deleteButton2" class="btn btn-danger custom-button">
+                        <button type="submit" name="deleteButton8" class="btn btn-danger custom-button">
                             Delete
                         </button>
                     </div>
@@ -483,26 +214,25 @@ $studio_array = $database->selectAllMitarbeiter($Mitarbeiter_ID, $Studio_ID, $Vo
             <h2>Search:</h2>
             <form method="get" class="row g-3">
 
-                <div class=col-md-6">
-                    <label for="Mitarbeiter_ID" class="form-label">Mitarbeiter-ID:</label>
-                    <input id="Mitarbeiter_ID" name="Mitarbeiter_ID"  class="form-control input-md"  type="number" value='<?php echo $Mitarbeiter_ID; ?>'>
-                </div>
 
                 <div class=col-md-6">
-                    <label for="Studio_ID" class="form-label">Studio-ID:</label>
-                    <input id="Studio_ID" name="Studio_ID" type="number" class="form-control input-md" value='<?php echo $Studio_ID; ?>'>
+                    <label for="_Mitarbeiter-IDs_" class="form-label">Mitarbeiter-ID:</label>
+                    <input id="_Mitarbeiter-IDs_" name="Mitarbeiter_ID" type ="number" class="form-control input-md" value='<?php echo $Mitarbeiter_ID; ?>'>
                 </div>
 
-                <div>
-                    <label for="V_name" class="form-label">Vorname:</label>
-                    <input id="V_name" name="Vorname" type ="text" class="form-control input-md" value='<?php echo $Vorname; ?>'
-                           maxlength="20">
+                <div class=col-md-6">
+                    <label for="_Kundennummers" class="form-label">Kundennummer:</label>
+                    <input id="_Kundennummers" name="Kundennummer" type="number" class="form-control input-md" value='<?php echo $Kundennummer; ?>'>
                 </div>
 
-                <div>
-                    <label for="N_name" class="form-label">Nachname:</label>
-                    <input id="N_name" name="Nachname" type="text" class="form-control input-md" value='<?php echo $Nachname; ?>'
-                           maxlength="20">
+                <div class=col-md-6">
+                    <label for="_Beginnzeit" class="form-label">Beginnezeit:</label>
+                    <input id="_Beginnzeit" name="Beginnzeit" type="datetime-local" class="form-control input-md"  value='<?php echo $Beginnzeit; ?>'>
+                </div>
+
+                <div class=col-md-6">
+                    <label for="_Endzeit" class="form-label">Endzeit:</label>
+                    <input id="_Endzeit" name="Endzeit" type="datetime-local" class="form-control input-md" value='<?php echo $Endzeit; ?>'>
                 </div>
 
                 <style>
@@ -513,8 +243,9 @@ $studio_array = $database->selectAllMitarbeiter($Mitarbeiter_ID, $Studio_ID, $Vo
                         padding: 0.375rem 0.75rem;
                     }
                 </style>
+
                 <div class="mt-3">
-                    <button id='submit14' type='submit' class="btn btn-info custom-button">
+                    <button id='submit8' type='submit' class="btn btn-info custom-button">
                         Search
                     </button>
                 </div>
@@ -524,6 +255,140 @@ $studio_array = $database->selectAllMitarbeiter($Mitarbeiter_ID, $Studio_ID, $Vo
 </div>
 <br>
 <hr>
+
+
+<?php
+
+$Mitarbeiter_ID = '';
+if (isset($_GET['Mitarbeiter_ID'])) {
+    $Mitarbeiter_ID = $_GET['Mitarbeiter_ID'];
+}
+
+$Kundennummer = '';
+if (isset($_GET['Kundennummer'])) {
+    $Kundennummer = $_GET['Kundennummer'];
+}
+
+$Zeitpunkt = '';
+if (isset($_GET['Zeitpunkt'])) {
+    $Zeitpunkt = $_GET['Zeitpunkt'];
+}
+
+//Fetch data from database
+$studio_array = $database->selectAllBetreut($Mitarbeiter_ID, $Kundennummer, $Zeitpunkt);
+?>
+
+
+<div class="container ml-2" >
+    <div class="row">
+        <div class="col-md-7">
+            <h2>Betreuungen:</h2>
+            <div class="table-container table-responsive" >
+                <table class="table table-bordered table-hover data-table" data-php-file="Betreut.php" id="data-table-7">
+                    <thead  class="thead-dark">
+                    <tr>
+                        <th scope="col">Mitarbeiter-ID</th>
+                        <th scope="col">Kundennummer</th>
+                        <th scope="col">Zeitpunkt</th>
+                    </tr>
+                    </thead>
+                    <style>
+                        .table-container{
+                            background-color: mintcream;
+                            max-height: 500px;
+                            overflow-y: auto;
+                        }
+                    </style>
+                    <tbody>
+                    <?php foreach ($studio_array as $Betreut) : ?>
+                        <tr>
+                            <td contenteditable="false"><?php echo $Betreut['MITARBEITER_ID']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Betreut['KUNDENNUMMER']; ?>  </td>
+                            <td contenteditable="false" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Betreut['ZEITPUNKT'])->format('H:i:s y-m-d'); ?>  </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <h2>Input: </h2>
+            <form method="post" action="Betreut.php" class="row g-3">
+
+                <div class="col-md-10">
+                    <label for="M_IDS" class="form-label">Mitarbeiter-ID:</label>
+                    <input id="M_IDS" name="Mitarbeiter_ID" type="number" class="form-control">
+                </div>
+
+                <div class="col-md-10">
+                    <label for="K_IDS" class="form-label">Kundennummer:</label>
+                    <input id="K_IDS" name="Kundennummer" type="number" class="form-control">
+                </div>
+
+                <div class="col-md-10">
+                    <label for="Zeitpunkt" class="form-label">Zeitpunkt:</label>
+                    <input id="Zeitpunkt" name="Zeitpunkt" type="datetime-local" class="form-control">
+                </div>
+
+
+                <div class="row mt-3">
+                    <div class="col-md-5">
+                        <button type="submit" name="addButton8"  class="btn btn-primary custom-button">
+                            Add
+                        </button>
+                    </div>
+                    <div class="col-md-5">
+                        <button type="submit" name="deleteButton9" class="btn btn-danger custom-button">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-2">
+            <h2>Search:</h2>
+            <form method="get" class="row g-3">
+
+
+                <div class=col-md-6">
+                    <label for="_Mitarbeiter-IDs__" class="form-label">Mitarbeiter-ID:</label>
+                    <input id="_Mitarbeiter-IDs__" name="Mitarbeiter_ID" type ="number" class="form-control input-md" value='<?php echo $Mitarbeiter_ID; ?>'>
+                </div>
+
+                <div class=col-md-6">
+                    <label for="_Kundennummers_" class="form-label">Kundennummer:</label>
+                    <input id="_Kundennummers_" name="Kundennummer" type="number" class="form-control input-md" value='<?php echo $Kundennummer; ?>'>
+                </div>
+
+                <div class=col-md-6">
+                    <label for="_Zeitpunkt" class="form-label">Zeitpunkt:</label>
+                    <input id="_Zeitpunkt" name="Beginnzeit" type="datetime-local" class="form-control input-md"  value='<?php echo $Zeitpunkt; ?>'>
+                </div>
+
+                <style>
+                    .custom-button {
+                        width: 118.033px;
+                        height: 62px;
+                        font-weight: 400; /* Set your desired font size */
+                        padding: 0.375rem 0.75rem;
+                    }
+                </style>
+
+                <div class="mt-3">
+                    <button id='submit9' type='submit' class="btn btn-info custom-button">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+<hr>
+
+
 
 
 
@@ -801,6 +666,158 @@ $studio_array = $database->selectAllRezeptionist($Mitarbeiter_ID, $Arbeitszeiten
 <br>
 <hr>
 
+<?php
+$Mitarbeiter_ID = '';
+if (isset($_GET['Mitarbeiter_ID'])) {
+    $Mitarbeiter_ID  = $_GET['Mitarbeiter_ID'];
+}
+
+$Studio_ID= '';
+if (isset($_GET['Studio_ID'])) {
+    $Studio_ID = $_GET['Studio_ID'];
+}
+
+$Vorname = '';
+if (isset($_GET['Vorname'])) {
+    $Vorname = $_GET['Vorname'];
+}
+
+$Nachname = '';
+if (isset($_GET['Nachname'])) {
+    $Nachname = $_GET['Nachname'];
+}
+
+
+//Fetch data from database
+$studio_array = $database->selectAllMitarbeiter($Mitarbeiter_ID, $Studio_ID, $Vorname, $Nachname);
+?>
+
+
+<div class="container ml-2" >
+    <div class="row">
+        <div class="col-md-7">
+            <h2>Mitarbeiter:</h2>
+            <div class="table-container table-responsive" >
+                <table class="table table-bordered table-hover data-table" data-php-file="Mitarbeiter.php" id="data-table-2">
+                    <thead  class="thead-dark">
+                    <tr>
+                        <th scope="col">Mitarbeiter-ID</th>
+                        <th scope="col">Studio-ID</th>
+                        <th scope="col">Vorname</th>
+                        <th scope="col">Nachname</th>
+                    </tr>
+                    </thead>
+                    <style>
+                        .table-container{
+                            background-color: mintcream;
+                            max-height: 500px;
+                            overflow-y: auto;
+                        }
+                    </style>
+                    <tbody>
+                    <?php foreach ($studio_array as $Mitarbeiter) : ?>
+                        <tr>
+                            <td contenteditable="false"><?php echo $Mitarbeiter['MITARBEITER_ID']; ?> </td>
+                            <td contenteditable="false"><?php echo $Mitarbeiter['STUDIO_ID']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Mitarbeiter['VORNAME']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Mitarbeiter['NACHNAME']; ?>  </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <h2>Input: </h2>
+            <form method="post" action="Mitarbeiter.php" class="row g-3">
+
+                <div class="col-md-10">
+                    <label for="new_ID" class="form-label">Mitarbeiter-ID:</label>
+                    <input id="new_ID" name="Mitarbeiter_ID" type="number" class="form-control">
+                </div>
+                <br>
+
+                <div class="col-md-10">
+                    <label for="new_F_ID" class="form-label">Studio-ID:</label>
+                    <input id="new_F_ID" name="Studio_ID" type="number" min="1" class="form-control">
+                </div>
+                <br>
+
+                <div class="col-md-10">
+                    <label for="new_Vorname" class="form-label">Vorname:</label>
+                    <input id="new_Vorname" name="Vorname" type="text" maxlength="20" class="form-control">
+                </div>
+                <br>
+
+                <div class="col-md-10">
+                    <label for="new_Nachname" class="form-label">Nachname:</label>
+                    <input id="new_Nachname" name="Nachname" type="text" maxlength="20" class="form-control">
+                </div>
+                <br>
+
+                <div class="row mt-3">
+                    <div class="col-md-5">
+                        <button type="submit" name="addButton2"  class="btn btn-primary custom-button">
+                            Add
+                        </button>
+                    </div>
+                    <div class="col-md-5">
+                        <button type="submit" name="deleteButton2" class="btn btn-danger custom-button">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-2">
+            <h2>Search:</h2>
+            <form method="get" class="row g-3">
+
+                <div class=col-md-6">
+                    <label for="Mitarbeiter_ID" class="form-label">Mitarbeiter-ID:</label>
+                    <input id="Mitarbeiter_ID" name="Mitarbeiter_ID"  class="form-control input-md"  type="number" value='<?php echo $Mitarbeiter_ID; ?>'>
+                </div>
+
+                <div class=col-md-6">
+                    <label for="Studio_ID" class="form-label">Studio-ID:</label>
+                    <input id="Studio_ID" name="Studio_ID" type="number" class="form-control input-md" value='<?php echo $Studio_ID; ?>'>
+                </div>
+
+                <div>
+                    <label for="V_name" class="form-label">Vorname:</label>
+                    <input id="V_name" name="Vorname" type ="text" class="form-control input-md" value='<?php echo $Vorname; ?>'
+                           maxlength="20">
+                </div>
+
+                <div>
+                    <label for="N_name" class="form-label">Nachname:</label>
+                    <input id="N_name" name="Nachname" type="text" class="form-control input-md" value='<?php echo $Nachname; ?>'
+                           maxlength="20">
+                </div>
+
+                <style>
+                    .custom-button {
+                        width: 118.033px;
+                        height: 62px;
+                        font-weight: 400; /* Set your desired font size */
+                        padding: 0.375rem 0.75rem;
+                    }
+                </style>
+                <div class="mt-3">
+                    <button id='submit14' type='submit' class="btn btn-info custom-button">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+<hr>
+
+
 
 <?php
 $Kundennummer = '';
@@ -844,7 +861,7 @@ $studio_array = $database->selectAllKunde($Kundennummer, $Studio_ID, $Vorname, $
                     <thead  class="thead-dark">
                     <tr>
                         <th scope="col">Kundennummer</th>
-                        <th scope="col">Studio_ID</th>
+                        <th scope="col">Studio-ID</th>
                         <th scope="col">Vorname</th>
                         <th scope="col">Nachname</th>
                         <th scope="col">Geschlecht</th>
@@ -1171,288 +1188,6 @@ $studio_array = $database->selectAllMGs($Kundennummer, $Mitgliedschaftsnummer, $
 <hr>
 
 
-<?php
-
-$Mitarbeiter_ID = '';
-if (isset($_GET['Mitarbeiter_ID'])) {
-    $Mitarbeiter_ID = $_GET['Mitarbeiter_ID'];
-}
-
-$Kundennummer = '';
-if (isset($_GET['Kundennummer'])) {
-    $Kundennummer = $_GET['Kundennummer'];
-}
-
-
-$Beginnzeit = '';
-if (isset($_GET['Beginnzeit'])) {
-    $Beginnzeit  = $_GET['Beginnzeit'];
-}
-
-$Endzeit = '';
-if (isset($_GET['Endzeit'])) {
-    $Endzeit = $_GET['Endzeit'];
-}
-
-
-
-//Fetch data from database
-$studio_array = $database->selectAllCoacht($Mitarbeiter_ID, $Kundennummer, $Beginnzeit, $Endzeit);
-?>
-
-<div class="container ml-2" >
-    <div class="row">
-        <div class="col-md-7">
-            <h2>Coaching Termine:</h2>
-            <div class="table-container table-responsive" >
-                <table class="table table-bordered table-hover data-table" data-php-file="Coacht.php" id="data-table-6">
-                    <thead  class="thead-dark">
-                    <tr>
-                        <th scope="col">Mitarbeiter_ID</th>
-                        <th scope="col">Kundennummer</th>
-                        <th scope="col">Beginnzeit</th>
-                        <th scope="col">Endzeit</th>
-                    </tr>
-                    </thead>
-                    <style>
-                        .table-container{
-                            background-color: mintcream;
-                            max-height: 500px;
-                            overflow-y: auto;
-                        }
-                    </style>
-                    <tbody>
-                    <?php foreach ($studio_array as $Coacht) : ?>
-                        <tr>
-                            <td contenteditable="false"><?php echo $Coacht['MITARBEITER_ID']; ?>  </td>
-                            <td contenteditable="false"><?php echo $Coacht['KUNDENNUMMER']; ?>  </td>
-                            <td contenteditable="false" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['BEGINNZEIT'])->format('H:i:s y-m-d'); ?>  </td>
-                            <td contenteditable="false" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Coacht['ENDZEIT'])->format('H:i:s y-m-d'); ?>  </td>
-                        </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <h2>Input: </h2>
-            <form method="post" action="Coacht.php" class="row g-3">
-
-                <div class="col-md-10">
-                    <label for="M_IDS" class="form-label">Mitarbeiter-ID:</label>
-                    <input id="M_IDS" name="Mitarbeiter_ID" type="number" class="form-control">
-                </div>
-
-                <div class="col-md-10">
-                    <label for="K_IDS" class="form-label">Kundennummer:</label>
-                    <input id="K_IDS" name="Kundennummer" type="number" class="form-control">
-                </div>
-
-                <div class="col-md-10">
-                    <label for="Beginnzeit" class="form-label">Beginnzeit:</label>
-                    <input id="Beginnzeit" name="Beginnzeit" type="datetime-local" class="form-control">
-                </div>
-
-                <div class="col-md-10">
-                    <label for="Endzeit" class="form-label">Endzeit:</label>
-                    <input id="Endzeit" name="Endzeit" type="datetime-local" class="form-control">
-                </div>
-
-
-                <div class="row mt-3">
-                    <div class="col-md-5">
-                        <button type="submit" name="addButton7"  class="btn btn-primary custom-button">
-                            Add
-                        </button>
-                    </div>
-                    <div class="col-md-5">
-                        <button type="submit" name="deleteButton8" class="btn btn-danger custom-button">
-                            Delete
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <div class="col-md-2">
-            <h2>Search:</h2>
-            <form method="get" class="row g-3">
-
-
-                <div class=col-md-6">
-                    <label for="_Mitarbeiter-IDs_" class="form-label">Mitarbeiter-ID:</label>
-                    <input id="_Mitarbeiter-IDs_" name="Mitarbeiter_ID" type ="number" class="form-control input-md" value='<?php echo $Mitarbeiter_ID; ?>'>
-                </div>
-
-                <div class=col-md-6">
-                    <label for="_Kundennummers" class="form-label">Kundennummer:</label>
-                    <input id="_Kundennummers" name="Kundennummer" type="number" class="form-control input-md" value='<?php echo $Kundennummer; ?>'>
-                </div>
-
-                <div class=col-md-6">
-                    <label for="_Beginnzeit" class="form-label">Beginnezeit:</label>
-                    <input id="_Beginnzeit" name="Beginnzeit" type="datetime-local" class="form-control input-md"  value='<?php echo $Beginnzeit; ?>'>
-                </div>
-
-                <div class=col-md-6">
-                    <label for="_Endzeit" class="form-label">Endzeit:</label>
-                    <input id="_Endzeit" name="Endzeit" type="datetime-local" class="form-control input-md" value='<?php echo $Endzeit; ?>'>
-                </div>
-
-                <style>
-                    .custom-button {
-                        width: 118.033px;
-                        height: 62px;
-                        font-weight: 400; /* Set your desired font size */
-                        padding: 0.375rem 0.75rem;
-                    }
-                </style>
-
-                <div class="mt-3">
-                    <button id='submit8' type='submit' class="btn btn-info custom-button">
-                        Search
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<br>
-<hr>
-
-
-<?php
-
-$Mitarbeiter_ID = '';
-if (isset($_GET['Mitarbeiter_ID'])) {
-    $Mitarbeiter_ID = $_GET['Mitarbeiter_ID'];
-}
-
-$Kundennummer = '';
-if (isset($_GET['Kundennummer'])) {
-    $Kundennummer = $_GET['Kundennummer'];
-}
-
-$Zeitpunkt = '';
-if (isset($_GET['Zeitpunkt'])) {
-    $Zeitpunkt = $_GET['Zeitpunkt'];
-}
-
-//Fetch data from database
-$studio_array = $database->selectAllBetreut($Mitarbeiter_ID, $Kundennummer, $Zeitpunkt);
-?>
-
-
-
-<div class="container ml-2" >
-    <div class="row">
-        <div class="col-md-7">
-            <h2>Betreuungen:</h2>
-            <div class="table-container table-responsive" >
-                <table class="table table-bordered table-hover data-table" data-php-file="Betreut.php" id="data-table-7">
-                    <thead  class="thead-dark">
-                    <tr>
-                        <th scope="col">Mitarbeiter_ID</th>
-                        <th scope="col">Kundennummer</th>
-                        <th scope="col">Zeitpunkt</th>
-                    </tr>
-                    </thead>
-                    <style>
-                        .table-container{
-                            background-color: mintcream;
-                            max-height: 500px;
-                            overflow-y: auto;
-                        }
-                    </style>
-                    <tbody>
-                    <?php foreach ($studio_array as $Betreut) : ?>
-                        <tr>
-                            <td contenteditable="false"><?php echo $Betreut['MITARBEITER_ID']; ?>  </td>
-                            <td contenteditable="false"><?php echo $Betreut['KUNDENNUMMER']; ?>  </td>
-                            <td contenteditable="false" class="timestamp-cell"><?php echo DateTime::createFromFormat('d-M-y H.i.s.u A', $Betreut['ZEITPUNKT'])->format('H:i:s y-m-d'); ?>  </td>
-                        </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <h2>Input: </h2>
-            <form method="post" action="Betreut.php" class="row g-3">
-
-                <div class="col-md-10">
-                    <label for="M_IDS" class="form-label">Mitarbeiter-ID:</label>
-                    <input id="M_IDS" name="Mitarbeiter_ID" type="number" class="form-control">
-                </div>
-
-                <div class="col-md-10">
-                    <label for="K_IDS" class="form-label">Kundennummer:</label>
-                    <input id="K_IDS" name="Kundennummer" type="number" class="form-control">
-                </div>
-
-                <div class="col-md-10">
-                    <label for="Zeitpunkt" class="form-label">Zeitpunkt:</label>
-                    <input id="Zeitpunkt" name="Zeitpunkt" type="datetime-local" class="form-control">
-                </div>
-
-
-                <div class="row mt-3">
-                    <div class="col-md-5">
-                        <button type="submit" name="addButton8"  class="btn btn-primary custom-button">
-                            Add
-                        </button>
-                    </div>
-                    <div class="col-md-5">
-                        <button type="submit" name="deleteButton9" class="btn btn-danger custom-button">
-                            Delete
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <div class="col-md-2">
-            <h2>Search:</h2>
-            <form method="get" class="row g-3">
-
-
-                <div class=col-md-6">
-                    <label for="_Mitarbeiter-IDs__" class="form-label">Mitarbeiter-ID:</label>
-                    <input id="_Mitarbeiter-IDs__" name="Mitarbeiter_ID" type ="number" class="form-control input-md" value='<?php echo $Mitarbeiter_ID; ?>'>
-                </div>
-
-                <div class=col-md-6">
-                    <label for="_Kundennummers_" class="form-label">Kundennummer:</label>
-                    <input id="_Kundennummers_" name="Kundennummer" type="number" class="form-control input-md" value='<?php echo $Kundennummer; ?>'>
-                </div>
-
-                <div class=col-md-6">
-                    <label for="_Zeitpunkt" class="form-label">Zeitpunkt:</label>
-                    <input id="_Zeitpunkt" name="Beginnzeit" type="datetime-local" class="form-control input-md"  value='<?php echo $Zeitpunkt; ?>'>
-                </div>
-
-                <style>
-                    .custom-button {
-                        width: 118.033px;
-                        height: 62px;
-                        font-weight: 400; /* Set your desired font size */
-                        padding: 0.375rem 0.75rem;
-                    }
-                </style>
-
-                <div class="mt-3">
-                    <button id='submit9' type='submit' class="btn btn-info custom-button">
-                        Search
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<br>
-<hr>
 
 <?php
 
@@ -1572,6 +1307,274 @@ $studio_array = $database->selectAllMGSt($Stufe, $Monatskosten);
 <hr>
 
 
+<?php
+
+// Include DatabaseHelper.php file
+
+// Get parameter 'person_id', 'surname' and 'name' from GET Request
+// Btw. you can see the parameters in the URL if they are set
+
+$Studio_ID = '';
+if (isset($_GET['Studio_ID'])) {
+    $Studio_ID  = $_GET['Studio_ID'];
+}
+
+$F_Name = '';
+if (isset($_GET['F_Name'])) {
+    $F_Name = $_GET['F_Name'];
+}
+
+$Strasse = '';
+if (isset($_GET['Strasse'])) {
+    $Strasse = $_GET['Strasse'];
+}
+
+
+$Plz = '';
+if (isset($_GET['Plz'])) {
+    $Plz = $_GET['Plz'];
+}
+
+
+
+//Fetch data from database
+$studio_array = $database->selectAllFitnessstudio($Studio_ID, $F_Name, $Plz, $Strasse);
+?>
+
+
+
+<div class="container ml-2" >
+    <div class="row">
+        <div class="col-md-7">
+            <h2>Fitnessstudios:</h2>
+            <div class="table-container table-responsive">
+                <table class="table table-bordered table-hover data-table" data-php-file="Fitnessstudio.php" id="data-table-1">
+                    <thead  class="thead-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Plz</th>
+                        <th scope="col">Strasse</th>
+                    </tr>
+                    </thead>
+                    <style>
+                        .table-container{
+                            background-color: mintcream;
+                            max-height: 500px;
+                            overflow-y: auto;
+                        }
+                    </style>
+                    <tbody>
+                    <?php foreach ($studio_array as $Fitnessstudio) : ?>
+                        <tr>
+                            <td contenteditable="false"><?php echo $Fitnessstudio['STUDIO_ID']; ?> </td>
+                            <td contenteditable="false"><?php echo $Fitnessstudio['F_NAME']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Fitnessstudio['PLZ']; ?>  </td>
+                            <td contenteditable="false"><?php echo $Fitnessstudio['STRASSE']; ?>  </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <h2>Input: </h2>
+            <form method="post" action="Fitnessstudio.php" class="row g-3">
+
+                <div class="col-md-10">
+                    <label for="new_ID" class="form-label">ID:</label>
+                    <input id="new_ID" name="Studio_ID" type="number" min="1" class="form-control">
+                </div>
+
+                <div class="col-md-10">
+                    <label for="new_F_Name" class="form-label">Name:</label>
+                    <input id="new_F_Name" name="F_Name" type="text" maxlength="20" class="form-control">
+                </div>
+
+                <div class="col-md-10">
+                    <label for="new_Platz" class="form-label">Plz:</label>
+                    <input id="new_Platz" name="Plz" type="number" class="form-control">
+                </div>
+
+                <div class="col-md-10">
+                    <label for="new_Strasse" class="form-label">Strasse:</label>
+                    <input id="new_Strasse" name="Strasse" type="text" maxlength="20" class="form-control">
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-5">
+                        <button type="submit" name="addButton1"  class="btn btn-primary custom-button">
+                            Add
+                        </button>
+                    </div>
+                    <div class="col-md-5">
+                        <button type="submit" name="deleteButton1" class="btn btn-danger custom-button ">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-2">
+            <h2>Search:</h2>
+            <form method="get" class="row g-3">
+                <div class=col-md-10">
+                    <label for="Studio_ID" class="form-label">ID:</label>
+                    <input id="Studio_ID" name="Studio_ID" type="number" value='<?php echo $Studio_ID; ?>' min="1" class="form-control">
+                </div>
+
+                <div class=col-md-10">
+                    <label for="F_Name" class="form-label">Name:</label>
+                    <input id="F_Name" name="F_Name" type="text" value='<?php echo $F_Name; ?>'
+                           maxlength="20" class="form-control">
+                </div>
+
+                <div class=col-md-10">
+                    <label for="Plz" class="form-label">Plz:</label>
+                    <input id="Plz" name="Plz" type="number" value='<?php echo $Plz; ?>'
+                           maxlength="20" class="form-control">
+                </div>
+
+                <div class=col-md-10">
+                    <label for="Strasse" class="form-label">Strasse:</label>
+                    <input id="Strasse" name="Strasse" type="text" value='<?php echo $Strasse; ?>'
+                           maxlength="20" class="form-control">
+                </div>
+                <style>
+                    .custom-button {
+                        width: 118.033px;
+                        height: 62px;
+                        font-weight: 400; /* Set your desired font size */
+                        padding: 0.375rem 0.75rem;
+                    }
+                </style>
+                <div class="mt-3">
+                    <button id='submit6' type='submit' class="btn btn-info custom-button">
+                        Search
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+<hr>
+
+
+<?php
+
+// Include DatabaseHelper.php file
+require_once('DatabaseHelper.php');
+
+$database = new DatabaseHelper();
+
+$Plz = '';
+if (isset($_GET['Plz'])) {
+    $Plz = $_GET['Plz'];
+}
+
+$Ort = '';
+if (isset($_GET['Ort'])) {
+    $Ort = $_GET['Ort'];
+}
+
+
+//Fetch data from database
+$studio_array = $database->selectAllPlz($Plz, $Ort);
+?>
+
+<div class="container ml-2" >
+    <div class="row">
+        <div class="col-md-7">
+            <h2>Postleitzahlen:</h2>
+            <div class="table-container table-responsive">
+                <table class="table table-bordered table-hover data-table" data-php-file="Plz.php" id="data-table-15">
+                    <thead  class="thead-dark">
+                    <tr>
+                        <th scope="col">Plz</th>
+                        <th scope="col">Ort</th>
+                    </tr>
+                    </thead>
+                    <style>
+                        .table-container{
+                            background-color: mintcream;
+                            max-height: 500px;
+                            overflow-y: auto;
+                        }
+                    </style>
+                    <tbody>
+                    <?php foreach ($studio_array as $Plz) : ?>
+                        <tr>
+                            <td contenteditable="false"><?php echo $Plz['PLZ']; ?> </td>
+                            <td contenteditable="false"><?php echo $Plz['ORT']; ?>  </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <h2>Input: </h2>
+            <form method="post" action="Plz.php" class="row g-3">
+
+                <div class="col-md-10">
+                    <label for="new_Platzs" class="form-label">Plz:</label>
+                    <input id="new_Platzs" name="Plz" type="number" class="form-control">
+                </div>
+
+                <div class="col-md-10">
+                    <label for="Ort" class="form-label">Ort:</label>
+                    <input id="Ort" name="Ort" type="text" maxlength="20" class="form-control">
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-5">
+                        <button type="submit" name="addButton15"  class="btn btn-primary custom-button">
+                            Add
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-2">
+            <h2>Search:</h2>
+            <form method="get" class="row g-3">
+
+                <div class=col-md-10">
+                    <label for="Plz" class="form-label">Plz:</label>
+                    <input id="Plz" name="Plz" type="number" value='<?php echo $Plz; ?>'
+                           maxlength="20" class="form-control">
+                </div>
+
+                <div class=col-md-10">
+                    <label for="Ort_" class="form-label">Ort:</label>
+                    <input id="Ort_" name="Ort" type="text" value='<?php echo $Ort; ?>'
+                           maxlength="20" class="form-control">
+                </div>
+
+                <style>
+                    .custom-button {
+                        width: 118.033px;
+                        height: 62px;
+                        font-weight: 400; /* Set your desired font size */
+                        padding: 0.375rem 0.75rem;
+                    }
+                </style>
+                <div class="mt-3">
+                    <button id='submit2' type='submit' class="btn btn-info custom-button">
+                        Search
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+<hr>
 
 
 
