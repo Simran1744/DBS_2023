@@ -108,13 +108,14 @@ class DatabaseHelper
         return $res;
     }
 
-    public function selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht, $Spezialisierung){
+    public function selectAllPersonalTrainer($Mitarbeiter_ID, $Studio_ID, $Geschlecht, $Spezialisierung){
 
 
         $sql = "SELECT MITARBEITER.MITARBEITER_ID, MITARBEITER.STUDIO_ID, PERSONAL_TRAINER.GESCHLECHT, PERSONAL_TRAINER.SPEZIALISIERUNG
         FROM PERSONAL_TRAINER
         JOIN MITARBEITER ON PERSONAL_TRAINER.MITARBEITER_ID = MITARBEITER.MITARBEITER_ID
         WHERE upper(PERSONAL_TRAINER.MITARBEITER_ID) LIKE upper('%{$Mitarbeiter_ID}%')
+          AND upper(MITARBEITER.STUDIO_ID) LIKE upper('%{$Studio_ID}%')
           AND upper(PERSONAL_TRAINER.SPEZIALISIERUNG) LIKE upper('%{$Spezialisierung}%')";
 
         if($Geschlecht != ''){

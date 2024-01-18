@@ -398,19 +398,25 @@ if (isset($_GET['Mitarbeiter_ID'])) {
     $Mitarbeiter_ID  = $_GET['Mitarbeiter_ID'];
 }
 
-$Geschlecht= '';
+$Studio_ID = '';
+if (isset($_GET['Studio_ID'])) {
+    $Studio_ID = $_GET['Studio_ID'];
+}
+
+$Geschlecht = '';
 if (isset($_GET['Geschlecht'])) {
     $Geschlecht = $_GET['Geschlecht'];
 }
 
-$Spezialisierung= '';
+$Spezialisierung = '';
 if (isset($_GET['Spezialisierung'])) {
     $Spezialisierung = $_GET['Spezialisierung'];
 }
 
 
+
 //Fetch data from database
-$studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht, $Spezialisierung);
+$studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Studio_ID, $Geschlecht, $Spezialisierung);
 ?>
 
 
@@ -491,6 +497,12 @@ $studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht
                 </div>
 
                 <div class=col-md-6">
+                    <label for="std_id"  class="form-label">Studio-ID:</label>
+                    <input id="std_id" name="Studio_ID" type="number" class="form-control input-md" value='<?php echo $Studio_ID; ?>'>
+                </div>
+
+
+                <div class=col-md-6">
                     <label for="P_G"  class="form-label">Geschlecht:</label>
                     <select  id="P_G" name="Geschlecht" type ="text" class="form-control input-md" value='<?php echo $Geschlecht; ?>'>
                         <option value="">All</option>
@@ -504,6 +516,7 @@ $studio_array = $database->selectAllPersonalTrainer($Mitarbeiter_ID, $Geschlecht
                     <input id="P_S" name="Spezialisierung" type="text" class="form-control input-md" value='<?php echo $Spezialisierung; ?>'
                            maxlength="20">
                 </div>
+
 
 
                 <style>
