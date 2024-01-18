@@ -23,7 +23,11 @@ public class InsertClass {
                 RezeptionistClass rezIns = new RezeptionistClass(connection);
                 KundeClass kundIns = new KundeClass(connection);
                 BetreutClass betreutIns = new BetreutClass(connection);
+                CoachtClass coachtIns = new CoachtClass(connection);
+                Mit_StufenClass mitStufenIns = new Mit_StufenClass(connection);
 
+
+                //mitStufenIns.insertMitStufen(); //only run once!!!
 
                 plzIns.insertPlzFromCSV("/Users/simra/Desktop/DBS_2023/PlzCSV.csv");
 
@@ -39,9 +43,9 @@ public class InsertClass {
 
                 kundIns.insertKundeCSV("/Users/simra/Desktop/DBS_2023/Kunde_DATA.csv", fitIns.getAllFitnessstudioIds());
 
-
                 betreutIns.insertBetreut(rezIns.getAllRezeptionistIds(), mitIns.getAllMitarbeiterIds());
 
+                coachtIns.insertCoacht(persIns.getAllTrainerFitIds(), kundIns.getAllKundFitIds());
 
 
                 ArrayList<Integer> newList;

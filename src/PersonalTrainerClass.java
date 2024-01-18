@@ -1,5 +1,6 @@
 import com.opencsv.CSVReader;
 import java.sql.*;
+import java.util.HashMap;
 import java.util.Random;
 import java.io.FileReader;
 import java.sql.Connection;
@@ -96,6 +97,31 @@ public class PersonalTrainerClass {
         }
 
         return mitIDs;
+    }
+
+    public HashMap<Integer, Integer> getAllTrainerFitIds(){
+        HashMap<Integer, Integer> fitMap = new HashMap<>();
+
+        try {
+            connection.setAutoCommit(false);
+            String sqlQuery = "SELECT MITARBEITER.MITARBEITER_ID, MITARBEITER.STUDIO_ID " +
+                    "FROM PERSONAL_TRAINER " +
+                    "JOIN MITARBEITER ON PERSONAL_TRAINER.MITARBEITER_ID = MITARBEITER.MITARBEITER_ID";
+
+            try (PreparedStatement stmt = connection.prepareStatement(sqlQuery);
+                 ResultSet rs = stmt.executeQuery()) {
+
+                while (rs.next()) {
+                    int persID = rs.getInt("Mitarbeiter_ID");
+                    int fitID = rs.getInt("Studio_ID");
+                    fitMap.put(persID,fitID);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return fitMap;
     }
 
 

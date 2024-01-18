@@ -1,13 +1,10 @@
 import com.opencsv.CSVReader;
 import java.sql.*;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Random;
+import java.util.*;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class KundeClass {
     private Connection connection;
@@ -95,5 +92,28 @@ public class KundeClass {
         }
 
         return kundIDs;
+    }
+
+    public HashMap<Integer, Integer> getAllKundFitIds(){
+        HashMap<Integer, Integer> fitMap = new HashMap<>();
+
+        try {
+            connection.setAutoCommit(false);
+            String sqlQuery = "SELECT KUNDENNUMMER, STUDIO_ID FROM KUNDE";
+            try (PreparedStatement stmt = connection.prepareStatement(sqlQuery);
+                 ResultSet rs = stmt.executeQuery()) {
+
+                while (rs.next()) {
+                    int kundID = rs.getInt("Kundennummer");
+                    int fitID = rs.getInt("Studio_ID");
+                    fitMap.put(kundID,fitID);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return fitMap;
+
     }
 }
