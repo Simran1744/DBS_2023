@@ -25,6 +25,7 @@ public class InsertClass {
                 BetreutClass betreutIns = new BetreutClass(connection);
                 CoachtClass coachtIns = new CoachtClass(connection);
                 Mit_StufenClass mitStufenIns = new Mit_StufenClass(connection);
+                MitgliedschaftClass mgIns = new MitgliedschaftClass(connection);
 
 
                 //mitStufenIns.insertMitStufen(); //only run once!!!
@@ -48,7 +49,11 @@ public class InsertClass {
                 coachtIns.insertCoacht(persIns.getAllTrainerFitIds(), kundIns.getAllKundFitIds());
 
 
-                ArrayList<Integer> newList;
+                mgIns.insertMitgliedschaft(kundIns.getAllKundenIds());
+
+
+
+
 
 
                 connection.commit();
